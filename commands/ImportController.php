@@ -80,7 +80,7 @@ class ImportController extends Controller
             $model->website = $fileop[1];
             $model->old_description = !empty($fileop[2]) ? $fileop[2] : '';
             $model->description = !empty($fileop[3]) ? $fileop[3] : '';
-            $model->spreadsheet = !empty($fileop[4) ? $fileop[4] : ''];
+            $model->spreadsheet = !empty($fileop[4]) ? $fileop[4] : '';
             $model->count_ratings = !empty($fileop[5]) ? $fileop[5] : '';
             $model->grading_ratings = !empty($fileop[6]) ? $fileop[6] : '';
             $model->paid_ratings = !empty($fileop[7]) ? $fileop[7] : '';
