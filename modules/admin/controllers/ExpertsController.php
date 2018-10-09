@@ -3,8 +3,9 @@
 namespace app\modules\admin\controllers;
 
 use Yii;
-use app\models\Experts;
+use app\models\helpers\Experts;
 use app\models\search\ExpertsSearch;
+use yii\helpers\Json;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -65,6 +66,7 @@ class ExpertsController extends Controller
     public function actionCreate()
     {
         $model = new Experts();
+        $model->address = $model->prepareAdress();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -85,6 +87,7 @@ class ExpertsController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $model->address = Json::decode($model->address);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);

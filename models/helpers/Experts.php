@@ -15,6 +15,18 @@ use yii\db\Expression;
 class Experts extends \app\models\Experts
 {
 
+    private $defAddr = [
+        'facebook' => '',
+        'twitter' => '',
+        'youtube' => '',
+        'tg_chat' => '',
+        'tg_group' => '',
+        'discord' => '',
+        'reddit' => '',
+        'medium' => '',
+        'bitcointalk_forum' => '',
+    ];
+
     public function behaviors()
     {
         return [
@@ -26,6 +38,12 @@ class Experts extends \app\models\Experts
             ],
         ];
     }
+
+    public function prepareAdress()
+    {
+        return $this->defAddr;
+    }
+
 
     public function setAddress($value = '{}')
     {
