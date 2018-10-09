@@ -77,7 +77,7 @@ class ImportController extends Controller
             if($skipRows-- > 0) continue;
             $model = new Experts();
             $model->name = $fileop[0];
-            $model->website = $fileop[1];
+            $model->website = !empty($fileop[1]) ? $fileop[1] : '';
             $model->old_description = !empty($fileop[2]) ? $fileop[2] : '';
             $model->description = !empty($fileop[3]) ? $fileop[3] : '';
             $model->spreadsheet = !empty($fileop[4]) ? $fileop[4] : '';
