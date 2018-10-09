@@ -85,18 +85,18 @@ class ImportController extends Controller
             $model->grading_ratings = !empty($fileop[6]) ? $fileop[6] : '';
             $model->paid_ratings = !empty($fileop[7]) ? $fileop[7] : '';
             $model->address = [
-                'facebook' => $fileop[8],
-                'twitter' => $fileop[9],
-                'youtube' => $fileop[10],
-                'tg_chat' => $fileop[11],
-                'tg_group' => $fileop[12],
-                'discord' => $fileop[13],
-                'reddit' => $fileop[14],
-                'medium' => $fileop[15],
-                'bitcointalk_forum' => $fileop[16],
+                'facebook' => !empty($fileop[8]) ? $fileop[8] : '',
+                'twitter' => !empty($fileop[9]) ? $fileop[9] : '',
+                'youtube' => !empty($fileop[10]) ? $fileop[10] : '',
+                'tg_chat' => !empty($fileop[11]) ? $fileop[11] : '',
+                'tg_group' => !empty($fileop[12]) ? $fileop[12] : '',
+                'discord' => !empty($fileop[13]) ? $fileop[13] : '',
+                'reddit' => !empty($fileop[14]) ? $fileop[14] : '',
+                'medium' => !empty($fileop[15]) ? $fileop[15] : '',
+                'bitcointalk_forum' => !empty($fileop[16]) ? $fileop[16] : '',
             ];
-            $model->email = $fileop[17];
-            $model->subscribe = $fileop[18];
+            $model->email = !empty($fileop[17]) ? $fileop[17] : '';
+            $model->subscribe = !empty($fileop[18]) ? $fileop[18] : '';
             $model->comments = !empty($fileop[19]) ? $fileop[19] : '';
             $model->status = 1;
             if(!$model->save()) {print_r('Строка: '.$row); print_r($model->errors);};
