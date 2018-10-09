@@ -97,7 +97,7 @@ class ImportController extends Controller
             ];
             $model->email = $fileop[17];
             $model->subscribe = $fileop[18];
-            $model->comments = $fileop[19];
+            $model->comments = !empty($fileop[19]) ? $fileop[19] : '';
             $model->status = 1;
             if(!$model->save()) {print_r('Строка: '.$row); print_r($model->errors);};
 //            print_r($fileop);fclose($handle);die();
