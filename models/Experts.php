@@ -13,7 +13,7 @@ use Yii;
  * @property string $old_description
  * @property string $description
  * @property string $spreadsheet
- * @property int $count_ratings
+ * @property string $count_ratings
  * @property string $grading_ratings
  * @property string $paid_ratings
  * @property string $address
@@ -41,10 +41,10 @@ class Experts extends \yii\db\ActiveRecord
     {
         return [
             [['name'], 'required'],
-            [['count_ratings', 'old_description', 'description', 'address', 'comments'], 'string'],
+            [['old_description', 'description', 'address', 'comments'], 'string'],
             [['status', 'created_at', 'updated_at'], 'integer'],
-            [['count_ratings'], 'string', 'max' => 50],
             [['name', 'website', 'spreadsheet', 'grading_ratings', 'paid_ratings', 'email', 'subscribe'], 'string', 'max' => 255],
+            [['count_ratings'], 'string', 'max' => 50],
             [['name'], 'unique'],
         ];
     }

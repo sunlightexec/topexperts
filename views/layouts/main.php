@@ -43,6 +43,14 @@ AppAsset::register($this);
         ['label' => 'Dictionsries', 'items' => [
             ['label' => 'Project Synonims', 'url' => ['/admin/project-synonims']],
             ['label' => 'Experts', 'url' => ['/admin/experts']],
+            ['label' => 'Categories', 'url' => ['/admin/categories']],
+            ['label' => 'Currencies', 'url' => ['/admin/currencies']],
+        ]],
+        ['label' => 'Data', 'items' => [
+            ['label' => 'Projects', 'url' => ['/admin/projects']],
+            ['label' => 'Project Data', 'url' => ['/admin/project-data']],
+//            ['label' => 'Categories', 'url' => ['/admin/categories']],
+//            ['label' => 'Currencies', 'url' => ['/admin/currencies']],
         ]],
     ];
 

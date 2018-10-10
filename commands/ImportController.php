@@ -7,8 +7,12 @@
 
 namespace app\commands;
 
+use app\models\helpers\Categories;
+use app\models\helpers\Currencies;
 use app\models\helpers\Experts;
+use app\models\helpers\ProjectData;
 use app\models\helpers\ProjectSynonims;
+use app\models\helpers\Projects;
 use yii\console\Controller;
 use yii\console\ExitCode;
 use yii\helpers\FileHelper;
@@ -25,6 +29,13 @@ class ImportController extends Controller
 {
     private $loadDir = '/data/';
 
+    public function actionIndex()
+    {
+        $this->actionExperts();
+        $this->actionProjectSynonims();
+        $this->actionProjects();
+    }
+
     /**
      * This command echoes what you have entered as the message.
      * @param string $message the message to be echoed.
@@ -40,7 +51,7 @@ class ImportController extends Controller
         if(!file_exists($loadFileName)) return ExitCode::NOINPUT;
         $handle = fopen($loadFileName, "r");
         $row = 1;
-        while (($fileop = fgetcsv($handle, 1000, ",")) !== false)
+        while (($fileop = fgetcsv($handle, 2000, ",")) !== false)
         {
             $row++;
             if($skipRows-- > 0) continue;
@@ -70,7 +81,7 @@ class ImportController extends Controller
         if(!file_exists($loadFileName)) return ExitCode::NOINPUT;
         $handle = fopen($loadFileName, "r");
         $row = 1;
-        while (($fileop = fgetcsv($handle, 1000, ",")) !== false)
+        while (($fileop = fgetcsv($handle, 2000, ",")) !== false)
         {
 //            print_r($fileop);fclose($handle);die();
             $row++;
@@ -105,5 +116,122 @@ class ImportController extends Controller
         fclose($handle);
 
         return ExitCode::OK;
+    }
+
+    public function actionProjects()
+    {
+        ProjectData::deleteAll();
+        Projects::deleteAll();
+        Categories::deleteAll();
+        Currencies::deleteAll();
+
+        $skipRows = 1;
+        $loadFileName = \Yii::$app->basePath . $this->loadDir . 'projects.csv';
+        $loadFileName = FileHelper::normalizePath($loadFileName);
+        if(!file_exists($loadFileName)) return ExitCode::NOINPUT;
+        $handle = fopen($loadFileName, "r");
+        $row = 0;
+        while (($fileop = fgetcsv($handle, 2000, ",")) !== false)
+        {
+            $row++;
+            if($row <= $skipRows) continue;
+            if($row == 2) {
+                $flds = $fileop;
+                continue;
+            }
+            if($row == 3) {
+                $fldName = $fileop;
+                continue;
+            }
+
+            for($i=0; $i<=172; $i++) {
+                if($fileop[$i] == 'No data') $fileop[$i] = null;
+            }
+
+            /*Category*/
+            $catName = $fileop[5];
+            $catId = null;
+            if(!empty($catName)) {
+                $catId = Categories::check($catName);
+            }
+            $valName = $fileop[7];
+            $valId1 = null;
+            if(!empty($valName)) {
+                $valId1 = Currencies::check($valName);
+            }
+
+            $valName = $fileop[9];
+            $valId2 = null;
+            if(!empty($valName)) {
+                $valId2 = Currencies::check($valName);
+            }
+
+            $fileop[6] = str_replace([',', '.', '​​ '],'',$fileop[6]);
+            $fileop[6] = preg_replace("/[^0-9]/", '', $fileop[6]);
+            $fileop[8] = str_replace(',','.',$fileop[8]);
+
+            $model = new Projects();
+            $data = [
+                'ICO_NAME' => $fileop[0],
+                'ICO_Website' => !empty($fileop[1]) ? $fileop[1] : null,
+                'ICO_Description' => !empty($fileop[2]) ? $fileop[2] : null,
+                'URL_Coinmarketcap' => !empty($fileop[3]) ? $fileop[3] : null,
+                'URL_ICODrops' => !empty($fileop[4]) ? $fileop[4] : null,
+                'Category' => $catId,
+                'HARD_CAP' => !empty($fileop[6]) ? $fileop[6] : null,
+                'Currency_HARD_CAP' => $valId1,
+                'ICO_Price' => !empty($fileop[8]) ? $fileop[8] : null,
+                'Currency_ICO_Price' => $valId2,
+                'START_ICO' => !empty($fileop[10]) ? self::cnvDate($fileop[10]) : null,
+                'END_ICO' => !empty($fileop[11]) ? self::cnvDate($fileop[11]) : null,
+                'Scam' => !empty($fileop[12]) ? $fileop[12] : null,
+            ];
+            $model->setAttributes($data);
+
+            if(!$model->save()) {print_r([$fileop[0], $fileop[6], $model->errors]); continue;}
+
+            for($i=13; $i<172; $i=$i+2) {
+                $expertName = $fldName[$i];
+                $expertModel = Experts::find()->where(['=', 'name', $expertName])->one();
+                if(empty($expertModel)) {print_r([$fileop[0], $expertName . " not found/n"]); }
+                else {
+                    $prData = new ProjectData();
+                    $prData->setAttributes([
+                        'project_id' => $model->id,
+                        'expert_id' => $expertModel->id,
+                        'Score' => $fileop[$i],
+                        'Report_Date' => !empty($fileop[$i+1]) ? self::cnvDate($fileop[$i+1]) : null,
+                    ]);
+                    if(!$prData->save()) {print_r([$fileop[0], $expertName, $prData->errors]); continue;}
+                }
+            }
+
+        }
+
+        return ExitCode::OK;
+    }
+
+    private static function cnvDate($strDate)
+    {
+        $strDate = explode('.', $strDate);
+
+        if(count($strDate) != 3) return null;
+        $strDate[0] = str_pad($strDate[0], 2, '0', STR_PAD_LEFT);
+        $strDate[1] = str_pad($strDate[1], 2, '0', STR_PAD_LEFT);
+        $strDate[2] = '20' . $strDate[2];
+        if($strDate[1] > 12) {
+//            $a = $strDate[1];
+//            $strDate[1] = $strDate[0];
+//            $strDate[0] = $a;
+            $strDate[1] = 12;
+        }
+//        print_r($strDate[2] . '-' .
+//        str_pad($strDate[1], 2, '0', STR_PAD_LEFT) . '-' .
+//        str_pad($strDate[0], 2, '0', STR_PAD_LEFT));
+        return strtotime(
+            $strDate[2] . '-' .
+            str_pad($strDate[1], 2, '0', STR_PAD_LEFT) . '-' .
+            str_pad($strDate[0], 2, '0', STR_PAD_LEFT)
+        );
     }
 }
