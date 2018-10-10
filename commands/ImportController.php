@@ -193,7 +193,8 @@ class ImportController extends Controller
             for($i=13; $i<172; $i=$i+2) {
                 $expertName = $fldName[$i];
                 $expertModel = Experts::find()->where(['=', 'name', $expertName])->one();
-                if(empty($expertModel)) {print_r([$fileop[0], $expertName . " not found/n"]); }
+                if(empty($fileop[$i]) && empty($fileop[$i+1])) continue;
+                if(empty($expertModel)) {print_r([$fileop[0], $expertName . " not found/n"]); continue;}
                 else {
                     $prData = new ProjectData();
                     $prData->setAttributes([

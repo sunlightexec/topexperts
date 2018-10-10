@@ -29,13 +29,13 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             'id',
-            'project_id',
-            'expert_id',
+            'project.ICO_NAME',
+            'expert.name',
             'Score',
-            'Report_Date',
-            'status',
-            'created_at',
-            'updated_at',
+            'Report_Date:date',
+//            'status',
+            'created_at:date',
+            'updated_at:date',
         ],
     ]) ?>
 
