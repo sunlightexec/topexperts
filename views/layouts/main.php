@@ -49,7 +49,7 @@ AppAsset::register($this);
         ['label' => 'Data', 'items' => [
             ['label' => 'Projects', 'url' => ['/admin/projects']],
             ['label' => 'Project Data', 'url' => ['/admin/project-data']],
-//            ['label' => 'Categories', 'url' => ['/admin/categories']],
+            ['label' => 'Exceptions', 'url' => ['/admin/exceptions']],
 //            ['label' => 'Currencies', 'url' => ['/admin/currencies']],
         ]],
     ];
