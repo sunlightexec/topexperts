@@ -54,10 +54,12 @@ class ImportController extends Controller
         if(!file_exists($loadFileName)) return ExitCode::NOINPUT;
         $handle = fopen($loadFileName, "r");
         $row = 1;
+        echo "0++";
         while (($fileop = fgetcsv($handle, 2000, ",")) !== false)
         {
             $row++;
             if($skipRows-- > 0) continue;
+            if($row % 10 == 0) echo "$row++";
             for($i=1; $i<3; $i++) {
                 if(!empty($fileop[$i])) {
                     $model = new ProjectSynonims();
@@ -71,7 +73,7 @@ class ImportController extends Controller
                 }
             }
         }
-
+        echo "\n";
         return ExitCode::OK;
     }
 
@@ -84,11 +86,13 @@ class ImportController extends Controller
         if(!file_exists($loadFileName)) return ExitCode::NOINPUT;
         $handle = fopen($loadFileName, "r");
         $row = 1;
+        echo "0++";
         while (($fileop = fgetcsv($handle, 2000, ",")) !== false)
         {
 //            print_r($fileop);fclose($handle);die();
             $row++;
             if($skipRows-- > 0) continue;
+            if($row % 100 == 0) echo "$row++";
             $model = new Experts();
             $model->name = $fileop[0];
             $model->website = !empty($fileop[1]) ? $fileop[1] : '';
@@ -117,6 +121,7 @@ class ImportController extends Controller
 //            print_r($fileop);fclose($handle);die();
         }
         fclose($handle);
+        echo "\n";
 
         return ExitCode::OK;
     }
@@ -134,6 +139,7 @@ class ImportController extends Controller
         if(!file_exists($loadFileName)) return ExitCode::NOINPUT;
         $handle = fopen($loadFileName, "r");
         $row = 0;
+        echo "0++";
         while (($fileop = fgetcsv($handle, 2000, ",")) !== false)
         {
             $row++;
@@ -146,6 +152,8 @@ class ImportController extends Controller
                 $fldName = $fileop;
                 continue;
             }
+
+            if($row % 500 == 0) echo "$row++";
 
             for($i=0; $i<=172; $i++) {
                 if($fileop[$i] == 'No data') $fileop[$i] = null;
@@ -211,6 +219,9 @@ class ImportController extends Controller
             }
 
         }
+        fclose($handle);
+
+        echo "\n";
 
         return ExitCode::OK;
     }
