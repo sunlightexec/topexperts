@@ -271,9 +271,10 @@ class ImportController extends Controller
             if(empty($expert)) {echo "project {$fileop[0]} not found\n"; continue;}
             $model = new Exceptions();
             $model->project_id = $expert->id;
-            $model->msg_true = !empty($fileop[1]) ? $fileop[1] : null;
-            $model->msg_fall = !empty($fileop[2]) ? $fileop[2] : null;
-            $model->msg_fall2 = !empty($fileop[3]) ? $fileop[3] : null;
+            $model->site = !empty($fileop[1]) ? $fileop[1] : null;
+            $model->msg_true = !empty($fileop[2]) ? $fileop[2] : null;
+            $model->msg_fall = !empty($fileop[3]) ? $fileop[3] : null;
+            $model->msg_fall2 = !empty($fileop[4]) ? $fileop[4] : null;
 
             if(!$model->save()) {
                 print_r([$row, $model->errors]);
