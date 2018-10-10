@@ -31,8 +31,11 @@ class ImportController extends Controller
 
     public function actionIndex()
     {
+        print_r("Import Experts \n");
         $this->actionExperts();
+        print_r("Import Synonims \n");
         $this->actionProjectSynonims();
+        print_r("Import Projects \n");
         $this->actionProjects();
     }
 
