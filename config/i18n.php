@@ -13,6 +13,7 @@ return [
                 'app/categories' => 'categories.php',
                 'app/currencies' => 'currencies.php',
                 'app/projects' => 'projects.php',
+                'app/exceptions' => 'exceptions.php',
             ],
         ],
     ],

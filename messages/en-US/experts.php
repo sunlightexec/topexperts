@@ -1,6 +1,6 @@
 <?php
 return [
-    'Name' => 'Name',
+    'Name' => 'Expert Name',
     'Old Description' => 'Old Description',
     'Description' => 'Description',
     'Spread Sheet' => 'Spread Sheet',

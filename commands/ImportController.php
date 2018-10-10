@@ -9,6 +9,7 @@ namespace app\commands;
 
 use app\models\helpers\Categories;
 use app\models\helpers\Currencies;
+use app\models\helpers\Exceptions;
 use app\models\helpers\Experts;
 use app\models\helpers\ProjectData;
 use app\models\helpers\ProjectSynonims;
@@ -248,5 +249,37 @@ class ImportController extends Controller
             str_pad($strDate[1], 2, '0', STR_PAD_LEFT) . '-' .
             str_pad($strDate[0], 2, '0', STR_PAD_LEFT)
         );
+    }
+
+    public function actionExceptions()
+    {
+        Exceptions::deleteAll();
+
+        $skipRows = 1;
+        $loadFileName = \Yii::$app->basePath . $this->loadDir . 'exceptions.csv';
+        $loadFileName = FileHelper::normalizePath($loadFileName);
+        if(!file_exists($loadFileName)) return ExitCode::NOINPUT;
+        $handle = fopen($loadFileName, "r");
+        $row = 1;
+        echo "0++";
+        while (($fileop = fgetcsv($handle, 2000, ",")) !== false)
+        {
+            $row++;
+            if($skipRows-- > 0) continue;
+            if($row % 10 == 0) echo "$row++";
+            $expert = Projects::find()->where(['=','ICO_NAME', $fileop[0]])->one();
+            if(empty($expert)) {echo "project {$fileop[0]} not found\n"; continue;}
+            $model = new Exceptions();
+            $model->project_id = $expert->id;
+            $model->msg_true = !empty($fileop[1]) ? $fileop[1] : null;
+            $model->msg_fall = !empty($fileop[2]) ? $fileop[2] : null;
+            $model->msg_fall2 = !empty($fileop[3]) ? $fileop[3] : null;
+
+            if(!$model->save()) {
+                print_r([$row, $model->errors]);
+            };
+        }
+        echo "\n";
+        return ExitCode::OK;
     }
 }
