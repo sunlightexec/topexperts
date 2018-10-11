@@ -14,6 +14,7 @@ return [
                 'app/currencies' => 'currencies.php',
                 'app/projects' => 'projects.php',
                 'app/exceptions' => 'exceptions.php',
+                'app/hystirical-data' => 'hystirical-data.php',
             ],
         ],
     ],

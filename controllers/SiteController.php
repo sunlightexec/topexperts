@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\components\api\CoinMarketCap;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
@@ -145,5 +146,16 @@ class SiteController extends Controller
     public function actionAbout()
     {
         return $this->render('about');
+    }
+
+    public function actionTest()
+    {
+        $api = new CoinMarketCap(
+            'work',
+            '418b4546-2ac8-4ae9-b4b6-9f7cbf549a9b'
+        );
+        $res = $api->getLatestData();
+
+        print_r($res); die();
     }
 }
