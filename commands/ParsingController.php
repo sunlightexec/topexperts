@@ -24,6 +24,11 @@ use yii\helpers\Json;
  */
 class ParsingController extends Controller
 {
+    public function actionClearData()
+    {
+        HystoricalData::deleteAll();
+    }
+
     public function actionLatestData()
     {
         $api = new CoinMarketCap(
