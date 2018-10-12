@@ -48,7 +48,7 @@ class Projects extends \yii\db\ActiveRecord
         return [
             [['ICO_NAME'], 'required'],
             [['ICO_Description'], 'string'],
-            [['Category', 'Currency_HARD_CAP', 'Currency_ICO_Price', 'status', 'created_at', 'updated_at'], 'integer'],
+            [['Category', 'Currency_HARD_CAP', 'Currency_ICO_Price', 'status', 'START_ICO', 'END_ICO'], 'integer'],
             [['HARD_CAP', 'ICO_Price'], 'number'],
             [['ICO_NAME', 'ICO_Website', 'URL_Coinmarketcap', 'URL_ICODrops', 'Scam'], 'string', 'max' => 255],
             [['ICO_NAME'], 'unique'],

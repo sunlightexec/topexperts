@@ -8,7 +8,7 @@ use Yii;
  * This is the model class for table "project_synonims".
  *
  * @property int $id
- * @property string $project_name
+ * @property string $expert_id
  * @property string $project_synonim
  * @property int $status
  * @property int $created_at
@@ -31,9 +31,8 @@ class ProjectSynonims extends \yii\db\ActiveRecord
     {
         return [
             [['project_name'], 'required'],
-            [['project_synonim'], 'string'],
+            [['project_synonim', 'project_name'], 'string'],
             [['status', 'created_at', 'updated_at'], 'integer'],
-            [['project_name'], 'string', 'max' => 255],
         ];
     }
 

@@ -18,8 +18,8 @@ class ProjectSynonims extends ProjectSynonimsModel
     public function rules()
     {
         return [
-            [['id', 'status', 'created_at', 'updated_at'], 'integer'],
-            [['project_name', 'project_synonim'], 'safe'],
+            [[ 'id', 'status', 'created_at', 'updated_at'], 'integer'],
+            [['project_synonim', 'project_name'], 'safe'],
         ];
     }
 
@@ -61,12 +61,12 @@ class ProjectSynonims extends ProjectSynonimsModel
         $query->andFilterWhere([
             'id' => $this->id,
             'status' => $this->status,
+            'expert_id' => $this->expert_id,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ]);
 
-        $query->andFilterWhere(['like', 'project_name', $this->project_name])
-            ->andFilterWhere(['like', 'project_synonim', $this->project_synonim]);
+        $query->andFilterWhere(['like', 'project_synonim', $this->project_synonim]);
 
         return $dataProvider;
     }

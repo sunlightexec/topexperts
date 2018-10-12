@@ -32,12 +32,18 @@ class ImportController extends Controller
 
     public function actionIndex()
     {
+        ProjectSynonims::deleteAll();
+        Experts::deleteAll();
+
+
         print_r("Import Experts \n");
         $this->actionExperts();
-        print_r("Import Synonims \n");
-        $this->actionProjectSynonims();
+
         print_r("Import Projects \n");
         $this->actionProjects();
+
+        print_r("Import Synonims \n");
+        $this->actionProjectSynonims();
     }
 
     /**
@@ -51,6 +57,8 @@ class ImportController extends Controller
 
         $skipRows = 1;
         $loadFileName = \Yii::$app->basePath . $this->loadDir . 'synonims.csv';
+        $errorFileName = \Yii::$app->basePath . $this->loadDir . 'synonims.err';
+        $errors = '';
         $loadFileName = FileHelper::normalizePath($loadFileName);
         if(!file_exists($loadFileName)) return ExitCode::NOINPUT;
         $handle = fopen($loadFileName, "r");
@@ -63,6 +71,7 @@ class ImportController extends Controller
             if($row % 10 == 0) echo "$row++";
             for($i=1; $i<3; $i++) {
                 if(!empty($fileop[$i])) {
+
                     $model = new ProjectSynonims();
                     $model->project_name = $fileop[0];
                     $model->project_synonim = $fileop[$i];
@@ -75,6 +84,8 @@ class ImportController extends Controller
             }
         }
         echo "\n";
+        fclose($handle);
+        file_put_contents($errorFileName, $errors);
         return ExitCode::OK;
     }
 
@@ -183,6 +194,9 @@ class ImportController extends Controller
             $fileop[8] = str_replace(',','.',$fileop[8]);
 
             $model = new Projects();
+            $sDate = !empty($fileop[10]) ? self::cnvDate($fileop[10]) : null;
+            $eDate = !empty($fileop[11]) ? self::cnvDate($fileop[11]) : null;
+            print_r([$sDate, $eDate]);
             $data = [
                 'ICO_NAME' => $fileop[0],
                 'ICO_Website' => !empty($fileop[1]) ? $fileop[1] : null,
@@ -194,8 +208,8 @@ class ImportController extends Controller
                 'Currency_HARD_CAP' => $valId1,
                 'ICO_Price' => !empty($fileop[8]) ? $fileop[8] : null,
                 'Currency_ICO_Price' => $valId2,
-                'START_ICO' => !empty($fileop[10]) ? self::cnvDate($fileop[10]) : null,
-                'END_ICO' => !empty($fileop[11]) ? self::cnvDate($fileop[11]) : null,
+                'START_ICO' => $sDate,
+                'END_ICO' => $eDate,
                 'Scam' => !empty($fileop[12]) ? $fileop[12] : null,
             ];
             $model->setAttributes($data);
@@ -242,12 +256,17 @@ class ImportController extends Controller
             $strDate[1] = 12;
         }
 //        print_r($strDate[2] . '-' .
-//        str_pad($strDate[1], 2, '0', STR_PAD_LEFT) . '-' .
-//        str_pad($strDate[0], 2, '0', STR_PAD_LEFT));
+//        $strDate[1] . '-' .
+//        $strDate[0]);
+//        echo ' :  '.strtotime(
+//                $strDate[2] . '-' .
+//                $strDate[1] . '-' .
+//                $strDate[0]
+//            ) . "\n";
         return strtotime(
             $strDate[2] . '-' .
-            str_pad($strDate[1], 2, '0', STR_PAD_LEFT) . '-' .
-            str_pad($strDate[0], 2, '0', STR_PAD_LEFT)
+            $strDate[1] . '-' .
+            $strDate[0]
         );
     }
 

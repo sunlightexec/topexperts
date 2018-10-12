@@ -1,7 +1,7 @@
 <?php
 return [
     'ID' => 'ID',
-    'Project Name' => 'Project Name',
+    'Expert Name' => 'Expert Name',
     'Project Synonim' => 'Project Synonim',
     'Status' => 'Status',
     'Created At' => 'Created At',
