@@ -30,7 +30,11 @@ $this->params['breadcrumbs'][] = $this->title;
             'created_at:date',
             'project.ICO_NAME',
             'project.ICO_Website',
-            'currency.name',
+            [
+                'attribute' => 'currency_id',
+                'value' => 'currency.name',
+                'filter' => false
+            ],
 //            'circulating_supply',
 //            'total_supply',
 //            'max_supply',
