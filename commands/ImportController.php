@@ -196,7 +196,7 @@ class ImportController extends Controller
             $model = new Projects();
             $sDate = !empty($fileop[10]) ? self::cnvDate($fileop[10]) : null;
             $eDate = !empty($fileop[11]) ? self::cnvDate($fileop[11]) : null;
-            print_r([$sDate, $eDate]);
+//            print_r([$sDate, $eDate]);
             $data = [
                 'ICO_NAME' => $fileop[0],
                 'ICO_Website' => !empty($fileop[1]) ? $fileop[1] : null,
