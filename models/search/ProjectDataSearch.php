@@ -19,7 +19,7 @@ class ProjectDataSearch extends ProjectData
     {
         return [
             [['id', 'project_id', 'expert_id', 'Report_Date', 'status', 'created_at', 'updated_at'], 'integer'],
-            [['Score'], 'safe'],
+            [['Score', 'seracName'], 'safe'],
         ];
     }
 

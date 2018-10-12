@@ -27,13 +27,21 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
 
 //            'id',
-            'created_at:date',
-            'project.ICO_NAME',
-            'project.ICO_Website',
+            'created_at:datetime',
             [
-                'attribute' => 'currency_id',
+                'label' => 'Project Name',
+                'value' => 'project.ICO_NAME',
+                'filter' => Html::activeTextInput($searchModel, 'searchName', ['class' => 'form-control'])
+            ],
+            [
+                'label' => 'URL',
+                'value' => 'project.ICO_Website',
+                'filter' => Html::activeTextInput($searchModel, 'searchURL', ['class' => 'form-control'])
+            ],
+            [
+                'label' => 'SEMBOL',
                 'value' => 'currency.name',
-                'filter' => false
+                'filter' => Html::activeTextInput($searchModel, 'searchCurrency', ['class' => 'form-control'])
             ],
 //            'circulating_supply',
 //            'total_supply',
@@ -46,7 +54,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
             //'updated_at',
 
-            ['class' => 'yii\grid\ActionColumn'],
+            ['class' => 'yii\grid\ActionColumn', 'template' => '{view}'],
         ],
     ]); ?>
     <?php Pjax::end(); ?>

@@ -24,6 +24,10 @@ use Yii;
  */
 class HystoricalData extends \yii\db\ActiveRecord
 {
+    public $searchName;
+    public $searchURL;
+    public $searchCurrency;
+
     /**
      * {@inheritdoc}
      */
@@ -41,6 +45,7 @@ class HystoricalData extends \yii\db\ActiveRecord
             [['currency_id', 'date_added', 'status', 'created_at', 'updated_at', 'project_id'], 'integer'],
             [['circulating_supply', 'total_supply', 'max_supply', 'updated_at'], 'double'],
             [['price', 'volume_24h', 'market_cap'], 'number'],
+            [['searchName'], 'string'],
             [['currency_id'], 'exist', 'skipOnError' => true, 'targetClass' => Currencies::className(), 'targetAttribute' => ['currency_id' => 'id']],
         ];
     }

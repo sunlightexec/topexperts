@@ -20,6 +20,7 @@ class HystoricalDataSearch extends HystoricalData
         return [
             [['id', 'project_id', 'currency_id', 'circulating_supply', 'total_supply', 'max_supply', 'date_added', 'status', 'created_at', 'updated_at'], 'integer'],
             [['price', 'volume_24h', 'market_cap'], 'number'],
+            [['searchName', 'searchURL', 'searchCurrency'], 'safe'],
         ];
     }
 
@@ -41,7 +42,8 @@ class HystoricalDataSearch extends HystoricalData
      */
     public function search($params)
     {
-        $query = HystoricalData::find();
+        $query = HystoricalData::find()
+            ->joinWith(['project', 'currency']);
 
         // add conditions that should always apply here
 
@@ -72,6 +74,10 @@ class HystoricalDataSearch extends HystoricalData
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ]);
+
+        $query->andFilterWhere(['like', 'projects.ICO_NAME', $this->searchName])
+            ->andFilterWhere(['like', 'projects.ICO_Website', $this->searchURL])
+            ->andFilterWhere(['like', 'currencies.name', $this->searchCurrency]);
 
         return $dataProvider;
     }
