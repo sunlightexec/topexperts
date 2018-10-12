@@ -38,7 +38,7 @@ class HystoricalData extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['currency_id', 'date_added', 'status', 'created_at', 'updated_at'], 'integer'],
+            [['currency_id', 'date_added', 'status', 'created_at', 'updated_at', 'project_id'], 'integer'],
             [['circulating_supply', 'total_supply', 'max_supply', 'updated_at'], 'double'],
             [['price', 'volume_24h', 'market_cap'], 'number'],
             [['currency_id'], 'exist', 'skipOnError' => true, 'targetClass' => Currencies::className(), 'targetAttribute' => ['currency_id' => 'id']],
@@ -53,6 +53,7 @@ class HystoricalData extends \yii\db\ActiveRecord
         return [
             'id' => Yii::t('app', 'ID'),
             'currency_id' => Yii::t('app/hystirical-data', 'Currency ID'),
+            'project_id' => Yii::t('app/hystirical-data', 'Project'),
             'circulating_supply' => Yii::t('app/hystirical-data', 'Circulating Supply'),
             'total_supply' => Yii::t('app/hystirical-data', 'Total Supply'),
             'max_supply' => Yii::t('app/hystirical-data', 'Max Supply'),
@@ -72,6 +73,14 @@ class HystoricalData extends \yii\db\ActiveRecord
     public function getCurrency()
     {
         return $this->hasOne(Currencies::className(), ['id' => 'currency_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getProject()
+    {
+        return $this->hasOne(Projects::className(), ['id' => 'project_id']);
     }
 
     /**

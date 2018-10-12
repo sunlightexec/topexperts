@@ -10,6 +10,8 @@ namespace app\commands;
 use app\components\api\CoinMarketCap;
 use app\models\helpers\Currencies;
 use app\models\helpers\HystoricalData;
+use app\models\helpers\Projects;
+use app\models\helpers\ProjectSynonims;
 use yii\console\Controller;
 use yii\console\ExitCode;
 use yii\helpers\Json;
@@ -38,9 +40,32 @@ class ParsingController extends Controller
 
         $res = $api->getLatestData();
         $res = Json::decode($res);
+        $err = '';
         if(is_array($res['status']) && $res['status']['error_code'] == 0) {
             foreach ($res['data'] as $item) {
                 $valId = Currencies::check( $item['symbol'] );
+                $projectModel = Projects::find()->where(['like', 'ICO_NAME', $item['name']])->one();
+
+                if(empty($projectModel)) {
+                    $synonimModel = ProjectSynonims::find()->where(['like', 'project_synonim', $item['name']])->one();
+                    if(!empty($synonimModel))
+                        $projectModel = Projects::find()->where(['=', 'ICO_NAME', $synonimModel->project_name])->one();
+                }
+                if(empty($projectModel)) {
+                    $synonimModel = ProjectSynonims::find()->where(['like', 'project_synonim', $item['slug']])->one();
+                    if(!empty($synonimModel))
+                        $projectModel = Projects::find()->where(['=', 'ICO_NAME', $synonimModel->project_name])->one();
+                }
+                if(empty($projectModel)) {
+                    $synonimModel = ProjectSynonims::find()->where(['like', 'project_synonim', $item['slug']])->one();
+                    if(!empty($synonimModel))
+                        $projectModel = Projects::find()->where(['=', 'ICO_NAME', $synonimModel->project_name])->one();
+                }
+                if(empty($projectModel)) {
+                    $err .= "Project {$item['name']} not found\n";
+                    echo "Project {$item['name']} not found\n";
+                    continue;
+                }
                 $model = new HystoricalData();
 //                print_r([
 //                    $item['quote'][$item['symbol']]['last_updated'],
@@ -48,6 +73,7 @@ class ParsingController extends Controller
 //                ]);
 //                echo "\n";
                 $data = [
+                    'project_id' => $projectModel->id,
                     'currency_id' => $valId,
                     'circulating_supply' => $item['circulating_supply'],
                     'total_supply' => $item['total_supply'],
@@ -61,5 +87,7 @@ class ParsingController extends Controller
                 if(!$model->save()) {print_r([$item['symbol'], $model->errors]); echo "\n";}
             }
         }
+
+        file_put_contents('hyst-data.err', $err);
     }
 }

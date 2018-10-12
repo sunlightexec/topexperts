@@ -28,6 +28,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
 //            'id',
             'created_at:date',
+            'project.ICO_NAME',
+            'project.ICO_Website',
             'currency.name',
 //            'circulating_supply',
 //            'total_supply',

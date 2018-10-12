@@ -7,4 +7,5 @@ return [
     'Price' => 'Price',
     'Volume' => 'Volume',
     'Market Cap' => 'Market Cap',
+    'Project' => 'Project',
 ];

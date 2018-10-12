@@ -61,7 +61,6 @@ class ProjectSynonims extends ProjectSynonimsModel
         $query->andFilterWhere([
             'id' => $this->id,
             'status' => $this->status,
-            'expert_id' => $this->expert_id,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ]);
