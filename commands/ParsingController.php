@@ -31,7 +31,7 @@ class ParsingController extends Controller
 {
     public function actionSetGraduation()
     {
-        $arProjectData = ProjectData::find()->all();
+        $arProjectData = ProjectData::find()->where('graduation_id is NULL')->all();
         $row = 0;
         foreach ($arProjectData as $oProjectData) {
             $row++;
