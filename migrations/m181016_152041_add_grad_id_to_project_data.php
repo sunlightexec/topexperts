@@ -11,20 +11,20 @@ class m181016_152041_add_grad_id_to_project_data extends Migration
     // Use up()/down() to run migration code without a transaction.
     public function up()
     {
-        $this->addColumn('{{%project_data}}', 'flip', $this->double()->after('graduation_id')->defaultValue(0));
-        $this->addColumn('{{%project_data}}', 'hold', $this->double()->after('flip')->defaultValue(0));
+//        $this->addColumn('{{%project_data}}', 'flip', $this->double()->after('graduation_id')->defaultValue(0));
+//        $this->addColumn('{{%project_data}}', 'hold', $this->double()->after('flip')->defaultValue(0));
 
-        $this->createIndex(
+/*        $this->createIndex(
             'idx-project_data-flip',
             '{{%project_data}}',
             'flip'
-        );
+        );*/
 
-        $this->createIndex(
+/*        $this->createIndex(
             'idx-project_data-hold',
             '{{%project_data}}',
             'hold'
-        );
+        );*/
 
     }
 
