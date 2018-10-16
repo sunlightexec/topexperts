@@ -117,7 +117,7 @@ class ImportController extends Controller
                 if(!$model->save()) {print_r($model->errors); echo "\n";}
             }
 
-            if($model && !$isHead) {
+            if(!empty($model) && !$isHead) {
                 $allowed = [];
                 $allowed[] = '--';
 
