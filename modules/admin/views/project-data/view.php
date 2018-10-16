@@ -32,6 +32,8 @@ $this->params['breadcrumbs'][] = $this->title;
             'project.ICO_NAME',
             'expert.name',
             'Score',
+            'flip',
+            'hold',
             'Report_Date:date',
 //            'status',
             'created_at:date',

@@ -39,6 +39,8 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             'Score',
             'Report_Date:date',
+            'flip',
+            'hold',
             //'status',
             //'created_at',
             //'updated_at',

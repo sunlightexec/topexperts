@@ -51,6 +51,8 @@ AppAsset::register($this);
             ['label' => 'Project Data', 'url' => ['/admin/project-data']],
             ['label' => 'Exceptions', 'url' => ['/admin/exceptions']],
             ['label' => '-----------------'],
+            ['label' => 'Graduations Ratings', 'url' => ['/admin/graduation-ratings']],
+            ['label' => '-----------------'],
             ['label' => 'Hystorical Data', 'url' => ['/admin/hystorical-data']],
         ]],
     ];

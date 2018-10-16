@@ -8,7 +8,9 @@
 namespace app\commands;
 
 use app\components\api\CoinMarketCap;
+use app\models\GraduationRatings;
 use app\models\helpers\Currencies;
+use app\models\helpers\GraduationRatingData;
 use app\models\helpers\HystoricalData;
 use app\models\helpers\ProjectData;
 use app\models\helpers\Projects;
@@ -27,6 +29,18 @@ use yii\helpers\Json;
  */
 class ParsingController extends Controller
 {
+    public function actionSetGraduation()
+    {
+        $arProjectData = ProjectData::find()->all();
+        $row = 0;
+        foreach ($arProjectData as $oProjectData) {
+            $row++;
+            if($row % 500 == 0) echo "$row++\n";
+
+            GraduationRatingData::applyRating($oProjectData);
+        }
+    }
+
     public function actionClearData()
     {
         HystoricalData::deleteAll();

@@ -70,4 +70,10 @@ class Experts extends \app\models\Experts
         $arCats = self::find()->all();
         return ArrayHelper::map($arCats, 'id', 'name');
     }
+
+    public static function getListOfNames()
+    {
+        $arCats = self::find()->all();
+        return ArrayHelper::map($arCats, 'name', 'name');
+    }
 }

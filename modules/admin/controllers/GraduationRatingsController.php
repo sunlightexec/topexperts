@@ -2,19 +2,18 @@
 
 namespace app\modules\admin\controllers;
 
-use app\models\helpers\GraduationRatingData;
-use app\models\helpers\GraduationRatings;
 use Yii;
-use app\models\helpers\ProjectData;
-use app\models\search\ProjectDataSearch;
+use app\models\helpers\GraduationRatings;
+use app\models\search\GraduationRatingsSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use app\models\search\GraduationRatingDataSearch;
 
 /**
- * ProjectDataController implements the CRUD actions for ProjectData model.
+ * GraduationRatingsController implements the CRUD actions for GraduationRatings model.
  */
-class ProjectDataController extends Controller
+class GraduationRatingsController extends Controller
 {
     /**
      * {@inheritdoc}
@@ -32,12 +31,12 @@ class ProjectDataController extends Controller
     }
 
     /**
-     * Lists all ProjectData models.
+     * Lists all GraduationRatings models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new ProjectDataSearch();
+        $searchModel = new GraduationRatingsSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -47,29 +46,34 @@ class ProjectDataController extends Controller
     }
 
     /**
-     * Displays a single ProjectData model.
+     * Displays a single GraduationRatings model.
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionView($id)
     {
+        $searchModel = new GraduationRatingDataSearch();
+        $searchModel->graduation_id = $id;
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
         return $this->render('view', [
             'model' => $this->findModel($id),
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
         ]);
     }
 
     /**
-     * Creates a new ProjectData model.
+     * Creates a new GraduationRatings model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new ProjectData();
+        $model = new GraduationRatings();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            GraduationRatingData::applyRatingWithId($model);
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
@@ -79,7 +83,7 @@ class ProjectDataController extends Controller
     }
 
     /**
-     * Updates an existing ProjectData model.
+     * Updates an existing GraduationRatings model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -90,7 +94,6 @@ class ProjectDataController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            GraduationRatingData::applyRatingWithId($model);
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
@@ -100,7 +103,7 @@ class ProjectDataController extends Controller
     }
 
     /**
-     * Deletes an existing ProjectData model.
+     * Deletes an existing GraduationRatings model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -114,18 +117,18 @@ class ProjectDataController extends Controller
     }
 
     /**
-     * Finds the ProjectData model based on its primary key value.
+     * Finds the GraduationRatings model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return ProjectData the loaded model
+     * @return GraduationRatings the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = ProjectData::findOne($id)) !== null) {
+        if (($model = GraduationRatings::findOne($id)) !== null) {
             return $model;
         }
 
-        throw new NotFoundHttpException(Yii::t('app/projects', 'The requested page does not exist.'));
+        throw new NotFoundHttpException(Yii::t('app/graduation-ratings', 'The requested page does not exist.'));
     }
 }

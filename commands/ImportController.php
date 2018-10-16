@@ -11,12 +11,15 @@ use app\models\helpers\Categories;
 use app\models\helpers\Currencies;
 use app\models\helpers\Exceptions;
 use app\models\helpers\Experts;
+use app\models\helpers\GraduationRatingData;
+use app\models\helpers\GraduationRatings;
 use app\models\helpers\ProjectData;
 use app\models\helpers\ProjectSynonims;
 use app\models\helpers\Projects;
 use yii\console\Controller;
 use yii\console\ExitCode;
 use yii\helpers\FileHelper;
+use yii\helpers\Json;
 
 /**
  * This command echoes the first argument that you have entered.
@@ -44,6 +47,101 @@ class ImportController extends Controller
 
         print_r("Import Synonims \n");
         $this->actionProjectSynonims();
+    }
+
+    /**
+     * This command echoes what you have entered as the message.
+     * @param string $message the message to be echoed.
+     * @return int Exit code
+     */
+    public function actionTypeRatings()
+    {
+        GraduationRatingData::deleteAll();
+        GraduationRatings::deleteAll();
+
+        $scoreType = [];
+
+        $skipRows = 4;
+        $loadFileName = \Yii::$app->basePath . $this->loadDir . 'ratings.csv';
+        $errorFileName = \Yii::$app->basePath . $this->loadDir . 'ratings.err';
+        $errors = '';
+        $loadFileName = FileHelper::normalizePath($loadFileName);
+        if(!file_exists($loadFileName)) return ExitCode::NOINPUT;
+        $handle = fopen($loadFileName, "r");
+        $row = 1;
+        echo "0++";
+        while (($fileop = fgetcsv($handle, 2000, ",")) !== false)
+        {
+            $isHead = false;
+            $row++;
+            if($skipRows-- > 0) continue;
+            if($row % 2 == 0) echo "$row++";
+            if( $row < 38 ) {
+                if( empty($scoreType[$fileop[0]]) ) {
+                    foreach($fileop as $index => $value) {
+                        if($index == 0) continue;
+                        if(!empty($value)) {
+                            $scoreType[$fileop[0]][] = [
+                                'index' => $index,
+                                'value' => $value,
+                                'num' => $fileop[0],
+                            ];
+                        }
+                    }
+                    $isHead = true;
+                } else {
+                    $model = new GraduationRatings();
+                    $model->name = "type_{$row}";
+                    $model->type = 1;
+                    if(!$model->save()) {print_r($model->errors); echo "\n";}
+
+                    /*graduation data*/
+                    foreach($scoreType[$fileop[0]] as $item) {
+                        $modelData = new GraduationRatingData();
+                        $modelData->graduation_id = $model->id;
+                        $modelData->score = strtoupper( $fileop[$item['index']] );
+                        $modelData->value = str_replace(',','.', $item['value']);
+                        if(!$modelData->save()) {print_r($modelData->errors);}
+                    }
+                    $isHead = false;
+                }
+            } else {
+                $isHead = false;
+                $model = new GraduationRatings();
+                $model->name = "type_{$row}";
+                $model->type = 2;
+                $model->max_value = $fileop[0];
+                if($row == 43) {
+                    $model->min_star = 6;
+                }
+                if(!$model->save()) {print_r($model->errors); echo "\n";}
+            }
+
+            if($model && !$isHead) {
+                $allowed = [];
+                $allowed[] = '--';
+
+                for($i=14; $i<count($fileop); $i++) {
+                    if(!empty($fileop[$i])) {
+                        $allowed[] = trim($fileop[$i]);
+                    }
+                }
+                if(count($allowed) == 1) {
+                    $allowed = null;
+                } else {
+                    $allowed[] = '--';
+                    $allowed = implode(',',$allowed);
+                }
+
+                $model->allowed = $allowed;
+                if(!$model->save()) {print_r($model->errors); echo "\n";}
+            }
+        }
+
+        echo "\n";
+        fclose($handle);
+        file_put_contents($errorFileName, $errors);
+        return ExitCode::OK;
     }
 
     /**
