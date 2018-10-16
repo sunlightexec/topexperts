@@ -88,7 +88,7 @@ class GraduationRatingData extends \app\models\GraduationRatingData
                 ->andFilterWhere($filter)
                 ->one();
 
-            if($modelHold->type == 2) {
+            if(!empty($modelHold) && $modelHold->type == 2) {
                 $oProjectData->hold = ((double)str_replace(['%',','], ['','.'], $flip) * 10 / $modelHold->max_value);
                 $oProjectData->graduation_id = $modelHold->id;
                 $oProjectData->save();
