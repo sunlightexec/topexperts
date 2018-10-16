@@ -23,4 +23,9 @@ class ProjectData extends \app\models\ProjectData
             ],
         ];
     }
+
+    public function getRating()
+    {
+
+    }
 }

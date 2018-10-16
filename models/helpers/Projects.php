@@ -10,7 +10,7 @@ namespace app\models\helpers;
 
 use yii\behaviors\TimestampBehavior;
 use yii\helpers\ArrayHelper;
-
+use app\models\helpers\ProjectSynonims;
 class Projects extends \app\models\Projects
 {
     public function behaviors()
@@ -40,5 +40,38 @@ class Projects extends \app\models\Projects
     {
         $arCats = self::find()->all();
         return ArrayHelper::map($arCats, 'id', 'ICO_NAME');
+    }
+
+    public static function getProjectByAttr($name, $slug) {
+        $projectModel = self::find()->where(['like', 'ICO_NAME', $name])->one();
+
+        if(empty($projectModel)) {
+            $synonimModel = ProjectSynonims::find()->where(['like', 'project_synonim', $name])->one();
+            if(!empty($synonimModel))
+                $projectModel = self::find()->where(['=', 'ICO_NAME', $synonimModel->project_name])->one();
+        }
+        if(empty($projectModel)) {
+            $synonimModel = ProjectSynonims::find()->where(['like', 'project_synonim', $slug])->one();
+            if(!empty($synonimModel))
+                $projectModel = self::find()->where(['=', 'ICO_NAME', $synonimModel->project_name])->one();
+        }
+        if(empty($projectModel)) {
+            $synonimModel = ProjectSynonims::find()->where(['like', 'project_synonim', $slug])->one();
+            if(!empty($synonimModel))
+                $projectModel = self::find()->where(['=', 'ICO_NAME', $synonimModel->project_name])->one();
+        }
+
+        return $projectModel;
+    }
+
+    public static function setAllStar()
+    {
+
+    }
+
+    public static function setStar($id)
+    {
+        $oProject = Projects::find()->where(['=', 'id', $id])->one();
+
     }
 }

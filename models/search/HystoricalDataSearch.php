@@ -18,7 +18,8 @@ class HystoricalDataSearch extends HystoricalData
     public function rules()
     {
         return [
-            [['id', 'project_id', 'currency_id', 'circulating_supply', 'total_supply', 'max_supply', 'date_added', 'status', 'created_at', 'updated_at'], 'integer'],
+            [['id', 'project_id', 'currency_id', 'circulating_supply', 'total_supply', 'max_supply',
+                'date_added', 'status', 'created_at', 'updated_at'], 'integer'],
             [['price', 'volume_24h', 'market_cap'], 'number'],
             [['searchName', 'searchURL', 'searchCurrency'], 'safe'],
         ];

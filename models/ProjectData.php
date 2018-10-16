@@ -21,7 +21,8 @@ use Yii;
  */
 class ProjectData extends \yii\db\ActiveRecord
 {
-    public $seracName;
+    public $searchProjectName;
+    public $searchExpertName;
 
     /**
      * {@inheritdoc}
@@ -38,7 +39,7 @@ class ProjectData extends \yii\db\ActiveRecord
     {
         return [
             [['project_id', 'expert_id', 'Report_Date', 'status', 'created_at', 'updated_at'], 'integer'],
-            [['Score', 'searchName'], 'string', 'max' => 255],
+            [['Score', 'searchProjectName', 'searchExpertName'], 'string', 'max' => 255],
             [['expert_id'], 'exist', 'skipOnError' => true, 'targetClass' => Experts::className(), 'targetAttribute' => ['expert_id' => 'id']],
             [['project_id'], 'exist', 'skipOnError' => true, 'targetClass' => Projects::className(), 'targetAttribute' => ['project_id' => 'id']],
         ];

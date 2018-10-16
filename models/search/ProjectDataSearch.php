@@ -19,7 +19,7 @@ class ProjectDataSearch extends ProjectData
     {
         return [
             [['id', 'project_id', 'expert_id', 'Report_Date', 'status', 'created_at', 'updated_at'], 'integer'],
-            [['Score', 'seracName'], 'safe'],
+            [['Score', 'searchProjectName', 'searchExpertName'], 'safe'],
         ];
     }
 
@@ -41,7 +41,7 @@ class ProjectDataSearch extends ProjectData
      */
     public function search($params)
     {
-        $query = ProjectData::find();
+        $query = ProjectData::find()->joinWith(['project', 'expert']);
 
         // add conditions that should always apply here
 
@@ -68,7 +68,9 @@ class ProjectDataSearch extends ProjectData
             'updated_at' => $this->updated_at,
         ]);
 
-        $query->andFilterWhere(['like', 'Score', $this->Score]);
+        $query->andFilterWhere(['like', 'Score', $this->Score])
+            ->andFilterWhere(['like', 'projects.ICO_Name', $this->searchProjectName])
+            ->andFilterWhere(['like', 'experts.name', $this->searchExpertName]);
 
         return $dataProvider;
     }
