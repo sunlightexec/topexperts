@@ -18,7 +18,8 @@ class ProjectsSearch extends Projects
     public function rules()
     {
         return [
-            [['id', 'Category', 'Currency_HARD_CAP', 'Currency_ICO_Price', 'START_ICO', 'END_ICO', 'status', 'created_at', 'updated_at'], 'integer'],
+            [['id', 'Category', 'Currency_HARD_CAP', 'Currency_ICO_Price', 'ICO_Star',
+                'START_ICO', 'END_ICO', 'status', 'created_at', 'updated_at'], 'integer'],
             [['ICO_NAME', 'ICO_Website', 'ICO_Description', 'URL_Coinmarketcap', 'URL_ICODrops', 'Scam'], 'safe'],
             [['HARD_CAP', 'ICO_Price'], 'number'],
         ];
@@ -66,6 +67,7 @@ class ProjectsSearch extends Projects
             'Currency_HARD_CAP' => $this->Currency_HARD_CAP,
             'ICO_Price' => $this->ICO_Price,
             'Currency_ICO_Price' => $this->Currency_ICO_Price,
+            'ICO_star' => $this->ICO_Star,
             'START_ICO' => $this->START_ICO,
             'END_ICO' => $this->END_ICO,
             'status' => $this->status,

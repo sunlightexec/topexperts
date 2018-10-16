@@ -27,8 +27,16 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
 
 //            'id',
-            'project.ICO_NAME',
-            'expert.name',
+            [
+                'label' => 'Project',
+                'value' => 'project.ICO_NAME',
+                'filter' => Html::activeTextInput($searchModel, 'searchProjectName', ['class' => 'form-control']),
+            ],
+            [
+                'label' => 'Expert',
+                'value' => 'expert.name',
+                'filter' => Html::activeTextInput($searchModel, 'searchExpertName', ['class' => 'form-control']),
+            ],
             'Score',
             'Report_Date:date',
             //'status',

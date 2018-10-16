@@ -10,6 +10,7 @@ namespace app\commands;
 use app\components\api\CoinMarketCap;
 use app\models\helpers\Currencies;
 use app\models\helpers\HystoricalData;
+use app\models\helpers\ProjectData;
 use app\models\helpers\Projects;
 use app\models\helpers\ProjectSynonims;
 use yii\console\Controller;
@@ -31,6 +32,19 @@ class ParsingController extends Controller
         HystoricalData::deleteAll();
     }
 
+    public function actionSetProjectId()
+    {
+        $arItems = HystoricalData::find()->where('project_id is NULL')->all();
+        foreach ($arItems as $count => $oItem) {
+            $projectModel = Projects::getProjectByAttr($oItem->name, '-');
+            if($count % 500 == 0) echo "$count ++";
+            if(!empty($projectModel)) {
+                $oItem->project_id = $projectModel->id;
+                if(!$oItem->save()) {print_r($oItem->errors); echo "\n";}
+            }
+        }
+    }
+
     public function actionLatestData()
     {
         $api = new CoinMarketCap(
@@ -44,23 +58,8 @@ class ParsingController extends Controller
         if(is_array($res['status']) && $res['status']['error_code'] == 0) {
             foreach ($res['data'] as $item) {
                 $valId = Currencies::check( $item['symbol'] );
-                $projectModel = Projects::find()->where(['like', 'ICO_NAME', $item['name']])->one();
 
-                if(empty($projectModel)) {
-                    $synonimModel = ProjectSynonims::find()->where(['like', 'project_synonim', $item['name']])->one();
-                    if(!empty($synonimModel))
-                        $projectModel = Projects::find()->where(['=', 'ICO_NAME', $synonimModel->project_name])->one();
-                }
-                if(empty($projectModel)) {
-                    $synonimModel = ProjectSynonims::find()->where(['like', 'project_synonim', $item['slug']])->one();
-                    if(!empty($synonimModel))
-                        $projectModel = Projects::find()->where(['=', 'ICO_NAME', $synonimModel->project_name])->one();
-                }
-                if(empty($projectModel)) {
-                    $synonimModel = ProjectSynonims::find()->where(['like', 'project_synonim', $item['slug']])->one();
-                    if(!empty($synonimModel))
-                        $projectModel = Projects::find()->where(['=', 'ICO_NAME', $synonimModel->project_name])->one();
-                }
+                $projectModel = Projects::getProjectByAttr($item['name'], $item['slug']);
                 if(empty($projectModel)) {
                     $err .= "Project {$item['name']} not found\n";
                     echo "Project {$item['name']} not found\n";

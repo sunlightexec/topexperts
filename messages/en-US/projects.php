@@ -14,6 +14,7 @@ return [
     'Start Ico' => 'Start Ico',
     'End Ico' => 'End Ico',
     'Scam' => 'Scam',
+    'ICO Star' => 'Star',
 
     'Project' => 'Project',
     'Expert' => 'Expert',
