@@ -38,7 +38,8 @@ class GraduationRatings extends \app\models\GraduationRatings
 
     public function beforeValidate()
     {
-        if(!$this->isNewRecord) {
+        if($this->isNewRecord || \Yii::$app->request instanceof \Yii\console\Request) {
+        } else {
             $data = \Yii::$app->request->post('GraduationRatings');
             $arrAllowed = empty($data['arrAllowed']) ? [] : $data['arrAllowed'];
             if( $arrAllowed !== false) {
