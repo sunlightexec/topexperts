@@ -9,6 +9,7 @@ use Yii;
  *
  * @property int $id
  * @property int $currency_id
+ * @property string $name
  * @property int $circulating_supply
  * @property int $total_supply
  * @property int $max_supply
@@ -45,7 +46,7 @@ class HystoricalData extends \yii\db\ActiveRecord
             [['currency_id', 'date_added', 'status', 'created_at', 'updated_at', 'project_id'], 'integer'],
             [['circulating_supply', 'total_supply', 'max_supply', 'updated_at'], 'double'],
             [['price', 'volume_24h', 'market_cap'], 'number'],
-            [['searchName'], 'string'],
+            [['searchName', 'name'], 'string'],
             [['currency_id'], 'exist', 'skipOnError' => true, 'targetClass' => Currencies::className(), 'targetAttribute' => ['currency_id' => 'id']],
         ];
     }
@@ -64,6 +65,7 @@ class HystoricalData extends \yii\db\ActiveRecord
             'max_supply' => Yii::t('app/hystirical-data', 'Max Supply'),
             'date_added' => Yii::t('app/hystirical-data', 'Date Added'),
             'price' => Yii::t('app/hystirical-data', 'Price'),
+            'name' => Yii::t('app/hystirical-data', 'Name'),
             'volume_24h' => Yii::t('app/hystirical-data', 'Volume'),
             'market_cap' => Yii::t('app/hystirical-data', 'Market Cap'),
             'status' => Yii::t('app', 'Status'),

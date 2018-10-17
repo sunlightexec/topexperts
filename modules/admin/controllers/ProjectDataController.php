@@ -2,6 +2,7 @@
 
 namespace app\modules\admin\controllers;
 
+use app\models\helpers\Experts;
 use app\models\helpers\GraduationRatingData;
 use app\models\helpers\GraduationRatings;
 use Yii;
@@ -111,6 +112,40 @@ class ProjectDataController extends Controller
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
+    }
+
+    public function actionGetRatingValue()
+    {
+        $graduation_id = Yii::$app->request->post('graduation_id', null);
+        $expert_id = Yii::$app->request->post('expert_id', null);
+        $projectData_id = Yii::$app->request->post('project_id', null);
+
+        $modelExpert = Experts::find()->where(['=', 'id', $expert_id])->one();
+        if(empty($graduation_id)) {
+            $ratingModel = GraduationRatings::find()
+                ->where(['like', 'allowed', ',' . $modelExpert->name . ','])
+                ->one();
+        } else {
+            $ratingModel = GraduationRatings::find()
+//                ->where(['like', 'allowed', ',' . $modelExpert->name . ','])
+                ->andFilterWhere(['id' => $graduation_id])
+                ->one();
+        }
+
+        $model = ProjectData::find()->where(['=', 'id', $projectData_id])->one();
+
+        $model->graduation_id = $graduation_id;
+        $model->Score = '';
+
+        /*return $this->renderAjax('ajax-rating-input', [
+            'model' => !empty($projectData_id) ? ProjectData::findOne(['id' => $projectData_id]) : null,
+            'ratingModel' => $ratingModel,
+        ]);*/
+
+        return $this->renderAjax('_form', [
+            'model' => $model,
+            'ratingModel' => $ratingModel,
+        ]);
     }
 
     /**

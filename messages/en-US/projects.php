@@ -15,6 +15,12 @@ return [
     'End Ico' => 'End Ico',
     'Scam' => 'Scam',
     'ICO Star' => 'Star',
+    'Flip All' => 'Flip All',
+    'Flip Year' => 'Flip Year',
+    'Flip Quarte' => 'Flip Quarte',
+    'Hold All' => 'Hold All',
+    'Hold Year' => 'Hold Year',
+    'Hold Quarte' => 'Hold Quarte',
 
     'Project' => 'Project',
     'Expert' => 'Expert',

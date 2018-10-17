@@ -42,7 +42,8 @@ class Projects extends \app\models\Projects
         return ArrayHelper::map($arCats, 'id', 'ICO_NAME');
     }
 
-    public static function getProjectByAttr($name, $slug) {
+    public static function getProjectByAttr($name, $slug, $url = null) {
+        $url = str_replace(['http://', 'https://'], '', $url);
         $projectModel = self::find()->where(['like', 'ICO_NAME', $name])->one();
 
         if(empty($projectModel)) {
@@ -60,6 +61,14 @@ class Projects extends \app\models\Projects
             if(!empty($synonimModel))
                 $projectModel = self::find()->where(['=', 'ICO_NAME', $synonimModel->project_name])->one();
         }
+        if(empty($projectModel) && !empty($url)) {
+            $projectModel = self::find()->where(['like', 'ICO_Website', $url])->one();
+            if(empty($projectModel)) {
+                $synonimModel = ProjectSynonims::find()->where(['like', 'project_synonim', $url])->one();
+                if(!empty($synonimModel))
+                    $projectModel = self::find()->where(['=', 'ICO_NAME', $synonimModel->project_name])->one();
+            }
+        }
 
         return $projectModel;
     }
@@ -72,6 +81,34 @@ class Projects extends \app\models\Projects
     public static function setStar($id)
     {
         $oProject = Projects::find()->where(['=', 'id', $id])->one();
+    }
+
+    public static function setRatings($project_id)
+    {
+        $modelProject = self::find()->where(['=', 'id', $project_id])->one();
+        $price = $modelProject->ICO_Price;
+        $currPrice = HystoricalData::getMaxPrice($modelProject->id);
+        if($modelProject->currencyICOPrice && $modelProject->currencyICOPrice->name != 'USD') {
+            $price *= $currPrice;
+        }
+        if($price > 0) {
+            $data = [
+                'flip_all' => HystoricalData::getMaxPrice($modelProject->id) / $price,
+                'flip_12' => HystoricalData::getMaxPrice($modelProject->id, 'year') / $price,
+                'flip_3' => HystoricalData::getMaxPrice($modelProject->id, 'quarter') / $price,
+                'hold_all' => HystoricalData::getHoldPrice($modelProject->id) / $price,
+                'hold_12' => HystoricalData::getHoldPrice($modelProject->id, 'year') / $price,
+                'hold_3' => HystoricalData::getHoldPrice($modelProject->id, 'quarter') / $price,
+            ];
+
+            foreach ($data as $key => $value) {
+                $modelProject->$key = $value;
+            }
+            if(!$modelProject->save()) {
+                print_r([$modelProject->errors, $modelProject->name]);
+            }
+        }
+
 
     }
 }

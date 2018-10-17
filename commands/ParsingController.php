@@ -10,6 +10,7 @@ namespace app\commands;
 use app\components\api\CoinMarketCap;
 use app\models\GraduationRatings;
 use app\models\helpers\Currencies;
+use app\models\helpers\Experts;
 use app\models\helpers\GraduationRatingData;
 use app\models\helpers\HystoricalData;
 use app\models\helpers\ProjectData;
@@ -29,6 +30,26 @@ use yii\helpers\Json;
  */
 class ParsingController extends Controller
 {
+    public function actionSetRatingProjects()
+    {
+        $arProjects = Projects::find()->all();
+        $row = 1;
+        foreach ($arProjects as $oProject) {
+            if($row++ % 500 == 0) echo "$row++";
+            Projects::setRatings($oProject->id);
+        }
+    }
+
+    public function actionSetRatingExperts()
+    {
+        $arExperts = Experts::find()->all();
+        $row = 1;
+        foreach ($arExperts as $oExpert) {
+            if($row++ % 5 == 0) echo "$row++";
+            Experts::setRatings($oExpert->id);
+        }
+    }
+
     public function actionSetGraduation()
     {
         ini_set('memory_limit', '256M');
@@ -76,9 +97,12 @@ class ParsingController extends Controller
 
                 $projectModel = Projects::getProjectByAttr($item['name'], $item['slug']);
                 if(empty($projectModel)) {
+                    $project_id = null;
                     $err .= "Project {$item['name']} not found\n";
                     echo "Project {$item['name']} not found\n";
                     continue;
+                } else {
+                    $project_id = $projectModel->id;
                 }
                 $model = new HystoricalData();
 //                print_r([
@@ -87,7 +111,7 @@ class ParsingController extends Controller
 //                ]);
 //                echo "\n";
                 $data = [
-                    'project_id' => $projectModel->id,
+                    'project_id' => $project_id,
                     'currency_id' => $valId,
                     'circulating_supply' => $item['circulating_supply'],
                     'total_supply' => $item['total_supply'],

@@ -13,6 +13,7 @@ use app\models\helpers\Exceptions;
 use app\models\helpers\Experts;
 use app\models\helpers\GraduationRatingData;
 use app\models\helpers\GraduationRatings;
+use app\models\helpers\HystoricalData;
 use app\models\helpers\ProjectData;
 use app\models\helpers\ProjectSynonims;
 use app\models\helpers\Projects;
@@ -47,6 +48,67 @@ class ImportController extends Controller
 
         print_r("Import Synonims \n");
         $this->actionProjectSynonims();
+    }
+
+    /**
+     * This command echoes what you have entered as the message.
+     * @param string $message the message to be echoed.
+     * @return int Exit code
+     */
+    public function actionHystorical()
+    {
+        ProjectSynonims::deleteAll();
+
+        $skipRows = 1;
+        $loadFileName = \Yii::$app->basePath . $this->loadDir . 'hystorical1.csv';
+        $errorFileName = \Yii::$app->basePath . $this->loadDir . 'hystorical.err';
+        $errors = '';
+        $loadFileName = FileHelper::normalizePath($loadFileName);
+        if(!file_exists($loadFileName)) return ExitCode::NOINPUT;
+        $handle = fopen($loadFileName, "r");
+        $row = 1;
+        echo "0++";
+        $lastProject = '';
+        while (($fileop = fgetcsv($handle, 2000, ";")) !== false)
+        {
+            $row++;
+            if($skipRows-- > 0) continue;
+            if($row % 10 == 0) echo "$row++";
+
+            $curId = Currencies::check($fileop[1]);
+            $modelProject = Projects::getProjectByAttr($fileop[0], $fileop[1], $fileop[2]);
+
+            if(empty($modelProject)) {
+                $project_id = null;
+                if($lastProject != $fileop[0]) {
+                    $message = "\nProject {$fileop[0]} not found\n";
+                    $errors .= $message;
+                    echo $message;
+                    $lastProject = $fileop[0];
+                }
+//                continue;
+            } else {
+                $project_id = $modelProject->id;
+            }
+
+            $data = [
+                'name' => $fileop[0],
+                'date_added' => strtotime($fileop[3]),
+                'project_id' => $project_id,
+                'currency_id' => $curId,
+                'price' => str_replace(',', '.', $fileop[5]),
+                'volume_24h' => (double)str_replace([',', '-'], ['.', ''], $fileop[6]),
+                'market_cap' => (double)str_replace([',', '-'], ['.', ''], $fileop[7]),
+            ];
+
+            HystoricalData::insertOrReplace($data);
+
+//            print_r($fileop);die();
+        }
+        echo "\n";
+        fclose($handle);
+        file_put_contents($errorFileName, $errors);
+        return ExitCode::OK;
     }
 
     /**

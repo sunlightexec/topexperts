@@ -20,6 +20,8 @@ use Yii;
  * @property string $email
  * @property string $subscribe
  * @property string $comments
+ * @property double $flip
+ * @property double $hold
  * @property int $status
  * @property int $created_at
  * @property int $updated_at
@@ -45,6 +47,7 @@ class Experts extends \yii\db\ActiveRecord
             [['status', 'created_at', 'updated_at'], 'integer'],
             [['name', 'website', 'spreadsheet', 'grading_ratings', 'paid_ratings', 'email', 'subscribe'], 'string', 'max' => 255],
             [['count_ratings'], 'string', 'max' => 50],
+            [['flip', 'hold'], 'double'],
             [['name'], 'unique'],
         ];
     }
@@ -68,6 +71,8 @@ class Experts extends \yii\db\ActiveRecord
             'email' => Yii::t('app/experts', 'Email'),
             'subscribe' => Yii::t('app/experts', 'Subscribe'),
             'comments' => Yii::t('app/experts', 'Comments'),
+            'flip' => Yii::t('app/experts', 'Flip'),
+            'hold' => Yii::t('app/experts', 'Hold'),
             'status' => Yii::t('app/experts', 'Status'),
             'created_at' => Yii::t('app/experts', 'Created At'),
             'updated_at' => Yii::t('app/experts', 'Updated At'),
@@ -81,5 +86,13 @@ class Experts extends \yii\db\ActiveRecord
     public static function find()
     {
         return new \app\models\query\ExpertsQuery(get_called_class());
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getProjectDatas()
+    {
+        return $this->hasMany(ProjectData::className(), ['project_id' => 'id']);
     }
 }

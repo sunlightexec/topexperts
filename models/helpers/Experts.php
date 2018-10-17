@@ -76,4 +76,35 @@ class Experts extends \app\models\Experts
         $arCats = self::find()->all();
         return ArrayHelper::map($arCats, 'name', 'name');
     }
+
+    public static function setRatings($expert_id)
+    {
+        $model = self::find()->where(['=', 'id', $expert_id])->one();
+
+        /*$select = 'AVG(IF(project_data.flip >= graduation_ratings.min_star, project_data.flip, "0" )) as flip,' .
+            'AVG(IF(project_data.hold >= graduation_ratings.min_star, project_data.hold, "0" )) as hold';*/
+
+        $select = [
+            'flipSum' => 'SUM(IF(project_data.flip >= graduation_ratings.min_star, project_data.flip, 0 ))',
+            'holdSum' => 'SUM(IF(project_data.hold >= graduation_ratings.min_star, project_data.hold, 0 ))',
+            'flipCount' => 'SUM(IF(project_data.flip >= graduation_ratings.min_star, 1, 0 ))',
+            'holdCount' => 'SUM(IF(project_data.hold >= graduation_ratings.min_star, 1, 0 ))',
+        ];
+
+        $updates = ProjectData::find()
+            ->joinWith(['graduation'])
+            ->select($select)
+            ->where(['=', 'project_data.expert_id', $expert_id])
+            ->groupBy('project_data.expert_id')
+            ->asArray()
+            ->one();
+
+//        print_r($updates);die();
+
+        if(!empty($updates)) {
+            $model->flip = $updates['flipCount']==0 ? 0 : round($updates['flipSum'] / $updates['flipCount'],1);
+            $model->hold = $updates['holdCount']==0 ? 0 : round($updates['holdSum'] / $updates['holdCount'],1);
+            $model->save();
+        }
+    }
 }

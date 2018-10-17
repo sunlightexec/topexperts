@@ -22,6 +22,12 @@ use Yii;
  * @property int $START_ICO
  * @property int $END_ICO
  * @property string $Scam
+ * @property double $flip_all
+ * @property double $flip_12
+ * @property double $flip_3
+ * @property double $hold_all
+ * @property double $hold_12
+ * @property double $hold_3
  * @property int $status
  * @property int $created_at
  * @property int $updated_at
@@ -53,6 +59,7 @@ class Projects extends \yii\db\ActiveRecord
             [['HARD_CAP', 'ICO_Price'], 'number'],
             [['ICO_NAME', 'ICO_Website', 'URL_Coinmarketcap', 'URL_ICODrops', 'Scam'], 'string', 'max' => 255],
             [['ICO_NAME'], 'unique'],
+            [['flip_all', 'flip_12', 'flip_3', 'hold_all', 'hold_12', 'hold_3'], 'double'],
             [['Category'], 'exist', 'skipOnError' => true, 'targetClass' => Categories::className(), 'targetAttribute' => ['Category' => 'id']],
             [['Currency_HARD_CAP'], 'exist', 'skipOnError' => true, 'targetClass' => Currencies::className(), 'targetAttribute' => ['Currency_HARD_CAP' => 'id']],
             [['Currency_ICO_Price'], 'exist', 'skipOnError' => true, 'targetClass' => Currencies::className(), 'targetAttribute' => ['Currency_ICO_Price' => 'id']],
@@ -80,6 +87,12 @@ class Projects extends \yii\db\ActiveRecord
             'START_ICO' => Yii::t('app/projects', 'Start  Ico'),
             'END_ICO' => Yii::t('app/projects', 'End  Ico'),
             'Scam' => Yii::t('app/projects', 'Scam'),
+            'flip_all' => Yii::t('app/projects', 'Flip All'),
+            'flip_12' => Yii::t('app/projects', 'Flip Year'),
+            'flip_3' => Yii::t('app/projects', 'Flip Quarte'),
+            'hold_all' => Yii::t('app/projects', 'Hold All'),
+            'hold_12' => Yii::t('app/projects', 'Hold Year'),
+            'hold_3' => Yii::t('app/projects', 'Hold Quarte'),
             'status' => Yii::t('app', 'Status'),
             'created_at' => Yii::t('app', 'Created At'),
             'updated_at' => Yii::t('app', 'Updated At'),

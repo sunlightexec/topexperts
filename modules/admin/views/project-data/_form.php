@@ -37,12 +37,33 @@ use kartik\select2\Select2;
         'options' => [
             'placeholder' => 'Select a type ...',
         ],
-        'disabled' => $model->isNewRecord ? false : true,
+//        'disabled' => $model->isNewRecord ? false : true,
         'pluginOptions' => [
             'allowClear' => true,
         ],
+        'pluginEvents' => [
+            'select2:select' => "function(e){
+                        var graduation_id = e.params.data.id;
+                        var project_id = " . $model->id .";
+                        var expert_id = $('#projectdata-expert_id').val();
+                        
+                        $.ajax({
+                            type: 'POST',
+                            url : '" . \Yii::$app->urlManager->createUrl('/admin/project-data/get-rating-value')."',
+                            data : {
+                                graduation_id: graduation_id,
+                                project_id: project_id,
+                                expert_id: expert_id
+                            },
+                            success: function(data) {
+                                $('.project-data-form').replaceWith(data);
+                            }
+                        });
+                        return false;
+                    }"
+        ],
     ]) ?>
-
+    <div id="setupRaiting">
     <?php if(!$model->isNewRecord):?>
         <?php if($model->getGraduation()->one()->type == 1):?>
             <?= $form->field($model, 'Score')->widget(Select2::classname(), [
@@ -56,6 +77,12 @@ use kartik\select2\Select2;
                 'pluginOptions' => [
                     'allowClear' => true,
                 ],
+                'pluginEvents' => [
+                    'select2:select' => "function(e){
+                        var data = e.params.data;
+                        console.log(data);
+                    }"
+                ],
             ]) ?>
         <?php else:?>
             <?= $form->field($model, 'Score')->textInput(['maxlength' => true]) ?>
@@ -63,6 +90,7 @@ use kartik\select2\Select2;
     <?php else:?>
         <?= $form->field($model, 'Score')->textInput(['maxlength' => true]) ?>
     <?php endif?>
+    </div>
     <?= $form->field($model, 'flip')->textInput(['disabled' => true]) ?>
 
     <?= $form->field($model, 'hold')->textInput(['disabled' => true]) ?>
