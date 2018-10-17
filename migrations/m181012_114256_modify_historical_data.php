@@ -32,10 +32,11 @@ class m181012_114256_modify_historical_data extends Migration
 
     public function down()
     {
-        $this->dropIndex('idx-hystorical_data-project_id',
-            '{{%hystorical_data}}');
         $this->dropForeignKey('fk-hystorical_data-project_id',
             '{{%hystorical_data}}');
+        $this->dropIndex('idx-hystorical_data-project_id',
+            '{{%hystorical_data}}');
+
         $this->dropColumn('{{%hystorical_data}}', 'project_id');
 
         echo "m181012_114256_modify_historical_data are reverted.\n";
