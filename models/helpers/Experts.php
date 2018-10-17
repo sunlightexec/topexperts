@@ -92,7 +92,8 @@ class Experts extends \app\models\Experts
         ];
 
         $updates = ProjectData::find()
-            ->joinWith(['graduation'])
+//            ->joinWith(['graduation'])
+            ->join('LEFT JOIN', 'graduation_ratings', 'project_data.graduation_id=graduation_ratings.id')
             ->select($select)
             ->where(['=', 'project_data.expert_id', $expert_id])
             ->groupBy('project_data.expert_id')

@@ -22,6 +22,7 @@ return [
     'Hold Year' => 'Hold Year',
     'Hold Quarte' => 'Hold Quarte',
     'Max Value' => 'Max Value',
+    'Min Star' => 'Min Star',
 
     'Project' => 'Project',
     'Expert' => 'Expert',

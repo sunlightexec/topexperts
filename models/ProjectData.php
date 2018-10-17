@@ -65,7 +65,7 @@ class ProjectData extends \yii\db\ActiveRecord
             'graduation_id' => Yii::t('app/projects', 'Graduation'),
             'flip' => Yii::t('app/projects', 'Flip'),
             'hold' => Yii::t('app/projects', 'Hold'),
-            'max_value' => Yii::t('app/projects', 'Max Value'),
+            'max_value' => Yii::t('app/projects', 'Min Star'),
             'status' => Yii::t('app/projects', 'Status'),
             'created_at' => Yii::t('app', 'Created At'),
             'updated_at' => Yii::t('app', 'Updated At'),
