@@ -91,6 +91,9 @@ use kartik\select2\Select2;
         <?= $form->field($model, 'Score')->textInput(['maxlength' => true]) ?>
     <?php endif?>
     </div>
+
+    <?= $form->field($model, 'max_value')->textInput(['maxlength' => true]) ?>
+
     <?= $form->field($model, 'flip')->textInput(['disabled' => true]) ?>
 
     <?= $form->field($model, 'hold')->textInput(['disabled' => true]) ?>

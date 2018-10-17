@@ -15,6 +15,7 @@ use Yii;
  * @property double $flip
  * @property double $hold
  * @property int $graduation_id
+ * @property int $max_value
  * @property int $status
  * @property int $created_at
  * @property int $updated_at
@@ -41,7 +42,7 @@ class ProjectData extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['project_id', 'expert_id', 'Report_Date', 'status', 'created_at', 'updated_at', 'graduation_id'], 'integer'],
+            [['max_value', 'project_id', 'expert_id', 'Report_Date', 'status', 'created_at', 'updated_at', 'graduation_id'], 'integer'],
             [['flip', 'hold'], 'double'],
             [['Score', 'searchProjectName', 'searchExpertName'], 'string', 'max' => 255],
             [['expert_id'], 'exist', 'skipOnError' => true, 'targetClass' => Experts::className(), 'targetAttribute' => ['expert_id' => 'id']],
@@ -64,6 +65,7 @@ class ProjectData extends \yii\db\ActiveRecord
             'graduation_id' => Yii::t('app/projects', 'Graduation'),
             'flip' => Yii::t('app/projects', 'Flip'),
             'hold' => Yii::t('app/projects', 'Hold'),
+            'max_value' => Yii::t('app/projects', 'Max Value'),
             'status' => Yii::t('app/projects', 'Status'),
             'created_at' => Yii::t('app', 'Created At'),
             'updated_at' => Yii::t('app', 'Updated At'),

@@ -21,6 +21,7 @@ return [
     'Hold All' => 'Hold All',
     'Hold Year' => 'Hold Year',
     'Hold Quarte' => 'Hold Quarte',
+    'Max Value' => 'Max Value',
 
     'Project' => 'Project',
     'Expert' => 'Expert',

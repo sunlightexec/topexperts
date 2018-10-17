@@ -85,10 +85,10 @@ class Experts extends \app\models\Experts
             'AVG(IF(project_data.hold >= graduation_ratings.min_star, project_data.hold, "0" )) as hold';*/
 
         $select = [
-            'flipSum' => 'SUM(IF(project_data.flip >= graduation_ratings.min_star, project_data.flip, 0 ))',
-            'holdSum' => 'SUM(IF(project_data.hold >= graduation_ratings.min_star, project_data.hold, 0 ))',
-            'flipCount' => 'SUM(IF(project_data.flip >= graduation_ratings.min_star, 1, 0 ))',
-            'holdCount' => 'SUM(IF(project_data.hold >= graduation_ratings.min_star, 1, 0 ))',
+            'flipSum' => 'SUM(IF(project_data.flip >= IF(project_data.max_value > 0, project_data.max_value, graduation_ratings.min_star), project_data.flip, 0 ))',
+            'holdSum' => 'SUM(IF(project_data.hold >= IF(project_data.max_value > 0, project_data.max_value, graduation_ratings.min_star), project_data.hold, 0 ))',
+            'flipCount' => 'SUM(IF(project_data.flip >= IF(project_data.max_value > 0, project_data.max_value, graduation_ratings.min_star), 1, 0 ))',
+            'holdCount' => 'SUM(IF(project_data.hold >= IF(project_data.max_value > 0, project_data.max_value, graduation_ratings.min_star), 1, 0 ))',
         ];
 
         $updates = ProjectData::find()

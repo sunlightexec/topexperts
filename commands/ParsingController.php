@@ -35,7 +35,7 @@ class ParsingController extends Controller
         $arProjects = Projects::find()->all();
         $row = 1;
         foreach ($arProjects as $oProject) {
-            if($row++ % 500 == 0) echo "$row++";
+            if($row++ % 2000 == 0) echo "$row++";
             Projects::setRatings($oProject->id);
         }
     }
