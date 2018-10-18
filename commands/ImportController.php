@@ -155,7 +155,10 @@ class ImportController extends Controller
                     $model = new GraduationRatings();
                     $model->name = "type_{$row}";
                     $model->type = 1;
-                    if(!$model->save()) {print_r($model->errors); echo "\n";}
+                    if(!$model->save()) {
+                        print_r($model->errors); echo "\n";
+                        $errors .= "Save Rating error " . json_encode($model->errors) . "\n";
+                    }
 
                     /*graduation data*/
                     foreach($scoreType[$fileop[0]] as $item) {
@@ -163,7 +166,10 @@ class ImportController extends Controller
                         $modelData->graduation_id = $model->id;
                         $modelData->score = strtoupper( $fileop[$item['index']] );
                         $modelData->value = str_replace(',','.', $item['value']);
-                        if(!$modelData->save()) {print_r($modelData->errors);}
+                        if(!$modelData->save()) {
+                            print_r($modelData->errors);
+                            $errors .= "Save Rating Data error " . json_encode($modelData->errors) . "\n";
+                        }
                     }
                     $isHead = false;
                 }
@@ -176,7 +182,10 @@ class ImportController extends Controller
                 if($row == 43) {
                     $model->min_star = 6;
                 }
-                if(!$model->save()) {print_r($model->errors); echo "\n";}
+                if(!$model->save()) {
+                    print_r($model->errors); echo "\n";
+                    $errors .= "Save Rating error " . json_encode($model->errors) . "\n";
+                }
             }
 
             if(!empty($model) && !$isHead) {
@@ -196,7 +205,10 @@ class ImportController extends Controller
                 }
 
                 $model->allowed = $allowed;
-                if(!$model->save()) {print_r($model->errors); echo "\n";}
+                if(!$model->save()) {
+                    print_r($model->errors); echo "\n";
+                    $errors .= "Save Rating error " . json_encode($model->errors) . "\n";
+                }
             }
         }
 
@@ -237,7 +249,7 @@ class ImportController extends Controller
                     $model->project_synonim = $fileop[$i];
                     $model->status = 1;
                     if(!$model->save()) {
-                        print_r($row);
+                        $errors .= "Save Rating error ({$row})" . json_encode($model->errors) . "\n";
                         print_r($model->errors);
                     };
                 }
@@ -253,7 +265,9 @@ class ImportController extends Controller
     {
         Experts::deleteAll();
         $skipRows = 1;
+        $errors = '';
         $loadFileName = \Yii::$app->basePath . $this->loadDir . 'experts.csv';
+        $errorFileName = \Yii::$app->basePath . $this->loadDir . 'experts.err';
         $loadFileName = FileHelper::normalizePath($loadFileName);
         if(!file_exists($loadFileName)) return ExitCode::NOINPUT;
         $handle = fopen($loadFileName, "r");
@@ -289,10 +303,14 @@ class ImportController extends Controller
             $model->subscribe = !empty($fileop[18]) ? $fileop[18] : '';
             $model->comments = !empty($fileop[19]) ? $fileop[19] : '';
             $model->status = 1;
-            if(!$model->save()) {print_r('Строка: '.$row); print_r($model->errors);};
+            if(!$model->save()) {
+                print_r('Строка: '.$row); print_r($model->errors);
+                $errors .= "Save Expert error ({$row})" . json_encode($model->errors) . "\n";
+            };
 //            print_r($fileop);fclose($handle);die();
         }
         fclose($handle);
+        file_put_contents($errorFileName, $errors);
         echo "\n";
 
         return ExitCode::OK;
@@ -307,6 +325,8 @@ class ImportController extends Controller
 
         $skipRows = 1;
         $loadFileName = \Yii::$app->basePath . $this->loadDir . 'projects.csv';
+        $errorFileName = \Yii::$app->basePath . $this->loadDir . 'projects.err';
+        $errors = '';
         $loadFileName = FileHelper::normalizePath($loadFileName);
         if(!file_exists($loadFileName)) return ExitCode::NOINPUT;
         $handle = fopen($loadFileName, "r");
@@ -374,13 +394,22 @@ class ImportController extends Controller
             ];
             $model->setAttributes($data);
 
-            if(!$model->save()) {print_r([$fileop[0], $fileop[6], $model->errors]); continue;}
+            if(!$model->save()) {
+                $errors .= "Save Project error ({$row})" . json_encode($model->errors) . "\n";
+                print_r([$fileop[0], $fileop[6], $model->errors]);
+                continue;
+            }
 
             for($i=13; $i<172; $i=$i+2) {
                 $expertName = $fldName[$i];
                 $expertModel = Experts::find()->where(['=', 'name', $expertName])->one();
                 if(empty($fileop[$i]) && empty($fileop[$i+1])) continue;
-                if(empty($expertModel)) {print_r([$fileop[0], $expertName . " not found/n"]); continue;}
+                if(empty($expertModel)) {
+                    print_r([$fileop[0], $expertName . " not found/n"]);
+                    $errors .= $expertName . " not found({$row})/n" . "\n";
+
+                    continue;
+                }
                 else {
                     $prData = new ProjectData();
                     $prData->setAttributes([
@@ -389,13 +418,17 @@ class ImportController extends Controller
                         'Score' => $fileop[$i],
                         'Report_Date' => !empty($fileop[$i+1]) ? self::cnvDate($fileop[$i+1]) : null,
                     ]);
-                    if(!$prData->save()) {print_r([$fileop[0], $expertName, $prData->errors]); continue;}
+                    if(!$prData->save()) {
+                        $errors .= "Save ProjectData error ({$row})" . json_encode($prData->errors) . "\n";
+                        print_r([$fileop[0], $expertName, $prData->errors]);
+                        continue;
+                    }
                 }
             }
 
         }
         fclose($handle);
-
+        file_put_contents($errorFileName, $errors);
         echo "\n";
 
         return ExitCode::OK;
@@ -436,6 +469,8 @@ class ImportController extends Controller
 
         $skipRows = 1;
         $loadFileName = \Yii::$app->basePath . $this->loadDir . 'exceptions.csv';
+        $errorFileName = \Yii::$app->basePath . $this->loadDir . 'exceptions.err';
+        $errors = '';
         $loadFileName = FileHelper::normalizePath($loadFileName);
         if(!file_exists($loadFileName)) return ExitCode::NOINPUT;
         $handle = fopen($loadFileName, "r");
@@ -456,9 +491,11 @@ class ImportController extends Controller
             $model->msg_fall2 = !empty($fileop[4]) ? $fileop[4] : null;
 
             if(!$model->save()) {
+                $errors .= "Save Exceptions error ({$row})" . json_encode($model->errors) . "\n";
                 print_r([$row, $model->errors]);
             };
         }
+        file_put_contents($errorFileName, $errors);
         echo "\n";
         return ExitCode::OK;
     }
