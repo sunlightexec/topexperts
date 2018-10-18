@@ -83,7 +83,7 @@ class SiteController extends Controller
     public function actionExpertsAll()
     {
         $searchModel = new ExpertsSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams, ['flip' => SORT_DESC, 'hold' => SORT_DESC]);
 
         return $this->render('experts-all', [
             'searchModel' => $searchModel,
