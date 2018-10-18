@@ -22,7 +22,7 @@ class ListExperts extends Widget
     public function run()
     {
         $searchModel = new ExpertsSearch();
-        $dataProvider = $searchModel->search(['sort' => $this->order . ' DESC']);
+        $dataProvider = $searchModel->search([], [$this->order => SORT_DESC]);
 
         return $this->render('list-experts', [
             'searchModel' => $searchModel,
