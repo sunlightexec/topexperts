@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\components\api\CoinMarketCap;
+use app\models\search\ExpertsSearch;
 use Yii;
 use yii\data\ArrayDataProvider;
 use yii\filters\AccessControl;
@@ -77,6 +78,17 @@ class SiteController extends Controller
                 'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
             ],
         ];
+    }
+
+    public function actionExpertsAll()
+    {
+        $searchModel = new ExpertsSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('experts-all', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
     }
 
     public function actionLoadError($file)

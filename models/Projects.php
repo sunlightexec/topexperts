@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\db\Exception;
 
 /**
  * This is the model class for table "projects".
@@ -105,6 +106,19 @@ class Projects extends \yii\db\ActiveRecord
     public function getProjectDatas()
     {
         return $this->hasMany(ProjectData::className(), ['project_id' => 'id']);
+    }
+
+    public function getStarProject()
+    {
+
+        return $this->getProjectDatas()
+            ->select(['cnt' => 'COUNT(*)'])
+            ->join('LEFT JOIN', 'graduation_ratings', 'graduation_ratings.id = project_data.graduation_id')
+            ->andWhere(['>=', 'flip', new Exception('
+        IF(project_data.max_value>0,project_data.max_value, graduation_ratings.max_value)
+        ')])->orWhere(['>=', 'hold', new Exception('
+        IF(project_data.max_value>0,project_data.max_value, graduation_ratings.max_value)
+        ')]);
     }
 
     /**

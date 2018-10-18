@@ -24,7 +24,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
+//            ['class' => 'yii\grid\SerialColumn'],
 
 //            'id',
             [
@@ -38,9 +38,45 @@ $this->params['breadcrumbs'][] = $this->title;
                 'filter' => Html::activeTextInput($searchModel, 'searchExpertName', ['class' => 'form-control']),
             ],
             'Score',
-            'Report_Date:date',
             'flip',
             'hold',
+            [
+                'label' => 'is star',
+                'value' => function($model){
+                    return $model->getProject()->one()->ICO_Star>=5 ? 'Yes' : 'No';
+                }
+            ],
+            [
+                'label' => 'is scam',
+                'value' => function($model){
+                    return !empty($model->getProject()->one()->Scam) ? 'Yes' : 'No';
+                }
+            ],
+            [
+                'label' => 'is coined',
+                'value' => function($model){
+                    return $model->getHystoricalData()->count() > 0 ? 'Yes' : 'No';
+                }
+            ],
+            [
+                'label' => 'Hold All',
+                'value' => function($model){
+                    return round($model->getProject()->one()->hold_all,1);
+                }
+            ],
+            [
+                'label' => 'Hold Yeat',
+                'value' => function($model){
+                    return round($model->getProject()->one()->hold_12,1);
+                }
+            ],
+            [
+                'label' => 'Hold Quarte',
+                'value' => function($model){
+                    return round($model->getProject()->one()->hold_3,1);
+                }
+            ],
+
             //'status',
             //'created_at',
             //'updated_at',

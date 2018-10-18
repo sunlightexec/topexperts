@@ -93,6 +93,38 @@ class Experts extends \yii\db\ActiveRecord
      */
     public function getProjectDatas()
     {
-        return $this->hasMany(ProjectData::className(), ['project_id' => 'id']);
+        return $this->hasMany(ProjectData::className(), ['expert_id' => 'id']);
+    }
+
+    public function getStarProject()
+    {
+        return $this->getProjectDatas()
+            ->join('INNER JOIN', 'projects', 'projects.id=project_data.project_id')
+            ->where(['>=','projects.ICO_Star', 5]);
+    }
+
+    public function getScamProject()
+    {
+        return $this->getProjectDatas()
+            ->join('INNER JOIN', 'projects', 'projects.id=project_data.project_id')
+            ->where('projects.Scam IS NOT NULL');
+    }
+
+    public function getStarCoinedProject()
+    {
+        return $this->getStarProject()
+            ->join('LEFT JOIN', 'hystorical_data', 'hystorical_data.project_id=project_data.project_id')
+            ->where('hystorical_data.id IS NOT NULL')
+            ->count();
+    }
+
+    public function countProject()
+    {
+        return $this->getProjectDatas()->where(['>','flip', 0])->orWhere(['>','hold', 0])->count();
+    }
+
+    public function countStarProject()
+    {
+        return $this->getProjectDatas()->where(['>','flip', 0])->orWhere(['>','hold', 0])->count();
     }
 }

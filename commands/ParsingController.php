@@ -30,6 +30,16 @@ use yii\helpers\Json;
  */
 class ParsingController extends Controller
 {
+    public function actionSetStar()
+    {
+        $arProjects = Projects::find()->all();
+        $row = 1;
+        foreach ($arProjects as $oProject) {
+            if($row++ % 500 == 0) echo "$row++";
+            Projects::setStar($oProject->id);
+        }
+    }
+
     public function actionSetRatingProjects()
     {
         $arProjects = Projects::find()->all();

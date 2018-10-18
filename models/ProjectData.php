@@ -97,6 +97,23 @@ class ProjectData extends \yii\db\ActiveRecord
         return $this->hasOne(Projects::className(), ['id' => 'project_id']);
     }
 
+    public function getStarProject()
+    {
+        return $this->getProject()->where(['>=', 'projects.ICO_Star', 5]);
+    }
+
+    public function getStarCoinedProject()
+    {
+        $this->getStarProject()
+            ->join('INNER JOIN', 'hystorical_data', 'hystorical_data.project_id=project_data.project_id')
+            ->count();
+    }
+
+    public function getHystoricalData()
+    {
+        return $this->hasMany(\app\models\helpers\HystoricalData::className(), ['project_id' => 'project_id']);
+    }
+
     /**
      * {@inheritdoc}
      * @return \app\models\query\ProjectDataQuery the active query used by this AR class.
