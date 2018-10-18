@@ -39,15 +39,18 @@ class ExpertsSearch extends Experts
      *
      * @return ActiveDataProvider
      */
-    public function search($params)
+    public function search($params, $sort = null)
     {
         $query = Experts::find();
 
         // add conditions that should always apply here
 
-        $dataProvider = new ActiveDataProvider([
-            'query' => $query,
-        ]);
+        $arrDp = ['query' => $query];
+        if(!empty($sort)) {
+            $arrDp['sort'] = ['defaultOrder'=>$sort];
+        }
+
+        $dataProvider = new ActiveDataProvider($arrDp);
 
         $this->load($params);
 
