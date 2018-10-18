@@ -87,15 +87,16 @@ class Experts extends \app\models\Experts
             'AVG(IF(project_data.hold >= graduation_ratings.min_star, project_data.hold, "0" )) as hold';*/
 
         $select = [
-            'flipSum' => 'SUM(IF(project_data.flip >= IF(project_data.max_value > 0, project_data.max_value, graduation_ratings.min_star), project_data.flip, 0 ))',
-            'holdSum' => 'SUM(IF(project_data.hold >= IF(project_data.max_value > 0, project_data.max_value, graduation_ratings.min_star), project_data.hold, 0 ))',
-            'flipCount' => 'SUM(IF(project_data.flip >= IF(project_data.max_value > 0, project_data.max_value, graduation_ratings.min_star), 1, 0 ))',
-            'holdCount' => 'SUM(IF(project_data.hold >= IF(project_data.max_value > 0, project_data.max_value, graduation_ratings.min_star), 1, 0 ))',
+            'flipSum' => 'SUM(IF(projects.flip_all >= IF(project_data.max_value > 0, project_data.max_value, graduation_ratings.min_star), projects.flip_all, 0 ))',
+            'holdSum' => 'SUM(IF(projects.hold_all >= IF(project_data.max_value > 0, project_data.max_value, graduation_ratings.min_star), projects.hold_all, 0 ))',
+            'flipCount' => 'SUM(IF(projects.flip_all >= IF(project_data.max_value > 0, project_data.max_value, graduation_ratings.min_star), 1, 0 ))',
+            'holdCount' => 'SUM(IF(projects.hold_all >= IF(project_data.max_value > 0, project_data.max_value, graduation_ratings.min_star), 1, 0 ))',
         ];
 
         $updates = ProjectData::find()
 //            ->joinWith(['graduation'])
             ->join('LEFT JOIN', 'graduation_ratings', 'project_data.graduation_id=graduation_ratings.id')
+            ->join('INNER JOIN', 'projects', 'project_data.project_id=projects.id')
             ->select($select)
             ->where(['=', 'project_data.expert_id', $expert_id])
             ->groupBy('project_data.expert_id')

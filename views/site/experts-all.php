@@ -50,7 +50,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'flip',
             'hold',
 
-            ['class' => 'yii\grid\ActionColumn'],
+//            ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>
     <?php Pjax::end(); ?>
