@@ -65,7 +65,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 }
             ],
             [
-                'label' => 'Hold Yeat',
+                'label' => 'Hold Year',
                 'value' => function($model){
                     return round($model->getProject()->one()->hold_12,1);
                 }
