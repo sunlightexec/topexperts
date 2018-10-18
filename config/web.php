@@ -41,11 +41,24 @@ $config = [
         ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
+            'flushInterval' => 1,
             'targets' => [
                 [
                     'class' => 'yii\log\FileTarget',
-                    'levels' => ['error', 'warning'],
+                    'levels' => ['error', 'warning', 'trace', ],
+                    'exportInterval' => 1,
+//                    'categories' => ['change-data'],
                 ],
+                /*[
+                    'class' => 'yii\log\EmailTarget',
+                    'levels' => ['info'],
+                    'categories' => ['change-data'],
+                    'message' => [
+                        'from' => ['log@nomail.ru'],
+                        'to' => ['admin@example.com'],
+                        'subject' => 'Change info on example.com was found',
+                    ],
+                ],*/
             ],
         ],
         'db' => $db,

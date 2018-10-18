@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use app\models\helpers\ProjectData;
 
 /**
  * This is the model class for table "graduation_ratings".
@@ -94,7 +95,7 @@ class GraduationRatings extends \yii\db\ActiveRecord
      */
     public function getProjectDatas()
     {
-        return $this->hasMany(ProjectData::className(), ['graduation_id' => 'id']);
+        return $this->hasMany(\app\models\helpers\ProjectData::className(), ['graduation_id' => 'id']);
     }
 
     /**
@@ -104,5 +105,27 @@ class GraduationRatings extends \yii\db\ActiveRecord
     public static function find()
     {
         return new \app\models\query\GraduationRatingsQuery(get_called_class());
+    }
+
+    public static function getMaxValue($id)
+    {
+        $model = self::find()->where(['=', 'id', $id])
+            ->one()
+            ->getGraduationRatingDatas()
+            ->orderBy('value DESC')
+            ->one();
+
+        return $model;
+    }
+
+    public static function getMinValue($id)
+    {
+        $model = self::find()->where(['=', 'id', $id])
+            ->one()
+            ->getGraduationRatingDatas()
+            ->orderBy('value ASC')
+            ->one();
+
+        return $model;
     }
 }

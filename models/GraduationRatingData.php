@@ -65,6 +65,14 @@ class GraduationRatingData extends \yii\db\ActiveRecord
     }
 
     /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getProjectDatas()
+    {
+        return $this->hasMany(\app\models\helpers\ProjectData::className(), ['graduation_id' => 'graduation_id']);
+    }
+
+    /**
      * {@inheritdoc}
      * @return \app\models\query\GraduationRatingDataQuery the active query used by this AR class.
      */

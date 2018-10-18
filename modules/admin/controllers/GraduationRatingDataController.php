@@ -3,7 +3,7 @@
 namespace app\modules\admin\controllers;
 
 use Yii;
-use app\models\GraduationRatingData;
+use app\models\helpers\GraduationRatingData;
 use app\models\search\GraduationRatingDataSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
