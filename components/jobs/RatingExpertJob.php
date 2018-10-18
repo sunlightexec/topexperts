@@ -12,10 +12,16 @@ use app\models\helpers\Experts;
 
 class RatingExpertJob extends BaseObject implements \yii\queue\JobInterface
 {
+    public $expert_id = null;
+
     public function execute($queue)
     {
-        $arExperts = Experts::find()->all();
-        $row = 1;
+        if(!empty($this->expert_id)) {
+            $arExperts = Experts::find()->where(['=', 'id', $this->expert_id])->all();
+        } else {
+            $arExperts = Experts::find()->all();
+        }
+
         foreach ($arExperts as $oExpert) {
             Experts::setRatings($oExpert->id);
         }
