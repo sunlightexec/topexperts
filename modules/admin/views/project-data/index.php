@@ -59,6 +59,12 @@ $this->params['breadcrumbs'][] = $this->title;
                 }
             ],
             [
+                'label' => 'is calced',
+                'value' => function($model){
+                    return $model->getProject()->one()->ICO_Star >= 5 ? 'Yes' : 'No';
+                }
+            ],
+            [
                 'label' => 'Hold All',
                 'value' => function($model){
                     return round($model->getProject()->one()->hold_all,1);
