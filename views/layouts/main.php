@@ -56,6 +56,7 @@ AppAsset::register($this);
             ['label' => 'Hystorical Data', 'url' => ['/admin/hystorical-data']],
             ['label' => '-----------------'],
             ['label' => 'Import Errors', 'url' => ['/site/list-errors']],
+            ['label' => 'Experts tables', 'url' => ['/site/experts-all']],
         ]],
     ];
 
