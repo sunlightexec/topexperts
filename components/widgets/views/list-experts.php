@@ -3,7 +3,7 @@ use yii\grid\GridView;
 ?>
 <?= GridView::widget([
     'dataProvider' => $dataProvider,
-    'filterModel' => $searchModel,
+    'filterModel' => /*$searchModel*/ false,
     'layout'=>"{items}",
     'columns' => [
         ['class' => 'yii\grid\SerialColumn'],

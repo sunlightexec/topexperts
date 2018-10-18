@@ -5,6 +5,7 @@ namespace app\controllers;
 use app\components\api\CoinMarketCap;
 use Yii;
 use yii\filters\AccessControl;
+use yii\helpers\FileHelper;
 use yii\web\Controller;
 use yii\web\Response;
 use yii\filters\VerbFilter;
@@ -74,6 +75,12 @@ class SiteController extends Controller
                 'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
             ],
         ];
+    }
+
+    public function actionListErrors()
+    {
+        $files = FileHelper::findFiles( \Yii::$app->basePath . '/data/' , ['only' => ['*.err']] );
+        die(print_r($files));
     }
 
     /**
