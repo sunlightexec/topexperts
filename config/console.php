@@ -7,13 +7,17 @@ $i18n = require __DIR__ . '/i18n.php';
 $config = [
     'id' => 'basic-console',
     'basePath' => dirname(__DIR__),
-    'bootstrap' => ['log'],
+    'bootstrap' => ['queue','log'],
     'controllerNamespace' => 'app\commands',
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
     ],
     'components' => [
+        'queue' => [
+            'class' => \yii\queue\file\Queue::className(),
+            'path' => '@runtime/queue',
+        ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
         ],
