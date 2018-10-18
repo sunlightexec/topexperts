@@ -54,6 +54,8 @@ AppAsset::register($this);
             ['label' => 'Graduations Ratings', 'url' => ['/admin/graduation-ratings']],
             ['label' => '-----------------'],
             ['label' => 'Hystorical Data', 'url' => ['/admin/hystorical-data']],
+            ['label' => '-----------------'],
+            ['label' => 'Import Errors', 'url' => ['/site/list-errors']],
         ]],
     ];
 
