@@ -40,8 +40,8 @@ $this->params['breadcrumbs'][] = $this->title;
             'volume_24h',
             'market_cap',
 //            'status',
-//            'created_at',
-//            'updated_at',
+            'created_at:datetime',
+            'updated_at:datetime',
         ],
     ]) ?>
 

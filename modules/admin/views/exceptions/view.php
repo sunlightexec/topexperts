@@ -35,8 +35,8 @@ $this->params['breadcrumbs'][] = $this->title;
             'msg_fall',
             'msg_fall2',
 //            'status',
-            'created_at:date',
-            'updated_at:date',
+            'created_at:datetime',
+            'updated_at:datetime',
         ],
     ]) ?>
 

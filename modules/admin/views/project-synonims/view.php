@@ -32,8 +32,8 @@ $this->params['breadcrumbs'][] = $this->title;
             'project_name',
             'project_synonim:ntext',
             'status',
-            'created_at',
-            'updated_at',
+            'created_at:datetime',
+            'updated_at:datetime',
         ],
     ]) ?>
 
