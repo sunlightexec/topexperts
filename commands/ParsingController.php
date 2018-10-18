@@ -30,7 +30,7 @@ use yii\helpers\Json;
  */
 class ParsingController extends Controller
 {
-    public function actionSetStar()
+    public function actionSetStarProject()
     {
         $arProjects = Projects::find()->all();
         $row = 1;
