@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use app\components\api\CoinMarketCap;
 use Yii;
+use yii\data\ArrayDataProvider;
 use yii\filters\AccessControl;
 use yii\helpers\FileHelper;
 use yii\web\Controller;
@@ -12,6 +13,7 @@ use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
 use app\models\SignupForm;
+use yii\web\NotFoundHttpException;
 
 class SiteController extends Controller
 {
@@ -77,10 +79,37 @@ class SiteController extends Controller
         ];
     }
 
+    public function actionLoadError($file)
+    {
+        $filePath = \Yii::$app->basePath . '/data/' . $file;
+
+        if(file_exists($filePath)) {
+            return Yii::$app->response->sendFile($filePath, $file);
+        }
+
+        throw new NotFoundHttpException(Yii::t('app/categories', 'The requested page does not exist.'));
+    }
+
     public function actionListErrors()
     {
         $files = FileHelper::findFiles( \Yii::$app->basePath . '/data/' , ['only' => ['*.err']] );
-        die(print_r($files));
+        $allFiles = [];
+        foreach ($files as $key => $file) {
+            $tmp = explode(DIRECTORY_SEPARATOR, $file);
+
+            $allFiles[] = [
+                'id' => $key,
+                'name' => $file,
+                'shortname' => $tmp[count($tmp) - 1]
+            ];
+        }
+        $dataProvider = new ArrayDataProvider([
+            'allModels' => $allFiles,
+            'pagination' => [ //постраничная разбивка
+                'pageSize' => 10, // 10 новостей на странице
+            ],
+        ]);
+        return $this->render('list-errors', ['dataProvider' => $dataProvider]);
     }
 
     /**
