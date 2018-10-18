@@ -113,8 +113,10 @@ class Experts extends \yii\db\ActiveRecord
     public function getStarCoinedProject()
     {
         return $this->getStarProject()
-            ->join('LEFT JOIN', 'hystorical_data', 'hystorical_data.project_id=project_data.project_id')
+            ->select('project_data.project_id')
+            ->join('INNER JOIN', 'hystorical_data', 'hystorical_data.project_id=project_data.project_id')
             ->where('hystorical_data.id IS NOT NULL')
+            ->groupBy('project_data.project_id')
             ->count();
     }
 
