@@ -40,7 +40,7 @@ AppAsset::register($this);
         ['label' => 'Home', 'url' => ['/site/index']],
         ['label' => 'About', 'url' => ['/site/about']],
         ['label' => 'Contact', 'url' => ['/site/contact']],
-        ['label' => 'Dictionsries', 'items' => [
+        ['label' => 'Dictionaries', 'items' => [
             ['label' => 'Project Synonims', 'url' => ['/admin/project-synonims']],
             ['label' => 'Experts', 'url' => ['/admin/experts']],
             ['label' => 'Categories', 'url' => ['/admin/categories']],
