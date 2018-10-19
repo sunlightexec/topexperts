@@ -41,9 +41,13 @@ class ProjectDataController extends Controller
         $searchModel = new ProjectDataSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
+        $dataProviderExport = $searchModel->search(Yii::$app->request->queryParams, 20);
+        $dataProviderExport->setTotalCount(20);
+
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'dataProviderExport' => $dataProviderExport,
         ]);
     }
 

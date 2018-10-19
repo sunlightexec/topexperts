@@ -12,6 +12,7 @@ use app\models\ProjectData;
  */
 class ProjectDataSearch extends ProjectData
 {
+    public $project_hold;
     /**
      * {@inheritdoc}
      */
@@ -19,7 +20,7 @@ class ProjectDataSearch extends ProjectData
     {
         return [
             [['id', 'project_id', 'expert_id', 'Report_Date', 'status', 'created_at', 'updated_at'], 'integer'],
-            [['Score', 'searchProjectName', 'searchExpertName'], 'safe'],
+            [['Score', 'searchProjectName', 'searchExpertName', 'project_hold'], 'safe'],
         ];
     }
 
@@ -39,15 +40,30 @@ class ProjectDataSearch extends ProjectData
      *
      * @return ActiveDataProvider
      */
-    public function search($params)
+    public function search($params, $limit = null)
     {
-        $query = ProjectData::find()->joinWith(['project', 'expert']);
+        $query = ProjectData::find()
+            ->joinWith(['project', 'expert']);
+
+        if(!empty($limit)) $query = $query->limit($limit);
 
         // add conditions that should always apply here
 
-        $dataProvider = new ActiveDataProvider([
+        $dpParams = [
             'query' => $query,
-        ]);
+            'sort' => [
+                'defaultOrder' => ['project_hold' => SORT_DESC]
+            ]
+        ];
+
+        $dataProvider = new ActiveDataProvider($dpParams);
+
+        $dataProvider->sort->attributes['project_hold'] = [
+            // The tables are the ones our relation are configured to
+            // in my case they are prefixed with "tbl_"
+            'asc' => ['projects.hold_all' => SORT_ASC],
+            'desc' => ['projects.hold_all' => SORT_DESC],
+        ];
 
         $this->load($params);
 

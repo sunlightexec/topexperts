@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
+use kartik\export\ExportMenu;
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\search\ExpertsSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -16,42 +17,49 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php Pjax::begin(); ?>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
-    <?= GridView::widget([
+    <?php
+    $gridColumns = [
+        ['class' => 'yii\grid\SerialColumn'],
+
+        'name',
+        [
+            'label' => 'total quoted',
+            'value' => function($model){
+                return $model->countProject();
+            }
+        ],
+        [
+            'label' => 'star',
+            'value' => function($model){
+                return $model->getStarProject()->count();
+            }
+        ],
+        [
+            'label' => 'scam',
+            'value' => function($model){
+                return $model->getScamProject()->count();
+            }
+        ],
+        [
+            'label' => 'not coined',
+            'value' => function($model){
+                return $model->getStarCoinedProject();
+            }
+        ],
+        'flip',
+        'hold',
+    ];
+    ?>
+
+    <?= ExportMenu::widget([
+        'dataProvider' => $dataProvider,
+        'columns' => $gridColumns
+    ]);?>
+
+    <?= \kartik\grid\GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
-            'name',
-            [
-                'label' => 'total quoted',
-                'value' => function($model){
-                    return $model->countProject();
-                }
-            ],
-            [
-                'label' => 'star',
-                'value' => function($model){
-                    return $model->getStarProject()->count();
-                }
-            ],
-            [
-                'label' => 'scam',
-                'value' => function($model){
-                    return $model->getScamProject()->count();
-                }
-            ],
-            [
-                'label' => 'not coined',
-                'value' => function($model){
-                    return $model->getStarCoinedProject();
-                }
-            ],
-            'flip',
-            'hold',
-
-//            ['class' => 'yii\grid\ActionColumn'],
-        ],
+        'columns' => $gridColumns,
     ]); ?>
     <?php Pjax::end(); ?>
 </div>
