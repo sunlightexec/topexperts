@@ -121,6 +121,28 @@ class Projects extends \yii\db\ActiveRecord
         ')])->groupBy('project_data.project_id');
     }
 
+    public function getStarProjectFlip()
+    {
+
+        return $this->getProjectDatas()
+            ->select(['cnt' => 'COUNT(*)'])
+            ->join('LEFT JOIN', 'graduation_ratings', 'graduation_ratings.id = project_data.graduation_id')
+            ->andWhere(['>=', 'flip', new Exception('
+        IF(project_data.max_value>0,project_data.max_value, graduation_ratings.max_value)
+        ')])->groupBy('project_data.project_id');
+    }
+
+    public function getStarProjectHold()
+    {
+
+        return $this->getProjectDatas()
+            ->select(['cnt' => 'COUNT(*)'])
+            ->join('LEFT JOIN', 'graduation_ratings', 'graduation_ratings.id = project_data.graduation_id')
+            ->andWhere(['>=', 'hold', new Exception('
+        IF(project_data.max_value>0,project_data.max_value, graduation_ratings.max_value)
+        ')])->groupBy('project_data.project_id');
+    }
+
     /**
      * @return \yii\db\ActiveQuery
      */

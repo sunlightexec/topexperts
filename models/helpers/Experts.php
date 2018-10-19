@@ -86,20 +86,39 @@ class Experts extends \app\models\Experts
         /*$select = 'AVG(IF(project_data.flip >= graduation_ratings.min_star, project_data.flip, "0" )) as flip,' .
             'AVG(IF(project_data.hold >= graduation_ratings.min_star, project_data.hold, "0" )) as hold';*/
 
-        $select = [
+        $selectFlip = [
             'flipSum' => 'SUM(IF(projects.flip_all >= IF(project_data.max_value > 0, project_data.max_value, graduation_ratings.min_star), projects.flip_all, 0 ))',
-            'holdSum' => 'SUM(IF(projects.hold_all >= IF(project_data.max_value > 0, project_data.max_value, graduation_ratings.min_star), projects.hold_all, 0 ))',
+//            'holdSum' => 'SUM(IF(projects.hold_all >= IF(project_data.max_value > 0, project_data.max_value, graduation_ratings.min_star), projects.hold_all, 0 ))',
             'flipCount' => 'SUM(IF(projects.flip_all >= IF(project_data.max_value > 0, project_data.max_value, graduation_ratings.min_star), 1, 0 ))',
+//            'holdCount' => 'SUM(IF(projects.hold_all >= IF(project_data.max_value > 0, project_data.max_value, graduation_ratings.min_star), 1, 0 ))',
+        ];
+
+        $selectHold = [
+//            'flipSum' => 'SUM(IF(projects.flip_all >= IF(project_data.max_value > 0, project_data.max_value, graduation_ratings.min_star), projects.flip_all, 0 ))',
+            'holdSum' => 'SUM(IF(projects.hold_all >= IF(project_data.max_value > 0, project_data.max_value, graduation_ratings.min_star), projects.hold_all, 0 ))',
+//            'flipCount' => 'SUM(IF(projects.flip_all >= IF(project_data.max_value > 0, project_data.max_value, graduation_ratings.min_star), 1, 0 ))',
             'holdCount' => 'SUM(IF(projects.hold_all >= IF(project_data.max_value > 0, project_data.max_value, graduation_ratings.min_star), 1, 0 ))',
         ];
 
-        $updates = ProjectData::find()
+        $updatesFlip = ProjectData::find()
 //            ->joinWith(['graduation'])
             ->join('LEFT JOIN', 'graduation_ratings', 'project_data.graduation_id=graduation_ratings.id')
             ->join('INNER JOIN', 'projects', 'project_data.project_id=projects.id')
-            ->select($select)
+            ->select($selectFlip)
             ->where(['=', 'project_data.expert_id', $expert_id])
             ->groupBy('project_data.expert_id')
+            ->having('flipCount>=5')
+            ->asArray()
+            ->one();
+
+        $updatesHold = ProjectData::find()
+//            ->joinWith(['graduation'])
+            ->join('LEFT JOIN', 'graduation_ratings', 'project_data.graduation_id=graduation_ratings.id')
+            ->join('INNER JOIN', 'projects', 'project_data.project_id=projects.id')
+            ->select($selectHold)
+            ->where(['=', 'project_data.expert_id', $expert_id])
+            ->groupBy('project_data.expert_id')
+            ->having('holdCount>=5')
             ->asArray()
             ->one();
 
@@ -107,8 +126,8 @@ class Experts extends \app\models\Experts
 
         if(!empty($updates)) {
             if($model->sco)
-            $model->flip = $updates['flipCount']==0 ? 0 : round($updates['flipSum'] / $updates['flipCount'],1);
-            $model->hold = $updates['holdCount']==0 ? 0 : round($updates['holdSum'] / $updates['holdCount'],1);
+            $model->flip = $updatesFlip['flipCount']==0 ? 0 : round($updatesFlip['flipSum'] / $updatesFlip['flipCount'],1);
+            $model->hold = $updatesHold['holdCount']==0 ? 0 : round($updatesHold['holdSum'] / $updatesHold['holdCount'],1);
             $model->save();
         }
     }
