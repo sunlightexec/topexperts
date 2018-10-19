@@ -121,7 +121,7 @@ class GraduationRatingData extends \app\models\GraduationRatingData
             ->one();
         if(!empty($modelHold)) {
             $oProjectData->hold = $modelHold->value;
-            if(empty($modelFlip))
+            if(empty($modelHold))
                 $oProjectData->graduation_id = $modelHold->getGraduation()->one()->id;
             $oProjectData->save();
         } else {
@@ -136,7 +136,7 @@ class GraduationRatingData extends \app\models\GraduationRatingData
                 ->one();
 
             if(!empty($modelHold) && $modelHold->type == 2) {
-                $oProjectData->hold = ((double)str_replace(['%',','], ['','.'], $flip) * 10 / $modelHold->max_value);
+                $oProjectData->hold = ((double)str_replace(['%',','], ['','.'], $hold) * 10 / $modelHold->max_value);
                 $oProjectData->graduation_id = $modelHold->id;
                 $oProjectData->save();
             }
