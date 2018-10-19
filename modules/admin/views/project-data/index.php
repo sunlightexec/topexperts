@@ -63,7 +63,7 @@ $this->params['breadcrumbs'][] = $this->title;
         [
             'label' => 'is calced',
             'value' => function($model){
-                return (($model->getHystoricalData()->count() > 0) && ($model->getProject()->one()->ICO_Star >= 5)) ? 'Yes' : 'No';
+                return (($model->getHystoricalData()->count() > 0) && ($model->flip > 8 || $model->hold > 8)) ? 'Yes' : 'No';
             }
         ],
         'project.END_ICO:date',
