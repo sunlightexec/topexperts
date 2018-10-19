@@ -72,6 +72,13 @@ class GraduationRatingData extends \app\models\GraduationRatingData
 
     public static function applyRating($oProjectData)
     {
+        echo ':-' . $oProjectData->Score . '-:';
+        if(empty($oProjectData->Score)) {
+            $oProjectData->flip = 0;
+            $oProjectData->hold = 0;
+            $oProjectData->save();
+            return;
+        }
         $score = explode('/', $oProjectData->Score);
         if(count($score) == 1) {
             $flip = $hold = $score[0];
