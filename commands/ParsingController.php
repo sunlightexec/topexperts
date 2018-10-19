@@ -181,6 +181,7 @@ class ParsingController extends Controller
                     'price' => $item['quote']['USD']['price'],
                     'volume_24h' => $item['quote']['USD']['volume_24h'],
                     'market_cap' => $item['quote']['USD']['market_cap'],
+                    'name' => $item['name'],
                 ];
                 $model->setAttributes($data);
                 if(!$model->save()) {print_r([$item['symbol'], $model->errors]); echo "\n";}
