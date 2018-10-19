@@ -106,6 +106,7 @@ class Experts extends \app\models\Experts
 //        print_r($updates);die();
 
         if(!empty($updates)) {
+            if($model->sco)
             $model->flip = $updates['flipCount']==0 ? 0 : round($updates['flipSum'] / $updates['flipCount'],1);
             $model->hold = $updates['holdCount']==0 ? 0 : round($updates['holdSum'] / $updates['holdCount'],1);
             $model->save();

@@ -36,8 +36,12 @@ $this->params['breadcrumbs'][] = $this->title;
             'filter' => Html::activeTextInput($searchModel, 'searchExpertName', ['class' => 'form-control']),
         ],
         'Score',
-        'flip',
-        'hold',
+        [
+            'label' => 'Unifed Score',
+            'value' => function($model){
+                return $model->flip . " / " . $model->hold;
+            }
+        ],
         [
             'label' => 'is star',
             'value' => function($model){
@@ -60,6 +64,26 @@ $this->params['breadcrumbs'][] = $this->title;
             'label' => 'is calced',
             'value' => function($model){
                 return $model->getProject()->one()->ICO_Star >= 5 ? 'Yes' : 'No';
+            }
+        ],
+        'project.END_ICO:date',
+        [
+            'label' => 'start trade',
+            'value' => function($model) {
+                $ret = $model->getHystoricalData()->one();
+                return empty($ret) ? null : date('M d, Y', $ret->date_added);
+            }
+        ],
+        [
+            'label' => 'last price',
+            'value' => function($model) {
+
+                $ret = $model->getHystoricalData()
+                    ->select(['price' => 'MAX(hystorical_data.price)'])
+                    ->where(['>=', 'date_added', strtotime('-1 DAY')])
+                    ->groupBy('hystorical_data.project_id')
+                    ->one();
+                return empty($ret) ? null : $ret->price;
             }
         ],
         [
