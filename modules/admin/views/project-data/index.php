@@ -71,7 +71,7 @@ $this->params['breadcrumbs'][] = $this->title;
         [
             'label' => 'start trade',
             'value' => function($model) {
-                $ret = $model->getHystoricalData()->one();
+                $ret = $model->getHystoricalData()->orderBy('updated_at')->one();
                 return empty($ret) ? null : date('M d, Y', $ret->date_added);
             }
         ],
