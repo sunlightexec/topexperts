@@ -72,7 +72,7 @@ class GraduationRatingData extends \app\models\GraduationRatingData
 
     public static function applyRating($oProjectData)
     {
-        echo ':-' . $oProjectData->Score . '-:';
+//        echo ':-' . $oProjectData->Score . '-:';
         if(empty($oProjectData->Score)) {
             $oProjectData->flip = 0;
             $oProjectData->hold = 0;
