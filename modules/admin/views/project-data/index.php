@@ -81,7 +81,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 $ret = $model->getHystoricalData()
                     ->select(['price' => 'MAX(hystorical_data.price)'])
-                    ->where(['>=', 'date_added', strtotime('-3 DAY')])
+                    ->where(['>=', 'updated_at', strtotime('-3 DAY')])
                     ->groupBy('hystorical_data.project_id')
                     ->one();
                 return empty($ret) ? null : $ret->price;
