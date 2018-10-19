@@ -30,6 +30,56 @@ use yii\helpers\Json;
  */
 class ParsingController extends Controller
 {
+    public function actionUpdProjectRatings()
+    {
+        $arData = ProjectData::find()->where('graduation_id IS NOT NULL and flip <> hold')->all();
+        echo count($arData) . "\n";
+        $row = 0;
+        foreach ($arData as $item) {
+            if($row++ % 500 == 0) echo "$row++";
+            $score = explode('/', $item->Score);
+            if(count($score) == 1) {
+                $flip = $hold = $score;
+            } else {
+                $flip = $score[0];
+                $hold = $score[1];
+            }
+
+            /*$sco = $item->getGraduation()->one()->getGraduationRatingDatas()
+                ->where(['=', 'score', $flip])->one();*/
+            $sco = GraduationRatingData::find()
+                ->filterWhere([
+                    'score' => $flip,
+                    'graduation_id' => $item->graduation_id
+                ])
+                ->one();
+            if(empty($sco)) {
+                $item->flip = 0;
+            } else {
+                $item->flip = $sco->value;
+            }
+
+            if($flip != $hold){
+                /*$sco = $item->getGraduation()->one()->getGraduationRatingDatas()
+                    ->where(['=', 'score', $hold])->one();*/
+
+                $sco = GraduationRatingData::find()
+                    ->filterWhere([
+                        'score' => $hold,
+                        'graduation_id' => $item->graduation_id
+                    ])
+                    ->one();
+            }
+
+            if(empty($sco)) {
+                $item->hold = 0;
+            } else {
+                $item->hold = $sco->value;
+            }
+            $item->save();
+        }
+    }
+
     public function actionSetStarProject()
     {
         $arProjects = Projects::find()->all();
