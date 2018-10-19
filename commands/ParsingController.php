@@ -38,6 +38,7 @@ class ParsingController extends Controller
         foreach ($arData as $item) {
             if($row++ % 500 == 0) echo "$row++";
             $score = explode('/', $item->Score);
+//            die(print_r($score));
             if(count($score) == 1) {
                 $flip = $hold = $score;
             } else {
