@@ -71,7 +71,7 @@ $this->params['breadcrumbs'][] = $this->title;
         [
             'label' => 'start trade',
             'value' => function($model) {
-                $ret = $model->getHystoricalData()->one();
+                $ret = $model->getHystoricalData()->orderBy('created_at DESC')->one();
                 return empty($ret) ? null : date('M d, Y', $ret->date_added);
             }
         ],
@@ -81,7 +81,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 $ret = $model->getHystoricalData()
                     ->select(['price' => 'MAX(hystorical_data.price)'])
-                    ->where(['>=', 'updated_at', strtotime('-3 DAY')])
+                    ->where(['>=', 'updated_at', strtotime('-2 DAY')])
                     ->groupBy('hystorical_data.project_id')
                     ->one();
                 return empty($ret) ? null : $ret->price;

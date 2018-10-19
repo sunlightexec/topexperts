@@ -177,10 +177,11 @@ class ParsingController extends Controller
                     'circulating_supply' => $item['circulating_supply'],
                     'total_supply' => $item['total_supply'],
                     'max_supply' => $item['max_supply'],
-                    'date_added' => strtotime($item['quote']['USD']['last_updated']),
+                    'date_added' => strtotime($item['date_added']),
                     'price' => $item['quote']['USD']['price'],
                     'volume_24h' => $item['quote']['USD']['volume_24h'],
                     'market_cap' => $item['quote']['USD']['market_cap'],
+                    'name' => $item['name'],
                 ];
                 $model->setAttributes($data);
                 if(!$model->save()) {print_r([$item['symbol'], $model->errors]); echo "\n";}
