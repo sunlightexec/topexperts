@@ -28,6 +28,9 @@ class ProjectData extends \yii\db\ActiveRecord
     public $searchProjectName;
     public $searchExpertName;
 
+    public $scoreFlip;
+    public $scoreHold;
+
     /**
      * {@inheritdoc}
      */
@@ -44,6 +47,7 @@ class ProjectData extends \yii\db\ActiveRecord
         return [
             [['max_value', 'project_id', 'expert_id', 'Report_Date', 'status', 'created_at', 'updated_at', 'graduation_id'], 'integer'],
             [['flip', 'hold'], 'double'],
+            [['scoreFlip', 'scoreHold'], 'string'],
             [['Score', 'searchProjectName', 'searchExpertName'], 'string', 'max' => 255],
             [['expert_id'], 'exist', 'skipOnError' => true, 'targetClass' => Experts::className(), 'targetAttribute' => ['expert_id' => 'id']],
             [['project_id'], 'exist', 'skipOnError' => true, 'targetClass' => Projects::className(), 'targetAttribute' => ['project_id' => 'id']],

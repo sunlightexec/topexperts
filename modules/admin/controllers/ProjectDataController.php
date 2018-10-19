@@ -120,11 +120,20 @@ class ProjectDataController extends Controller
 
     public function actionGetRatingValue()
     {
-        $graduation_id = Yii::$app->request->post('graduation_id', null);
-        $expert_id = Yii::$app->request->post('expert_id', null);
-        $projectData_id = Yii::$app->request->post('project_id', null);
+        $data = Yii::$app->request->post('ProjectData', null);
+        if(empty($data)) {
+            $graduation_id = Yii::$app->request->post('graduation_id', null);
+            $expert_id = Yii::$app->request->post('expert_id', null);
+            $projectData_id = Yii::$app->request->post('project_id', null);
+        } else {
+            $graduation_id = $data['graduation_id'];
+            $expert_id = $data['expert_id'];
+            $projectData_id = $data['project_id'];
+        }
 
+//die(print_r([$graduation_id,$expert_id,$projectData_id]));
         $modelExpert = Experts::find()->where(['=', 'id', $expert_id])->one();
+//        die(print_r($modelExpert->attributes));
         if(empty($graduation_id)) {
             $ratingModel = GraduationRatings::find()
                 ->where(['like', 'allowed', ',' . $modelExpert->name . ','])

@@ -8,10 +8,12 @@ use kartik\select2\Select2;
 /* @var $model app\models\ProjectData */
 /* @var $form yii\widgets\ActiveForm */
 ?>
-
+<?php $md = $model->getGraduation()->one();?>
 <div class="project-data-form">
 
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin([
+            'action' => $model->isNewRecord ? ['/admin/project-data/create'] : ['/admin/project-data/update', 'id' => $model->id]
+    ]); ?>
 
     <?= $form->field($model, 'project_id')->widget(Select2::classname(), [
         'data' => \app\models\helpers\Projects::getList(),
@@ -26,7 +28,18 @@ use kartik\select2\Select2;
         ],
     ]) ?>
 
-    <?= $form->field($model, 'expert_id')->textInput() ?>
+    <?= $form->field($model, 'expert_id')->widget(Select2::classname(), [
+        'data' => \app\models\helpers\Experts::getList(),
+        'hideSearch' => true,
+//        'language' => 'de',
+        'options' => [
+            'placeholder' => 'Select a type ...',
+        ],
+//        'disabled' => true,
+        'pluginOptions' => [
+            'allowClear' => true,
+        ],
+    ]) ?>
 
 <!--    --><?//= $form->field($model, 'Report_Date')->textInput() ?>
 
@@ -65,8 +78,8 @@ use kartik\select2\Select2;
     ]) ?>
     <div id="setupRaiting">
     <?php if(!$model->isNewRecord):?>
-        <?php if($model->getGraduation()->one()->type == 1):?>
-            <?= $form->field($model, 'Score')->widget(Select2::classname(), [
+        <?php if(!empty($md) && $md->type == 1):?>
+            <?= $form->field($model, 'scoreFlip')->widget(Select2::classname(), [
                 'data' => \app\models\helpers\GraduationRatingData::getValues($model->graduation_id),
                 'hideSearch' => true,
 //        'language' => 'de',
@@ -85,10 +98,36 @@ use kartik\select2\Select2;
                 ],
             ]) ?>
         <?php else:?>
-            <?= $form->field($model, 'Score')->textInput(['maxlength' => true]) ?>
+            <?= $form->field($model, 'scoreFlip')->textInput(['maxlength' => true]) ?>
         <?php endif;?>
     <?php else:?>
-        <?= $form->field($model, 'Score')->textInput(['maxlength' => true]) ?>
+        <?= $form->field($model, 'scoreFlip')->textInput(['maxlength' => true]) ?>
+    <?php endif?>
+    <?php if(!$model->isNewRecord):?>
+        <?php if(!empty($md) && $md->type == 1):?>
+            <?= $form->field($model, 'scoreHold')->widget(Select2::classname(), [
+                'data' => \app\models\helpers\GraduationRatingData::getValues($model->graduation_id),
+                'hideSearch' => true,
+//        'language' => 'de',
+                'options' => [
+                    'placeholder' => 'Select a type ...',
+                ],
+//                'disabled' => $model->isNewRecord ? false : true,
+                'pluginOptions' => [
+                    'allowClear' => true,
+                ],
+                'pluginEvents' => [
+                    'select2:select' => "function(e){
+                        var data = e.params.data;
+                        console.log(data);
+                    }"
+                ],
+            ]) ?>
+        <?php else:?>
+            <?= $form->field($model, 'scoreHold')->textInput(['maxlength' => true]) ?>
+        <?php endif;?>
+    <?php else:?>
+        <?= $form->field($model, 'scoreHold')->textInput(['maxlength' => true]) ?>
     <?php endif?>
     </div>
 
