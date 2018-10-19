@@ -118,7 +118,7 @@ class Projects extends \yii\db\ActiveRecord
         IF(project_data.max_value>0,project_data.max_value, graduation_ratings.max_value)
         ')])->orWhere(['>=', 'hold', new Exception('
         IF(project_data.max_value>0,project_data.max_value, graduation_ratings.max_value)
-        ')]);
+        ')])->groupBy('project_data.project_id');
     }
 
     /**
