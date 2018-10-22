@@ -88,6 +88,14 @@ $this->params['breadcrumbs'][] = $this->title;
             }
         ],
         [
+            'label' => 'Flip All',
+            'attribute' => 'project_hold',
+            'value' => function($model){
+                return round($model->getProject()->one()->flip_all,1);
+            },
+            'enableSorting' => true,
+        ],
+        [
             'label' => 'Hold All',
             'attribute' => 'project_hold',
             'value' => function($model){
