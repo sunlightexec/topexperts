@@ -49,8 +49,8 @@ $this->params['breadcrumbs'][] = $this->title;
         [
             'label' => 'coined',
             'value' => function($model){
-                return $model->getStarProject()->count() - $model->getStarCoinedProject() . " / " .
-                    $model->getStarProjectHold()->count() - $model->getStarCoinedProject();
+                return (int)$model->getStarProject()->count() - $model->getStarCoinedProject()/* . " / " .
+                    (int)$model->getStarProjectHold()->count() - $model->getStarCoinedProject()*/;
             }
         ],
         'flip',
