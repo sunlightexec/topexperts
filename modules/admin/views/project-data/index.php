@@ -37,7 +37,7 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
         'Score',
         [
-            'label' => 'Unifed<br>Score',
+            'label' => 'Unifed Score',
             'value' => function($model){
                 return $model->flip . " / " . $model->hold;
             }
