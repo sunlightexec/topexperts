@@ -45,7 +45,7 @@ $this->params['breadcrumbs'][] = $this->title;
         [
             'label' => 'is star',
             'value' => function($model){
-                return (($model->flip > 8) ? 'Yes' : 'No') . ' / ' . (($model->hold > 8) ? 'Yes' : 'No');
+                return (($model->flip >= 8) ? 'Yes' : 'No') . ' / ' . (($model->hold >= 8) ? 'Yes' : 'No');
             }
         ],
         [
