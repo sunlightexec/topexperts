@@ -32,6 +32,7 @@ use yii\db\Exception;
  * @property int $status
  * @property int $created_at
  * @property int $updated_at
+ * @property int $ICO_Star_Hold
  *
  * @property ProjectData[] $projectDatas
  * @property Categories $category
@@ -56,7 +57,7 @@ class Projects extends \yii\db\ActiveRecord
         return [
             [['ICO_NAME'], 'required'],
             [['ICO_Description'], 'string'],
-            [['Category', 'Currency_HARD_CAP', 'Currency_ICO_Price', 'status', 'START_ICO', 'END_ICO', 'ICO_Star'], 'integer'],
+            [['Category', 'Currency_HARD_CAP', 'Currency_ICO_Price', 'status', 'START_ICO', 'END_ICO', 'ICO_Star', 'ICO_Star_Hold'], 'integer'],
             [['HARD_CAP', 'ICO_Price'], 'number'],
             [['ICO_NAME', 'ICO_Website', 'URL_Coinmarketcap', 'URL_ICODrops', 'Scam'], 'string', 'max' => 255],
             [['ICO_NAME'], 'unique'],
@@ -85,6 +86,7 @@ class Projects extends \yii\db\ActiveRecord
             'ICO_Price' => Yii::t('app/projects', 'Ico  Price'),
             'Currency_ICO_Price' => Yii::t('app/projects', 'Currency  Ico  Price'),
             'ICO_Star' => Yii::t('app/projects', 'ICO Star'),
+            'ICO_Star_Hold' => Yii::t('app/projects', 'ICO Star'),
             'START_ICO' => Yii::t('app/projects', 'Start  Ico'),
             'END_ICO' => Yii::t('app/projects', 'End  Ico'),
             'Scam' => Yii::t('app/projects', 'Scam'),

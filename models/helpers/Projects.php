@@ -81,9 +81,11 @@ class Projects extends \app\models\Projects
     public static function setStar($id)
     {
         $oProject = Projects::find()->where(['=', 'id', $id])->one();
-        $star = $oProject->getStarProject()->asArray()->one();
+        $starFlip = $oProject->getStarProjectFlip()->asArray()->one();
+        $starHold = $oProject->getStarProjectHold()->asArray()->one();
 
-        $oProject->ICO_Star = $star['cnt'];
+        $oProject->ICO_Star = empty($starFlip) ? 0 : $starFlip['cnt'];
+        $oProject->ICO_Star_Hold = empty($starHold) ? 0 : $starHold['cnt'];
         $oProject->save();
     }
 
