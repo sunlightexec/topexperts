@@ -37,7 +37,7 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
         'Score',
         [
-            'label' => 'Unifed Score',
+            'label' => 'Unifed<br>Score',
             'value' => function($model){
                 return $model->flip . " / " . $model->hold;
             }
@@ -55,13 +55,13 @@ $this->params['breadcrumbs'][] = $this->title;
             }
         ],
         [
-            'label' => 'is coined',
+            'label' => 'is coin',
             'value' => function($model){
                 return $model->getHystoricalData()->count() > 0 ? 'Yes' : 'No';
             }
         ],
         [
-            'label' => 'is calced',
+            'label' => 'is calc',
             'value' => function($model){
                 return ((($model->getHystoricalData()->count() > 0) && ($model->flip > 8)) ? 'Yes' : 'No') . ' / ' .
                     ((($model->getHystoricalData()->count() > 0) && ($model->hold > 8)) ? 'Yes' : 'No');
