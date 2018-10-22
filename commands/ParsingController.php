@@ -61,34 +61,56 @@ class ParsingController extends Controller
 
             /*$sco = $item->getGraduation()->one()->getGraduationRatingDatas()
                 ->where(['=', 'score', $flip])->one();*/
-            $sco = GraduationRatingData::find()
-                ->filterWhere([
-                    'score' => $flip,
-                    'graduation_id' => $item->graduation_id
-                ])
-                ->one();
+            $GR = $item->getGraduation()->one()->type;
+            if($GR->type == 1) {
+                $sco = GraduationRatingData::find()
+                    ->filterWhere([
+                        'score' => $flip,
+                        'graduation_id' => $item->graduation_id
+                    ])
+                    ->one();
+                $divider = 1;
+            } else {
+                $sco = GraduationRatingData::find()
+                    ->filterWhere([
+//                        'score' => $flip,
+                        'graduation_id' => $item->graduation_id
+                    ])
+                    ->one();
+                $divider = $GR->max_value;
+            }
+
             if(empty($sco)) {
                 $item->flip = 0;
             } else {
-                $item->flip = $sco->value;
+                $item->flip = str_replace( ['%', ','],['','.'],$sco->value ) / $divider;
             }
 
             if($flip != $hold){
                 /*$sco = $item->getGraduation()->one()->getGraduationRatingDatas()
                     ->where(['=', 'score', $hold])->one();*/
-
-                $sco = GraduationRatingData::find()
-                    ->filterWhere([
-                        'score' => $hold,
-                        'graduation_id' => $item->graduation_id
-                    ])
-                    ->one();
+                if($GR->type == 1) {
+                    $sco = GraduationRatingData::find()
+                        ->filterWhere([
+                            'score' => $hold,
+                            'graduation_id' => $item->graduation_id
+                        ])
+                        ->one();
+                } else {
+                    $sco = GraduationRatingData::find()
+                        ->filterWhere([
+//                            'score' => $hold,
+                            'graduation_id' => $item->graduation_id
+                        ])
+                        ->one();
+                }
+                $divider = $GR->max_value;
             }
 
             if(empty($sco)) {
                 $item->hold = 0;
             } else {
-                $item->hold = $sco->value;
+                $item->hold = str_replace( ['%', ','],['','.'],$sco->value ) / $divider;
             }
             $item->save();
         }
