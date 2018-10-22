@@ -54,7 +54,7 @@ class ProjectData extends \app\models\ProjectData
     public function afterSave($insert, $changedAttributes)
     {
         \Yii::$app->queue->push(
-            new RatingExpertJob(['expert_id' => $this->expert_id])
+//            new RatingExpertJob(['expert_id' => $this->expert_id])
         );
         \Yii::$app->queue->delay(3 * 60)->push(
             new RatingProjectJob(['project_id' => $this->project_id])
