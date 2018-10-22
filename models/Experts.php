@@ -127,7 +127,7 @@ class Experts extends \yii\db\ActiveRecord
         return $this->getStarProject()
             ->select('project_data.project_id')
             ->join('INNER JOIN', 'hystorical_data', 'hystorical_data.project_id=project_data.project_id')
-            ->where('hystorical_data.id IS NOT NULL')
+            ->andWhere('hystorical_data.id IS NOT NULL')
             ->groupBy('project_data.project_id')
             ->count();
     }
