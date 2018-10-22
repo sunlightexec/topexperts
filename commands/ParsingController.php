@@ -36,7 +36,7 @@ class ParsingController extends Controller
         $row = 1;
         foreach ($arData as $item) {
             if($row++ % 500 == 0) echo "$row";
-            Projects::setRatings($item-id);
+            Projects::setRatings($item->id);
         }
     }
 
