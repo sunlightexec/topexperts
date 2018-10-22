@@ -30,6 +30,16 @@ use yii\helpers\Json;
  */
 class ParsingController extends Controller
 {
+    public function actionRecalcProject()
+    {
+        $arData = ProjectData::find()->all();
+        $row = 1;
+        foreach ($arData as $item) {
+            if($row++ % 500 == 0) echo "$row";
+            ProjectData::setRatings($item-id);
+        }
+    }
+
     public function actionUpdProjectRatings()
     {
         $arData = ProjectData::find()->where('graduation_id IS NOT NULL and flip <> hold')->all();
