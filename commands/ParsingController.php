@@ -42,7 +42,10 @@ class ParsingController extends Controller
 
     public function actionUpdProjectRatings()
     {
-        $arData = ProjectData::find()->where('graduation_id IS NOT NULL and flip <> hold')->all();
+        $arData = ProjectData::find()
+//            ->where('graduation_id IS NOT NULL and flip <> hold')
+            ->where('flip = 0 OR hold = 0')
+            ->all();
         echo count($arData) . "\n";
         $row = 0;
         foreach ($arData as $item) {
