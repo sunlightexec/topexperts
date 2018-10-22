@@ -41,7 +41,7 @@ $this->params['breadcrumbs'][] = $this->title;
             },
             'filter' => Html::activeDropDownList($searchModel, 'is_coined', [
                 '' => 'All',
-                '0' => 'No',
+                '2' => 'No',
                 '1'=>'Yes'
             ], ['class' => 'form-control'])
         ],

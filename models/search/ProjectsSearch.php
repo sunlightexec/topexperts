@@ -65,7 +65,7 @@ class ProjectsSearch extends Projects
             if($this->is_coined == 1) {
                 $condition = 'EXISTS (SELECT 1 FROM hystorical_data WHERE hystorical_data.project_id = projects.id)';
                 $query->where($condition);
-            } elseif($this->is_coined === 0) {
+            } elseif($this->is_coined == 2) {
                 $condition = 'NOT EXISTS (SELECT 1 FROM hystorical_data WHERE hystorical_data.project_id = projects.id)';
                 $query->where($condition);
             }
