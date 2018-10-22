@@ -46,7 +46,7 @@ class ParsingController extends Controller
         echo count($arData) . "\n";
         $row = 0;
         foreach ($arData as $item) {
-            if($row++ % 500 == 0) echo "$row++";
+            if($row++ % 100 == 0) echo "$row++";
             $score = explode('/', $item->Score);
 //            die(print_r($score));
             if(count($score) == 1) {
