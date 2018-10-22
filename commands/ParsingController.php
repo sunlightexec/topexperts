@@ -37,7 +37,6 @@ class ParsingController extends Controller
         foreach ($arData as $item) {
             if($row++ % 500 == 0) echo "$row";
             Projects::setRatings($item->id);
-            GraduationRatingData::applyRatingWithId($item);
         }
     }
 
@@ -51,6 +50,8 @@ class ParsingController extends Controller
         $row = 0;
         foreach ($arData as $item) {
             if($row++ % 100 == 0) echo "$row++";
+            GraduationRatingData::applyRatingWithId($item);
+            continue;
             $score = explode('/', $item->Score);
 //            die(print_r($score));
             if(count($score) == 1) {
