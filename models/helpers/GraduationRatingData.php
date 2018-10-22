@@ -171,7 +171,7 @@ class GraduationRatingData extends \app\models\GraduationRatingData
 
             $modelFlip = GraduationRatings::find()
                 ->where(['=', 'graduation_ratings.id', $oProjectData->graduation_id])
-                ->andFilterWhere($filter)
+//                ->andFilterWhere($filter)
                 ->one();
 
             if($modelFlip->type == 2) {
@@ -195,7 +195,7 @@ class GraduationRatingData extends \app\models\GraduationRatingData
             }
             $modelHold = GraduationRatings::find()
                 ->where(['=', 'graduation_ratings.id', $oProjectData->graduation_id])
-                ->andFilterWhere($filter)
+//                ->andFilterWhere($filter)
                 ->one();
 
             if($modelHold->type == 2) {
