@@ -95,7 +95,7 @@ class Projects extends \app\models\Projects
         if($modelProject->currencyICOPrice && $modelProject->currencyICOPrice->name != 'USD') {
             $price *= $currPrice;
         }
-        if($price > 0) {
+        if($price > 0 && $currPrice > 0) {
             $data = [
                 'flip_all' => HystoricalData::getMaxPrice($modelProject->id) / $price,
                 'flip_12' => HystoricalData::getMaxPrice($modelProject->id, 'year') / $price,
@@ -105,14 +105,23 @@ class Projects extends \app\models\Projects
                 'hold_3' => HystoricalData::getHoldPrice($modelProject->id, 'quarter') / $price,
             ];
 
-            foreach ($data as $key => $value) {
-                $modelProject->$key = $value;
-            }
-            if(!$modelProject->save()) {
-                print_r([$modelProject->errors, $modelProject->name]);
-            }
-        }
 
+        } else {
+            $data = [
+                'flip_all' => 0,
+                'flip_12' => 0,
+                'flip_3' => 0,
+                'hold_all' => 0,
+                'hold_12' => 0,
+                'hold_3' => 0,
+            ];
+        }
+        foreach ($data as $key => $value) {
+            $modelProject->$key = $value;
+        }
+        if(!$modelProject->save()) {
+            print_r([$modelProject->errors, $modelProject->name]);
+        }
 
     }
 }
