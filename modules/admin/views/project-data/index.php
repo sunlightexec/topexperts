@@ -44,6 +44,7 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
         [
             'label' => 'is star',
+            'attribute' => 'is_star',
             'value' => function($model){
                 return (($model->flip >= 8) ? 'Yes' : 'No') . ' / ' . (($model->hold >= 8) ? 'Yes' : 'No');
             }
@@ -89,7 +90,7 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
         [
             'label' => 'Flip All',
-            'attribute' => 'project_hold',
+            'attribute' => 'project_flip',
             'value' => function($model){
                 return round($model->getProject()->one()->flip_all,1);
             },

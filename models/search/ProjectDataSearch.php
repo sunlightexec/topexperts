@@ -13,6 +13,8 @@ use app\models\ProjectData;
 class ProjectDataSearch extends ProjectData
 {
     public $project_hold;
+    public $project_flip;
+    public $is_star;
     /**
      * {@inheritdoc}
      */
@@ -20,7 +22,7 @@ class ProjectDataSearch extends ProjectData
     {
         return [
             [['id', 'project_id', 'expert_id', 'Report_Date', 'status', 'created_at', 'updated_at'], 'integer'],
-            [['Score', 'searchProjectName', 'searchExpertName', 'project_hold'], 'safe'],
+            [['Score', 'searchProjectName', 'searchExpertName', 'project_hold', 'is_star'], 'safe'],
         ];
     }
 
@@ -63,6 +65,22 @@ class ProjectDataSearch extends ProjectData
             // in my case they are prefixed with "tbl_"
             'asc' => ['projects.hold_all' => SORT_ASC],
             'desc' => ['projects.hold_all' => SORT_DESC],
+        ];
+
+        $dataProvider->sort->attributes['project_flip'] = [
+            // The tables are the ones our relation are configured to
+            // in my case they are prefixed with "tbl_"
+            'asc' => ['projects.flip_all' => SORT_ASC],
+            'desc' => ['projects.flip_all' => SORT_DESC],
+        ];
+
+        $dataProvider->sort->attributes['is_star'] = [
+            // The tables are the ones our relation are configured to
+            // in my case they are prefixed with "tbl_"
+//            'asc' => [ new \yii\db\Expression(' FIELD (flip, IF(flip >=8,1,0))') => SORT_ASC],
+            'asc' => [ ' IF(project_data.flip >=8,1,0)' => SORT_ASC],
+            'desc' => [ ' IF(project_data.flip >=8,1,0)' => SORT_DESC],
+//            'desc' => ['projects.ICO_Star' => SORT_DESC],
         ];
 
         $this->load($params);

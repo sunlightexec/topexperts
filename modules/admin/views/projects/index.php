@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
+use kartik\export\ExportMenu;
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\search\ProjectsSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -20,34 +21,45 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= Html::a(Yii::t('app/projects', 'Create Projects'), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
+    <?php
+    $columns = [
+        ['class' => 'yii\grid\SerialColumn'],
+
+        'ICO_NAME',
+        'ICO_Website',
+        'category.name',
+        'HARD_CAP',
+        'currencyHARDCAP.name',
+        'ICO_Price',
+        'currencyICOPrice.name',
+        'ICO_Star',
+        'Scam',
+        [
+            'attribute' => 'is_coined',
+            'value' => function($model){
+                return $model->getHystoricalData()->count() > 0 ? 'Yes' : 'No';
+            },
+            'filter' => Html::activeDropDownList($searchModel, 'is_coined', [
+                '' => 'All',
+                '0' => 'No',
+                '1'=>'Yes'
+            ], ['class' => 'form-control'])
+        ],
+
+        ['class' => 'yii\grid\ActionColumn'],
+    ];
+
+    ?>
+
+    <?= ExportMenu::widget([
+        'dataProvider' => $dataProvider,
+        'columns' => $columns
+    ]);?>
+
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
-//            'id',
-            'ICO_NAME',
-            'ICO_Website',
-//            'ICO_Description:ntext',
-//            'URL_Coinmarketcap:url',
-            //'URL_ICODrops:url',
-            'category.name',
-            'HARD_CAP',
-            'currencyHARDCAP.name',
-            'ICO_Price',
-            'currencyICOPrice.name',
-            'ICO_Star',
-            'Scam',
-//            'START_ICO:date',
-//            'END_ICO:date',
-            //'Scam',
-            //'status',
-            //'created_at',
-            //'updated_at',
-
-            ['class' => 'yii\grid\ActionColumn'],
-        ],
+        'columns' => $columns,
     ]); ?>
     <?php Pjax::end(); ?>
 </div>

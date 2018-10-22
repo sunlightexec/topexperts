@@ -41,6 +41,8 @@ use yii\db\Exception;
  */
 class Projects extends \yii\db\ActiveRecord
 {
+    public $is_coined;
+
     /**
      * {@inheritdoc}
      */
@@ -61,6 +63,7 @@ class Projects extends \yii\db\ActiveRecord
             [['HARD_CAP', 'ICO_Price'], 'number'],
             [['ICO_NAME', 'ICO_Website', 'URL_Coinmarketcap', 'URL_ICODrops', 'Scam'], 'string', 'max' => 255],
             [['ICO_NAME'], 'unique'],
+            [['is_coined'], 'safe'],
             [['flip_all', 'flip_12', 'flip_3', 'hold_all', 'hold_12', 'hold_3'], 'double'],
             [['Category'], 'exist', 'skipOnError' => true, 'targetClass' => Categories::className(), 'targetAttribute' => ['Category' => 'id']],
             [['Currency_HARD_CAP'], 'exist', 'skipOnError' => true, 'targetClass' => Currencies::className(), 'targetAttribute' => ['Currency_HARD_CAP' => 'id']],
@@ -108,6 +111,14 @@ class Projects extends \yii\db\ActiveRecord
     public function getProjectDatas()
     {
         return $this->hasMany(ProjectData::className(), ['project_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getHystoricalData()
+    {
+        return $this->hasMany(\app\models\helpers\HystoricalData::className(), ['project_id' => 'id']);
     }
 
     public function getStarProject()

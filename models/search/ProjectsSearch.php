@@ -12,6 +12,8 @@ use app\models\Projects;
  */
 class ProjectsSearch extends Projects
 {
+    public $is_coined;
+
     /**
      * {@inheritdoc}
      */
@@ -20,7 +22,7 @@ class ProjectsSearch extends Projects
         return [
             [['id', 'Category', 'Currency_HARD_CAP', 'Currency_ICO_Price', 'ICO_Star',
                 'START_ICO', 'END_ICO', 'status', 'created_at', 'updated_at'], 'integer'],
-            [['ICO_NAME', 'ICO_Website', 'ICO_Description', 'URL_Coinmarketcap', 'URL_ICODrops', 'Scam'], 'safe'],
+            [['ICO_NAME', 'ICO_Website', 'ICO_Description', 'URL_Coinmarketcap', 'URL_ICODrops', 'Scam', 'is_coined'], 'safe'],
             [['HARD_CAP', 'ICO_Price'], 'number'],
         ];
     }
@@ -59,6 +61,16 @@ class ProjectsSearch extends Projects
             return $dataProvider;
         }
 
+        if(isset($this->is_coined)) {
+            if($this->is_coined == 1) {
+                $condition = 'EXISTS (SELECT 1 FROM hystorical_data WHERE hystorical_data.project_id = projects.id)';
+                $query->where($condition);
+            } elseif($this->is_coined === 0) {
+                $condition = 'NOT EXISTS (SELECT 1 FROM hystorical_data WHERE hystorical_data.project_id = projects.id)';
+                $query->where($condition);
+            }
+        }
+
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
@@ -74,6 +86,8 @@ class ProjectsSearch extends Projects
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ]);
+
+
 
         $query->andFilterWhere(['like', 'ICO_NAME', $this->ICO_NAME])
             ->andFilterWhere(['like', 'ICO_Website', $this->ICO_Website])
