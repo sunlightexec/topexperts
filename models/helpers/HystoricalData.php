@@ -56,7 +56,7 @@ class HystoricalData extends \app\models\HystoricalData
 
         switch($period) {
             case 'last':
-                $model = $model->orderBy('date_added DESC');
+                $model = $model->andWhere('date_added >= ' . strtotime("-2 DAY"))->orderBy('date_added DESC');
                 break;
             case 'quarter':
                 $model = $model->andWhere('date_added >= ' . strtotime("-3 Month"))->orderBy('date_added ASC');
