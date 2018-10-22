@@ -32,7 +32,7 @@ class ParsingController extends Controller
 {
     public function actionRecalcProject()
     {
-        $arData = ProjectData::find()->all();
+        $arData = Projects::find()->all();
         $row = 1;
         foreach ($arData as $item) {
             if($row++ % 500 == 0) echo "$row";
