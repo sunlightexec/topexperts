@@ -116,11 +116,11 @@ class Projects extends \yii\db\ActiveRecord
         return $this->getProjectDatas()
             ->select(['cnt' => 'COUNT(*)'])
             ->join('LEFT JOIN', 'graduation_ratings', 'graduation_ratings.id = project_data.graduation_id')
-            ->andWhere(['>=', 'flip', new Exception('
+            ->andWhere(['>=', 'flip', '
         IF(project_data.max_value>0,project_data.max_value, graduation_ratings.max_value)
-        ')])->orWhere(['>=', 'hold', new Exception('
+        '])->orWhere(['>=', 'hold', '
         IF(project_data.max_value>0,project_data.max_value, graduation_ratings.max_value)
-        ')])->groupBy('project_data.project_id');
+        '])->groupBy('project_data.project_id');
     }
 
     public function getStarProjectFlip()
@@ -129,9 +129,8 @@ class Projects extends \yii\db\ActiveRecord
         return $this->getProjectDatas()
             ->select(['cnt' => 'COUNT(*)'])
             ->join('LEFT JOIN', 'graduation_ratings', 'graduation_ratings.id = project_data.graduation_id')
-            ->andWhere(['>=', 'flip', new Exception('
-        IF(project_data.max_value>0,project_data.max_value, graduation_ratings.max_value)
-        ')])->groupBy('project_data.project_id');
+            ->andWhere(['>=', 'flip', 'IF(project_data.max_value>0,project_data.max_value, graduation_ratings.max_value)'])
+            ->groupBy('project_data.project_id');
     }
 
     public function getStarProjectHold()
@@ -140,9 +139,8 @@ class Projects extends \yii\db\ActiveRecord
         return $this->getProjectDatas()
             ->select(['cnt' => 'COUNT(*)'])
             ->join('LEFT JOIN', 'graduation_ratings', 'graduation_ratings.id = project_data.graduation_id')
-            ->andWhere(['>=', 'hold', new Exception('
-        IF(project_data.max_value>0,project_data.max_value, graduation_ratings.max_value)
-        ')])->groupBy('project_data.project_id');
+            ->andWhere(['>=', 'hold', 'IF(project_data.max_value>0,project_data.max_value, graduation_ratings.max_value)'])
+            ->groupBy('project_data.project_id');
     }
 
     /**
