@@ -61,7 +61,7 @@ class ParsingController extends Controller
 
             /*$sco = $item->getGraduation()->one()->getGraduationRatingDatas()
                 ->where(['=', 'score', $flip])->one();*/
-            $GR = $item->getGraduation()->one()->type;
+            $GR = $item->getGraduation()->one();
             if($GR->type == 1) {
                 $sco = GraduationRatingData::find()
                     ->filterWhere([
