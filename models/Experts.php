@@ -101,7 +101,7 @@ class Experts extends \yii\db\ActiveRecord
     {
         return $this->getProjectDatas()
             ->join('INNER JOIN', 'projects', 'projects.id=project_data.project_id')
-            ->where(['>=','projects.ICO_Star', 5])
+//            ->where(['>=','projects.ICO_Star', 5])
             ->join('INNER JOIN', 'graduation_ratings', 'graduation_ratings.id = project_data.graduation_id')
             ->andWhere(['>=', 'project_data.flip', new Expression('IF(project_data.max_value>0,project_data.max_value, graduation_ratings.min_star)')]);
     }
@@ -110,7 +110,7 @@ class Experts extends \yii\db\ActiveRecord
     {
         return $this->getProjectDatas()
             ->join('INNER JOIN', 'projects', 'projects.id=project_data.project_id')
-            ->where(['>=','projects.ICO_Star_Hold', 5])
+//            ->where(['>=','projects.ICO_Star_Hold', 5])
             ->join('INNER JOIN', 'graduation_ratings', 'graduation_ratings.id = project_data.graduation_id')
             ->andWhere(['>=', 'project_data.hold', new Expression('IF(project_data.max_value>0,project_data.max_value, graduation_ratings.min_star)')]);
     }
