@@ -129,7 +129,7 @@ class Experts extends \yii\db\ActiveRecord
 
     public function countProject()
     {
-        return $this->getProjectDatas()->where(['>','flip', 0])->orWhere(['>','hold', 0])->count();
+        return $this->getProjectDatas()/*->where(['>','flip', 0])->orWhere(['>','hold', 0])*/->count();
     }
 
     public function countStarProject()
