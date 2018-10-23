@@ -21,7 +21,7 @@ class HystoricalDataSearch extends HystoricalData
             [['id', 'project_id', 'currency_id', 'circulating_supply', 'total_supply', 'max_supply',
                 'date_added', 'status', 'created_at', 'updated_at'], 'integer'],
             [['price', 'volume_24h', 'market_cap'], 'number'],
-            [['searchName', 'searchURL', 'searchCurrency'], 'safe'],
+            [['searchName', 'searchURL', 'searchCurrency', 'name'], 'safe'],
         ];
     }
 
@@ -78,7 +78,8 @@ class HystoricalDataSearch extends HystoricalData
 
         $query->andFilterWhere(['like', 'projects.ICO_NAME', $this->searchName])
             ->andFilterWhere(['like', 'projects.ICO_Website', $this->searchURL])
-            ->andFilterWhere(['like', 'currencies.name', $this->searchCurrency]);
+            ->andFilterWhere(['like', 'currencies.name', $this->searchCurrency])
+            ->andFilterWhere(['like', 'hystorical_data.name', $this->name]);
 
         return $dataProvider;
     }

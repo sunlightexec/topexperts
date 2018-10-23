@@ -80,7 +80,7 @@ class ImportController extends Controller
         $hysts = HystoricalData::find()
             ->select('project_id, name')
             ->where('project_id IS NULL')
-            ->andWhere(['=', 'name', 'Alchemint Standards'])
+//            ->andWhere(['=', 'name', 'Alchemint Standards'])
             ->groupBy('project_id, name')
             ->all();
         foreach($hysts as $hyst) {

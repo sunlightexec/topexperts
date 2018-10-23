@@ -50,6 +50,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'price',
             'volume_24h',
             'market_cap',
+            'name',
             //'status',
 
             //'updated_at',
