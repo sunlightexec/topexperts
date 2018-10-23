@@ -47,9 +47,11 @@ class Projects extends \app\models\Projects
         $projectModel = self::find()->where(['like', 'ICO_NAME', $name.'%', false])->one();
 
         if(empty($projectModel)) {
-            /*if($name=='Alchemint Standards') {
-                print_r([$name, $slug]);
-            }*/
+            $projectModel = self::find()->where(['like', 'ICO_NAME', $slug.'%', false])->one();
+        }
+
+        if(empty($projectModel)) {
+
             $synonimModel = ProjectSynonims::find()->where(['like', 'project_synonim', $name.'%', false])->one();
             if(empty($synonimModel))
                 $synonimModel = ProjectSynonims::find()->where(['like', 'project_synonim', $slug.'%', false])->one();
