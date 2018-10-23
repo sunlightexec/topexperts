@@ -203,8 +203,10 @@ class ParsingController extends Controller
         );
 
         $res = $api->getLatestData();
+
         $res = Json::decode($res);
         $err = '';
+        file_put_contents('json.json',json_encode($res['data']));
         if(is_array($res['status']) && $res['status']['error_code'] == 0) {
             foreach ($res['data'] as $item) {
                 $valId = Currencies::check( $item['symbol'] );

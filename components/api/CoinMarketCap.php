@@ -34,7 +34,7 @@ class CoinMarketCap
 
     private function makeUrl($url)
     {
-        return $this->url[$this->version] . $url . '?' . self::API_KEY_PARAM_NAME . '=' . $this->apiKey;
+        return $this->url[$this->version] . $url . '?' . self::API_KEY_PARAM_NAME . '=' . $this->apiKey .'&limit=5000';
     }
 
     private function doQuery( $url )
