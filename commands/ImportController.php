@@ -73,7 +73,7 @@ class ImportController extends Controller
         {
             $row++;
             if($skipRows-- > 0) continue;
-            if($row % 10 == 0) echo "$row++";
+            if($row % 5000 == 0) echo "$row++";
 
             $curId = Currencies::check($fileop[1]);
             $modelProject = Projects::getProjectByAttr($fileop[0], $fileop[1], $fileop[2]);

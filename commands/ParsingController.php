@@ -30,6 +30,22 @@ use yii\helpers\Json;
  */
 class ParsingController extends Controller
 {
+    public function actionSetHystory()
+    {
+        $arRecs = HystoricalData::find()->where('project_id IS NULL')->all();
+        $row = 0;
+        foreach($arRecs as $oRec) {
+            if($row++ % 2000 == 0) echo "++#row";
+            $id = Projects::getProjectByAttr($oRec->name, $oRec->name);
+
+            if(!empty($id)) {
+                $oRec->project_id = $id;
+                $oRec->save();
+            }
+        }
+        echo "\nFINISH\n";
+    }
+
     public function actionRecalcProject()
     {
         $arData = Projects::find()->all();

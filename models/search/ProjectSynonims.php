@@ -65,7 +65,8 @@ class ProjectSynonims extends ProjectSynonimsModel
             'updated_at' => $this->updated_at,
         ]);
 
-        $query->andFilterWhere(['like', 'project_synonim', $this->project_synonim]);
+        $query->andFilterWhere(['like', 'project_synonim', $this->project_synonim])
+            ->andFilterWhere(['like', 'project_name', $this->project_name]);
 
         return $dataProvider;
     }
