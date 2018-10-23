@@ -50,6 +50,53 @@ class ImportController extends Controller
         $this->actionProjectSynonims();
     }
 
+    public function actionPrjClear()
+    {
+
+        $skipRows = 1;
+        $loadFileName = \Yii::$app->basePath . $this->loadDir . 'forclear.csv';
+        $errorFileName = \Yii::$app->basePath . $this->loadDir . 'forclear.err';
+        $errors = '';
+        $loadFileName = FileHelper::normalizePath($loadFileName);
+        if(!file_exists($loadFileName)) return ExitCode::NOINPUT;
+        $handle = fopen($loadFileName, "r");
+        $row = 1;
+        echo "0++";
+        $lastProject = '';
+        while (($fileop = fgetcsv($handle, 2000, ";")) !== false) {
+            if($row++ % 200 == 0) echo "$row++";
+            $project = Projects::getProjectByAttr($fileop[0], $fileop[0]);
+            if(!empty($project)) {
+                HystoricalData::updateAll([
+                    'project_id' => null,
+                ], '`project_id`='.$project->id
+                );
+            }
+
+
+        }
+        echo "\nUPDATING\n";
+        $row = 0;
+        $hysts = HystoricalData::find()
+            ->select('project_id, name')
+            ->where('project_id IS NULL')
+            ->andWhere(['=', 'name', 'Alchemint Standards'])
+            ->groupBy('project_id, name')
+            ->all();
+        foreach($hysts as $hyst) {
+            if($row++ % 200 == 0) echo "$row++";
+            $project = Projects::getProjectByAttr($hyst->name, $hyst->name);
+            if(!empty($project)) {
+                HystoricalData::updateAll([
+                    'project_id' => $project->id,
+                ], '`name`="'.$hyst->name . '"'
+                );
+            }
+        }
+        fclose($handle);
+        echo "\n";
+    }
+
     /**
      * This command echoes what you have entered as the message.
      * @param string $message the message to be echoed.
@@ -57,7 +104,7 @@ class ImportController extends Controller
      */
     public function actionHystorical()
     {
-        ProjectSynonims::deleteAll();
+        HystoricalData::deleteAll('total_supply IS NULL');
 
         $skipRows = 1;
         $loadFileName = \Yii::$app->basePath . $this->loadDir . 'hystorical1.csv';
@@ -241,7 +288,7 @@ class ImportController extends Controller
             $row++;
             if($skipRows-- > 0) continue;
             if($row % 10 == 0) echo "$row++";
-            for($i=1; $i<3; $i++) {
+            for($i=1; $i<4; $i++) {
                 if(!empty($fileop[$i])) {
 
                     $model = new ProjectSynonims();

@@ -214,7 +214,7 @@ class ParsingController extends Controller
                     $project_id = null;
                     $err .= "Project {$item['name']} not found\n";
                     echo "Project {$item['name']} not found\n";
-                    continue;
+//                    continue;
                 } else {
                     $project_id = $projectModel->id;
                 }

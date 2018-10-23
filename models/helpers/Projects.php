@@ -47,11 +47,19 @@ class Projects extends \app\models\Projects
         $projectModel = self::find()->where(['like', 'ICO_NAME', $name.'%', false])->one();
 
         if(empty($projectModel)) {
+            /*if($name=='Alchemint Standards') {
+                print_r([$name, $slug]);
+            }*/
             $synonimModel = ProjectSynonims::find()->where(['like', 'project_synonim', $name.'%', false])->one();
+            if(empty($synonimModel))
+                $synonimModel = ProjectSynonims::find()->where(['like', 'project_synonim', $slug.'%', false])->one();
+            /*if(empty($synonimModel))
+                $synonimModel = ProjectSynonims::find()->where(['like', 'project_synonim', $slug.'%', false])->one();*/
+
             if(!empty($synonimModel))
                 $projectModel = self::find()->where(['=', 'ICO_NAME', $synonimModel->project_name])->one();
         }
-        if(empty($projectModel)) {
+        /*if(empty($projectModel)) {
             $synonimModel = ProjectSynonims::find()->where(['like', 'project_synonim', $slug.'%', false])->one();
             if(!empty($synonimModel))
                 $projectModel = self::find()->where(['=', 'ICO_NAME', $synonimModel->project_name])->one();
@@ -60,7 +68,7 @@ class Projects extends \app\models\Projects
             $synonimModel = ProjectSynonims::find()->where(['like', 'project_synonim', $slug.'%', false])->one();
             if(!empty($synonimModel))
                 $projectModel = self::find()->where(['=', 'ICO_NAME', $synonimModel->project_name])->one();
-        }
+        }*/
         if(empty($projectModel) && !empty($url)) {
             $projectModel = self::find()->where(['like', 'ICO_Website', $url])->one();
             if(empty($projectModel)) {
