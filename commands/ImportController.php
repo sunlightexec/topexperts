@@ -39,6 +39,8 @@ class ImportController extends Controller
         ProjectSynonims::deleteAll();
         Experts::deleteAll();
 
+        print_r("Import Experts \n");
+        $this->actionTypeRatings();
 
         print_r("Import Experts \n");
         $this->actionExperts();
@@ -48,6 +50,9 @@ class ImportController extends Controller
 
         print_r("Import Synonims \n");
         $this->actionProjectSynonims();
+
+        print_r("Import Hystory \n");
+        $this->actionHystorical()();
     }
 
     public function actionPrjClear()
@@ -369,6 +374,7 @@ class ImportController extends Controller
         Projects::deleteAll();
         Categories::deleteAll();
         Currencies::deleteAll();
+        HystoricalData::updateAll(['project_id' => null]);
 
         $skipRows = 1;
         $loadFileName = \Yii::$app->basePath . $this->loadDir . 'projects.csv';
