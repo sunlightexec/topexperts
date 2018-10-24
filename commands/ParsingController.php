@@ -38,6 +38,7 @@ class ParsingController extends Controller
         $step = 30000;
         $arRecs = HystoricalData::find()
 //            ->where('project_id IS NULL')
+            ->where('name IS NOT NULL')
             ->limit($step)
             ->all();
         $row = 0;
