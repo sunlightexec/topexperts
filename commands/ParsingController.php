@@ -37,7 +37,7 @@ class ParsingController extends Controller
             ->limit(10000)
             ->all();
         $row = 0;
-        while(count($arRecs) > 0) {
+        while(!empty($arRecs) ) {
 
             foreach($arRecs as $oRec) {
                 if($row++ % 2000 == 0) echo "$row++";
@@ -47,7 +47,9 @@ class ParsingController extends Controller
                     $oRec->project_id = $id;
                     $oRec->save();
                 }
+                unset($oRec);
             }
+            unset($arRecs);
             $arRecs = HystoricalData::find()
                 ->where('project_id IS NULL')
                 ->limit(10000)
