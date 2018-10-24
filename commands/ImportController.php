@@ -325,7 +325,7 @@ class ImportController extends Controller
         $handle = fopen($loadFileName, "r");
         $row = 1;
         echo "0++";
-        while (($fileop = fgetcsv($handle, 2000, ",")) !== false)
+        while (($fileop = fgetcsv($handle, 3000, ",")) !== false)
         {
 //            print_r($fileop);fclose($handle);die();
             $row++;
