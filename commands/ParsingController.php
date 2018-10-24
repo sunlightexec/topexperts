@@ -38,7 +38,7 @@ class ParsingController extends Controller
             ->all();
         $row = 0;
         foreach($arRecs as $oRec) {
-            if($row++ % 2000 == 0) echo "++#row";
+            if($row++ % 2000 == 0) echo "$row++";
             $id = Projects::getProjectByAttr($oRec->name, $oRec->name);
 
             if(!empty($id)) {
