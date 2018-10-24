@@ -32,6 +32,8 @@ class ParsingController extends Controller
 {
     public function actionSetHystory()
     {
+        echo ini_get('memory_limit') . "\n";
+        ini_set('memory_limit', '512M');
         $arRecs = HystoricalData::find()
             ->where('project_id IS NULL')
             ->limit(10000)
