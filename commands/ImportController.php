@@ -52,7 +52,7 @@ class ImportController extends Controller
         $this->actionProjectSynonims();
 
         print_r("Import Hystory \n");
-        $this->actionHystorical()();
+        $this->actionHystorical();
     }
 
     public function actionPrjClear()
