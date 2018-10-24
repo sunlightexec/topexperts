@@ -34,6 +34,7 @@ class ParsingController extends Controller
     {
         echo ini_get('memory_limit') . "\n";
         ini_set('memory_limit', '512M');
+        HystoricalData::deleteAll('name IS NULL');
         $start = 0;
         $step = 30000;
         $arRecs = HystoricalData::find()
@@ -49,10 +50,10 @@ class ParsingController extends Controller
                 $id = Projects::getProjectByAttr($oRec->name, $oRec->name);
 
                 if(!empty($id)) {
-                    $oRec->project_id = $id;
+                    $oRec->project_id = $id->id;
                     $oRec->save();
                 }
-                unset($oRec);
+//                unset($oRec);
             }
             unset($arRecs);
             $start += $step;
