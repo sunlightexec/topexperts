@@ -36,7 +36,7 @@ class ParsingController extends Controller
         ini_set('memory_limit', '512M');
         $arRecs = HystoricalData::find()
             ->where('project_id IS NULL')
-            ->limit(10000)
+            ->limit(30000)
             ->all();
         $row = 0;
         while(!empty($arRecs) ) {
