@@ -34,18 +34,26 @@ class ParsingController extends Controller
     {
         $arRecs = HystoricalData::find()
             ->where('project_id IS NULL')
-            ->limit(10000)
+            ->limit(20000)
             ->all();
         $row = 0;
-        foreach($arRecs as $oRec) {
-            if($row++ % 2000 == 0) echo "$row++";
-            $id = Projects::getProjectByAttr($oRec->name, $oRec->name);
+        while(count($arRecs) > 0) {
 
-            if(!empty($id)) {
-                $oRec->project_id = $id;
-                $oRec->save();
+            foreach($arRecs as $oRec) {
+                if($row++ % 2000 == 0) echo "$row++";
+                $id = Projects::getProjectByAttr($oRec->name, $oRec->name);
+
+                if(!empty($id)) {
+                    $oRec->project_id = $id;
+                    $oRec->save();
+                }
             }
+            $arRecs = HystoricalData::find()
+                ->where('project_id IS NULL')
+                ->limit(10000)
+                ->all();
         }
+
         echo "\nFINISH\n";
     }
 
