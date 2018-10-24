@@ -34,9 +34,11 @@ class ParsingController extends Controller
     {
         echo ini_get('memory_limit') . "\n";
         ini_set('memory_limit', '512M');
+        $start = 0;
+        $step = 30000;
         $arRecs = HystoricalData::find()
-            ->where('project_id IS NULL')
-            ->limit(30000)
+//            ->where('project_id IS NULL')
+            ->limit($step)
             ->all();
         $row = 0;
         while(!empty($arRecs) ) {
@@ -52,9 +54,11 @@ class ParsingController extends Controller
                 unset($oRec);
             }
             unset($arRecs);
+            $start += $step;
             $arRecs = HystoricalData::find()
                 ->where('project_id IS NULL')
-                ->limit(10000)
+                ->limit($step)
+                ->offset($start)
                 ->all();
         }
 
