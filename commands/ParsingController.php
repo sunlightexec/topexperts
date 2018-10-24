@@ -32,7 +32,10 @@ class ParsingController extends Controller
 {
     public function actionSetHystory()
     {
-        $arRecs = HystoricalData::find()->where('project_id IS NULL')->all();
+        $arRecs = HystoricalData::find()
+            ->where('project_id IS NULL')
+            ->limit(100000)
+            ->all();
         $row = 0;
         foreach($arRecs as $oRec) {
             if($row++ % 2000 == 0) echo "++#row";
