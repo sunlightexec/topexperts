@@ -47,11 +47,10 @@ class ParsingController extends Controller
 
             foreach($arRecs as $oRec) {
                 if($row++ % 2000 == 0) echo "$row++";
-                $id = Projects::getProjectByAttr($oRec->name, $oRec->name);
+                $prj = Projects::getProjectByAttr($oRec->name, $oRec->name);
 
                 if(!empty($id)) {
-                    $oRec->project_id = $id->id;
-                    $oRec->save();
+                    $oRec->project_id = $prj->id;
                 }
 //                unset($oRec);
             }
@@ -240,6 +239,9 @@ class ParsingController extends Controller
 //                    continue;
                 } else {
                     $project_id = $projectModel->id;
+                    HystoricalData::updateAll([
+                        'currency_id' => $valId,
+                    ], "project_id = $project_id AND currency_id IS NULL"  );
                 }
                 $model = new HystoricalData();
 //                print_r([
