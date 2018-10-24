@@ -34,7 +34,7 @@ class ParsingController extends Controller
     {
         $arRecs = HystoricalData::find()
             ->where('project_id IS NULL')
-            ->limit(100000)
+            ->limit(50000)
             ->all();
         $row = 0;
         foreach($arRecs as $oRec) {
