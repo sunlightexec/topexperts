@@ -405,7 +405,7 @@ class ImportController extends Controller
             }
 
             /*Category*/
-            if(!isset($fileop[5])) die(print_r($fileop));
+//            if(!isset($fileop[5])) die(print_r($fileop));
             $catName = $fileop[5];
             $catId = null;
             if(!empty($catName)) {
