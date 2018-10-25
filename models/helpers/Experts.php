@@ -146,8 +146,8 @@ class Experts extends \app\models\Experts
 //        print_r($updates);die();
 
         if(!empty($updatesFlip) || !empty($updatesHold)) {
-            $model->flip = $updatesFlip['flipCount']==0 ? 0 : round($updatesFlip['flipSum'] / $updatesFlip['flipCount'],4);
-            $model->hold = $updatesHold['holdCount']==0 ? 0 : round($updatesHold['holdSum'] / $updatesHold['holdCount'],4);
+            $model->flip = empty($updatesFlip['flipCount']) ? 0 : round($updatesFlip['flipSum'] / $updatesFlip['flipCount'],4);
+            $model->hold = empty($updatesHold['holdCount']) ? 0 : round($updatesHold['holdSum'] / $updatesHold['holdCount'],4);
             $model->save();
         } else {
             $model->flip = 0;
