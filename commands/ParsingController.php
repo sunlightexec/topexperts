@@ -209,7 +209,7 @@ class ParsingController extends Controller
 
     public function actionSetRatingProjects()
     {
-        $arProjects = Projects::find()->all();
+        $arProjects = Projects::find()->where(['in', 'id', [43248,39311]])->all();
         $row = 1;
         foreach ($arProjects as $oProject) {
             if($row++ % 2000 == 0) echo "$row++";
