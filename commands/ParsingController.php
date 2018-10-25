@@ -51,6 +51,7 @@ class ParsingController extends Controller
 
                 if(!empty($id)) {
                     $oRec->project_id = $prj->id;
+                    $oRec->save();
                 }
 //                unset($oRec);
             }
