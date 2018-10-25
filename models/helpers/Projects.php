@@ -116,9 +116,9 @@ class Projects extends \app\models\Projects
                 ->select(['price' => 'MAX(price)'])
                 ->joinWith(['currency'])
                 ->where(['=', 'currencies.id', $modelProject->Currency_ICO_Price])
-                ->andWhere('FROM_UNIXTIME(hystorical_data.created_at, "%Y-%m-%d %h:%i:%s") BETWEEN ' .
-                    'DATE_SUB(FROM_UNIXTIME('.$fnDate.', "%Y-%m-%d %h:%i:%s"), INTERVAL 1 day) AND ' .
-                    'DATE_ADD(FROM_UNIXTIME('.$fnDate.', "%Y-%m-%d %h:%i:%s"), INTERVAL 1 day)')
+                ->andWhere('FROM_UNIXTIME(hystorical_data.created_at, "%Y-%m-%d") BETWEEN ' .
+                    'FROM_UNIXTIME('.$fnDate.', "%Y-%m-%d") AND ' .
+                    'FROM_UNIXTIME('.$fnDate.', "%Y-%m-%d")')
                 ->orderBy('hystorical_data.created_at DESC')
                 ->groupBy('currencies.id')
                 ->one();
