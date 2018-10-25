@@ -128,6 +128,10 @@ class Experts extends \app\models\Experts
             $model->flip = $updatesFlip['flipCount']==0 ? 0 : round($updatesFlip['flipSum'] / $updatesFlip['flipCount'],1);
             $model->hold = $updatesHold['holdCount']==0 ? 0 : round($updatesHold['holdSum'] / $updatesHold['holdCount'],1);
             $model->save();
+        } else {
+            $model->flip = 0;
+            $model->hold = 0;
+            $model->save();
         }
     }
 
