@@ -45,8 +45,18 @@ $this->params['breadcrumbs'][] = $this->title;
                 '1'=>'Yes'
             ], ['class' => 'form-control'])
         ],
-        'flip_all',
-        'hold_all',
+        [
+            'attribute' => 'flip_all',
+            'value' => function($model){
+                return number_format($model->flip_all,4);
+            }
+        ],
+        [
+            'attribute' => 'hold_all',
+            'value' => function($model){
+                return number_format($model->hold_all,4);
+            }
+        ],
 
         ['class' => 'yii\grid\ActionColumn'],
     ];
