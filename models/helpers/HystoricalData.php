@@ -102,13 +102,13 @@ class HystoricalData extends \app\models\HystoricalData
             ->filterWhere(['name' => $data['name']])
             ->andFilterWhere($where)
             ->one();
-
-        $model->detachBehavior('asDate');
-
+        
         if(empty($model)) {
             $model = new self();
-            $model->setAttributes($data);
-            if(!$model->save()) print_r([$model->errors, $data['volume_24h']]);
         }
+        $model->detachBehavior('asDate');
+        $model->setAttributes($data);
+        if(!$model->save()) print_r([$model->errors, $data['volume_24h']]);
+
     }
 }
