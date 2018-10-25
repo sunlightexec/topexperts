@@ -15,13 +15,14 @@ class ProjectDataSearch extends ProjectData
     public $project_hold;
     public $project_flip;
     public $is_star;
+    public $is_coined;
     /**
      * {@inheritdoc}
      */
     public function rules()
     {
         return [
-            [['id', 'project_id', 'expert_id', 'Report_Date', 'status', 'created_at', 'updated_at'], 'integer'],
+            [['is_coined', 'id', 'project_id', 'expert_id', 'Report_Date', 'status', 'created_at', 'updated_at'], 'integer'],
             [['Score', 'searchProjectName', 'searchExpertName', 'project_hold', 'is_star'], 'safe'],
         ];
     }
