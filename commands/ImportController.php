@@ -371,7 +371,7 @@ class ImportController extends Controller
         return ExitCode::OK;
     }
 
-    public function actioinUpdatePrice()
+    public function actionUpdatePrice()
     {
         $loadFileName = \Yii::$app->basePath . $this->loadDir . 'projects.csv';
         $loadFileName = FileHelper::normalizePath($loadFileName);
@@ -396,6 +396,7 @@ class ImportController extends Controller
             }
         }
         fclose($handle);
+        return ExitCode::OK;
     }
 
     public function actionProjects()
