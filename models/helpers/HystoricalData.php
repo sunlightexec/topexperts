@@ -41,7 +41,7 @@ class HystoricalData extends \app\models\HystoricalData
         $model = self::find()->select(['price' => 'MAX(price)'])->filterWhere(['project_id' => $project_id]);
 
         print_r([
-            'project' => $project->ICO_Name,
+            'project' => $project->ICO_NAME,
             '$start' => date('d.m.Y',$start),
             '$stop' => date('d.m.Y',$stop),
             '$coin' => date('d.m.Y',$coin),
