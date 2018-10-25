@@ -124,11 +124,11 @@ class Experts extends \app\models\Experts
             ->asArray()
             ->all();
 
-        /*if($expert_id == 1140) {
+        if($expert_id == 1140) {
             die(print_r($updatesFlip));
         } else {
             return 0;
-        }*/
+        }
 
         $updatesHold = ProjectData::find()
 //            ->joinWith(['graduation'])
