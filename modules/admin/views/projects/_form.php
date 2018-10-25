@@ -57,7 +57,7 @@ use kartik\date\DatePicker;
 
     <?= $form->field($model, 'START_ICO')->widget(DatePicker::classname(), [
         'name' => 'check_issue_date',
-        'value' => date('Y-m-d', $model->START_ICO),
+        'value' => $model->START_ICO /*== 0 ? '' : date('Y-m-d', $model->START_ICO)*/,
         'options' => ['placeholder' => 'Select issue date ...'],
         'pluginOptions' => [
             'format' => 'yyyy-mm-dd',
@@ -67,7 +67,7 @@ use kartik\date\DatePicker;
 
     <?= $form->field($model, 'END_ICO')->widget(DatePicker::classname(), [
         'name' => 'check_issue_date',
-        'value' => date('Y-m-d', $model->END_ICO),
+        'value' => $model->END_ICO/*date('Y-m-d', $model->END_ICO)*/,
         'options' => ['placeholder' => 'Select issue date ...'],
         'pluginOptions' => [
             'format' => 'yyyy-mm-dd',
