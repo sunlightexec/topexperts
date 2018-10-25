@@ -46,10 +46,11 @@ class ParsingController extends Controller
         while(!empty($arRecs) ) {
 
             foreach($arRecs as $oRec) {
-                if($row++ % 2000 == 0) echo "$row++";
+                if($row++ % 2000 == 0) echo "$row++\n";
                 $prj = Projects::getProjectByAttr($oRec->name, $oRec->name);
 
                 if(!empty($id)) {
+                    echo "{$oRec->name} saved\n";
                     $oRec->project_id = $prj->id;
                     $oRec->save();
                 }
