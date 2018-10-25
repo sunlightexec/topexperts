@@ -111,7 +111,16 @@ class Projects extends \app\models\Projects
         $price = $modelProject->ICO_Price;
         $currPrice = HystoricalData::getHoldPrice($modelProject->id);
         if($modelProject->currencyICOPrice && $modelProject->currencyICOPrice->name != 'USD') {
-            $price = $currPrice;
+            $curr = HystoricalData::find()
+                ->joinWith(['currency'])
+                ->where(['=', 'currencies.id', $modelProject->Currency_ICO_Price])
+                ->orderBy('hystorical_data.created_at DESC')
+                ->one();
+            if(!empty($curr)) {
+                $price = $price * $curr->price;
+            } else {
+                $price = $currPrice;
+            }
         }
         if($price > 0 && $currPrice > 0) {
             $data = [
