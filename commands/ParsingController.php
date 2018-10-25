@@ -19,7 +19,7 @@ use app\models\helpers\ProjectSynonims;
 use yii\console\Controller;
 use yii\console\ExitCode;
 use yii\helpers\Json;
-
+use yii\db\Expression;
 /**
  * This command echoes the first argument that you have entered.
  *
