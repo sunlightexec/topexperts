@@ -41,41 +41,37 @@ class HystoricalData extends \app\models\HystoricalData
 
         $model = self::find()->select(['price' => 'MAX(price)'])->filterWhere(['project_id' => $project_id]);
 
-        print_r([
+        /*print_r([
             'project' => $project->ICO_NAME,
             '$start' => date('d.m.Y',$start),
             '$stop' => date('d.m.Y',$stop),
             '$coin' => date('d.m.Y',$coin),
             '$workDate' => date('d.m.Y',$workDate),
-        ]);
+            'workDate' => $workDate,
+        ]);*/
 
         switch($period) {
             case 'last':
-                $model = $model->andWhere('FROM_UNIXTIME(created_at, "%Y-%m-%d %h:%i:%s") BETWEEN ' . $workDate .
-                    ' AND DATE_ADD(FROM_UNIXTIME(' . $workDate . ', "%Y-%m-%d %h:%i:%s"), INTERVAL 30 day)');
-                if($debug) echo 'LATEST: created_at BETWEEN ' . $workDate .
-                    ' AND DATE_ADD(FROM_UNIXTIME(' . $workDate . ', "%Y-%m-%d %h:%i:%s"), INTERVAL 30 day)' . "\n";
+                $model = $model->andWhere('FROM_UNIXTIME(created_at, "%Y-%m-%d %h:%i:%s") BETWEEN FROM_UNIXTIME(' . $workDate .
+                    ', "%Y-%m-%d %h:%i:%s") AND DATE_ADD(FROM_UNIXTIME(' . $workDate . ', "%Y-%m-%d %h:%i:%s"), INTERVAL 30 day)');
                 break;
             case 'quarter':
                 if( $coin > strtotime("-90 DAY") ) return 0;
-                $model = $model->andWhere('FROM_UNIXTIME(created_at, "%Y-%m-%d %h:%i:%s") BETWEEN ' . strtotime("-90 DAY").
-                    ' AND DATE_ADD(FROM_UNIXTIME(' . strtotime("-90 DAY") . ', "%Y-%m-%d %h:%i:%s"), INTERVAL 30 day)');
-                if($debug) echo 'QUARTER: created_at BETWEEN ' . strtotime("-90 DAY").
-                    ' AND DATE_ADD(FROM_UNIXTIME(' . strtotime("-90 DAY") . ', "%Y-%m-%d %h:%i:%s"), INTERVAL 30 day)' . "\n";
+                $model = $model->andWhere('FROM_UNIXTIME(created_at, "%Y-%m-%d %h:%i:%s") BETWEEN FROM_UNIXTIME(' . strtotime("-90 DAY").
+                    ', "%Y-%m-%d %h:%i:%s") AND DATE_ADD(FROM_UNIXTIME(' . strtotime("-90 DAY") . ', "%Y-%m-%d %h:%i:%s"), INTERVAL 30 day)');
                 break;
             case 'year':
                 if( $coin > strtotime("-365 DAY") ) return 0;
-                $model = $model->andWhere('FROM_UNIXTIME(created_at, "%Y-%m-%d %h:%i:%s") BETWEEN ' . strtotime("-365 DAY") .
-                    ' AND DATE_ADD(FROM_UNIXTIME(' . strtotime("-365 DAY") . ', "%Y-%m-%d %h:%i:%s"), INTERVAL 30 day)');
-                if($debug) echo 'YEAR: created_at BETWEEN ' . strtotime("-365 DAY") .
-                    ' AND DATE_ADD(FROM_UNIXTIME(' . strtotime("-365 DAY") . ', "%Y-%m-%d %h:%i:%s"), INTERVAL 30 day)' . "\n";
+                $model = $model->andWhere('FROM_UNIXTIME(created_at, "%Y-%m-%d %h:%i:%s") BETWEEN FROM_UNIXTIME(' . strtotime("-365 DAY") .
+                    ', "%Y-%m-%d %h:%i:%s") AND DATE_ADD(FROM_UNIXTIME(' . strtotime("-365 DAY") . ', "%Y-%m-%d %h:%i:%s"), INTERVAL 30 day)');
+
                 break;
         }
 
-        print_r($model->groupBy('project_id')->createCommand()->getRawSql());
+//        print_r($model->groupBy('project_id')->createCommand()->getRawSql());
         $model = $model->groupBy('project_id')->one();
         if(empty($model)) {
-            echo "RESULT: 0\n";
+//            echo "RESULT: 0\n";
             return 0;
         }
 
@@ -101,19 +97,20 @@ class HystoricalData extends \app\models\HystoricalData
 
         switch($period) {
             case 'last':
-                $model = $model->andWhere('created_at >= ' . $workDate)
+                $model = $model->andWhere('FROM_UNIXTIME(created_at, "%Y-%m-%d %h:%i:%s") BETWEEN FROM_UNIXTIME(' . strtotime('-3 DAY') .
+                    ', "%Y-%m-%d %h:%i:%s") AND DATE_ADD(FROM_UNIXTIME(' . strtotime('-3 DAY') . ', "%Y-%m-%d %h:%i:%s"), INTERVAL 3 day)')
                     ->orderBy('created_at DESC');
                 break;
             case 'quarter':
                 if( $coin > strtotime("-90 DAY") ) return 0;
-                $model = $model->andWhere('created_at BETWEEN ' . strtotime("-90 DAY").
-                    ' AND DATE_ADD(' . strtotime("-90 DAY") . ', INTERVAL 30 day)')
+                $model = $model->andWhere('FROM_UNIXTIME(created_at, "%Y-%m-%d %h:%i:%s") BETWEEN FROM_UNIXTIME(' . strtotime("-90 DAY").
+                    ', "%Y-%m-%d %h:%i:%s") AND DATE_ADD(FROM_UNIXTIME(' . strtotime("-90 DAY") . ', "%Y-%m-%d %h:%i:%s"), INTERVAL 90 day)')
                     ->orderBy('created_at ASC');
                 break;
             case 'year':
                 if( $coin > strtotime("-365 DAY") ) return 0;
-                $model = $model->andWhere('created_at BETWEEN ' . strtotime("-365 DAY") .
-                    ' AND DATE_ADD(' . strtotime("-365 DAY") . ', INTERVAL 15 day)')
+                $model = $model->andWhere('FROM_UNIXTIME(created_at, "%Y-%m-%d %h:%i:%s") BETWEEN FROM_UNIXTIME(' . strtotime("-365 DAY") .
+                    ', "%Y-%m-%d %h:%i:%s") AND DATE_ADD(FROM_UNIXTIME(' . strtotime("-365 DAY") . ', "%Y-%m-%d %h:%i:%s"), INTERVAL 15 day)')
                     ->orderBy('created_at ASC');
                 break;
         }
