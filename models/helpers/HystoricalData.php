@@ -72,7 +72,7 @@ class HystoricalData extends \app\models\HystoricalData
                 break;
         }
 
-        $model = $model->groupBy('project_id')->one();
+        $model = $model->groupBy('project_id')->all();
         if(empty($model)) {
             echo "RESULT: 0\n";
             return 0;
