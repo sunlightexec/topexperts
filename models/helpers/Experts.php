@@ -119,13 +119,15 @@ class Experts extends \app\models\Experts
             ->where(['=', 'project_data.expert_id', $expert_id])
 //            ->andWhere('EXISTS ( SELECT 1 FROM hystorical_data where hystorical_data.project_id = project_data.project_id )' )
             ->groupBy('project_data.expert_id')
-            ->having('flipCount>=5 ')
+//            ->having('flipCount>=5 ')
 //            ->having('ICO_Star>=5')
             ->asArray()
-            ->one();
+            ->all();
 
         if($expert_id == 1140) {
             die(print_r($updatesFlip));
+        } else {
+            return 0;
         }
 
         $updatesHold = ProjectData::find()
