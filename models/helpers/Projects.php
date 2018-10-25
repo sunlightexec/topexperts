@@ -109,9 +109,9 @@ class Projects extends \app\models\Projects
     {
         $modelProject = self::find()->where(['=', 'id', $project_id])->one();
         $price = $modelProject->ICO_Price;
-        $currPrice = HystoricalData::getMaxPrice($modelProject->id);
+        $currPrice = HystoricalData::getHoldPrice($modelProject->id);
         if($modelProject->currencyICOPrice && $modelProject->currencyICOPrice->name != 'USD') {
-            $price *= $currPrice;
+            $price = $currPrice;
         }
         if($price > 0 && $currPrice > 0) {
             $data = [
