@@ -105,9 +105,9 @@ class Experts extends \app\models\Experts
 
         $selectHold = [
 //            'flipSum' => 'SUM(IF(projects.flip_all >= IF(project_data.max_value > 0, project_data.max_value, graduation_ratings.min_star), projects.flip_all, 0 ))',
-            'holdSum' => 'SUM(IF(projects.hold_all_all>0 AND '.$fieldHold1.' >= IF(project_data.max_value > 0, project_data.max_value, graduation_ratings.min_star), projects.'.$fieldHold.', 0 ))',
+            'holdSum' => 'SUM(IF(projects.hold_all>0 AND '.$fieldHold1.' >= IF(project_data.max_value > 0, project_data.max_value, graduation_ratings.min_star), projects.'.$fieldHold.', 0 ))',
 //            'flipCount' => 'SUM(IF(projects.flip_all >= IF(project_data.max_value > 0, project_data.max_value, graduation_ratings.min_star), 1, 0 ))',
-            'holdCount' => 'SUM(IF(projects.hold_all_all>0 AND '.$fieldHold1.' >= IF(project_data.max_value > 0, project_data.max_value, graduation_ratings.min_star), 1, 0 ))',
+            'holdCount' => 'SUM(IF(projects.hold_all>0 AND '.$fieldHold1.' >= IF(project_data.max_value > 0, project_data.max_value, graduation_ratings.min_star), 1, 0 ))',
         ];
 
         $updatesFlip = ProjectData::find()
