@@ -44,17 +44,17 @@ class Projects extends \app\models\Projects
 
     public static function getProjectByAttr($name, $slug, $url = null) {
         $url = str_replace(['http://', 'https://'], '', $url);
-        $projectModel = self::find()->where(['like', 'ICO_NAME', $name.'%', false])->one();
+        $projectModel = self::find()->where(['like', 'ICO_NAME', $name, false])->one();
 
         if(empty($projectModel)) {
-            $projectModel = self::find()->where(['like', 'ICO_NAME', $slug.'%', false])->one();
+            $projectModel = self::find()->where(['like', 'ICO_NAME', $slug, false])->one();
         }
 
         if(empty($projectModel)) {
 
-            $synonimModel = ProjectSynonims::find()->where(['like', 'project_synonim', $name.'%', false])->one();
+            $synonimModel = ProjectSynonims::find()->where(['like', 'project_synonim', $name, false])->one();
             if(empty($synonimModel))
-                $synonimModel = ProjectSynonims::find()->where(['like', 'project_synonim', $slug.'%', false])->one();
+                $synonimModel = ProjectSynonims::find()->where(['like', 'project_synonim', $slug, false])->one();
             /*if(empty($synonimModel))
                 $synonimModel = ProjectSynonims::find()->where(['like', 'project_synonim', $slug.'%', false])->one();*/
 
