@@ -124,11 +124,11 @@ class Experts extends \app\models\Experts
             ->asArray()
             ->all();
 
-        if($expert_id == 1140) {
+        /*if($expert_id == 1140) {
             die(print_r($updatesFlip));
         } else {
             return 0;
-        }
+        }*/
 
         $updatesHold = ProjectData::find()
 //            ->joinWith(['graduation'])
@@ -141,13 +141,13 @@ class Experts extends \app\models\Experts
 //            ->having('holdCount>=5')
 //            ->having('ICO_Star_Hold>=5')
             ->asArray()
-            ->one();
+            ->all();
 
 //        print_r($updates);die();
 
-        if(!empty($updatesFlip) || !empty($updatesHold)) {
-            $model->flip = empty($updatesFlip['flipCount']) ? 0 : round($updatesFlip['flipSum'] / $updatesFlip['flipCount'],4);
-            $model->hold = empty($updatesHold['holdCount']) ? 0 : round($updatesHold['holdSum'] / $updatesHold['holdCount'],4);
+        if(!empty($updatesFlip[0]) || !empty($updatesHold[0])) {
+            $model->flip = empty($updatesFlip[0]['flipCount']) ? 0 : round($updatesFlip[0]['flipSum'] / $updatesFlip[0]['flipCount'],4);
+            $model->hold = empty($updatesHold[0]['holdCount']) ? 0 : round($updatesHold[0]['holdSum'] / $updatesHold[0]['holdCount'],4);
             $model->save();
         } else {
             $model->flip = 0;
