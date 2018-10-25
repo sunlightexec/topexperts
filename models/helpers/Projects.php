@@ -110,7 +110,7 @@ class Projects extends \app\models\Projects
         $modelProject = self::find()->where(['=', 'id', $project_id])->one();
         $price = $modelProject->ICO_Price;
         $currPrice = HystoricalData::getHoldPrice($modelProject->id);
-        if($modelProject->currencyICOPrice && $modelProject->currencyICOPrice->name != 'USD') {
+        if($modelProject->getCurrencyICOPrice()->one() && $modelProject->getCurrencyICOPrice()->one()->name != 'USD') {
             $fnDate = empty($modelProject->END_ICO) ? strtotime('-2DAY') : $modelProject->END_ICO;
             $curr = HystoricalData::find()
                 ->select(['price' => 'MAX(price)'])
