@@ -77,7 +77,7 @@ class HystoricalData extends \app\models\HystoricalData
             return 0;
 
 
-        echo $model->price . "\n";
+        echo 'RESULT' . $model->price . "\n";
 
         return $model->price;
     }
