@@ -187,7 +187,7 @@ class ParsingController extends Controller
     public function actionSetGraduation()
     {
         ini_set('memory_limit', '256M');
-        $arProjectData = ProjectData::find()->all();
+        $arProjectData = ProjectData::find()->where('graduatioin_id IS NULL')->all();
         $row = 0;
         foreach ($arProjectData as $oProjectData) {
             $row++;
