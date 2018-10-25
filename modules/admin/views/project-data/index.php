@@ -28,6 +28,7 @@ $this->params['breadcrumbs'][] = $this->title;
         [
             'label' => 'Project',
             'value' => 'project.ICO_NAME',
+            'attribute' => 'project_name',
             'filter' => Html::activeTextInput($searchModel, 'searchProjectName', ['class' => 'form-control']),
         ],
         [
