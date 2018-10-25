@@ -303,8 +303,8 @@ class ParsingController extends Controller
                     'volume_24h' => $item['quote']['USD']['volume_24h'],
                     'market_cap' => $item['quote']['USD']['market_cap'],
                     'name' => $item['name'],
-                    'created_at' => new Expression('NOW()'),
-                    'updated_at' => new Expression('NOW()'),
+                    'created_at' => time(),
+                    'updated_at' => time(),
                 ];
                 $model->setAttributes($data);
                 if(!$model->save()) {print_r([$item['symbol'], $model->errors]); echo "\n";}
