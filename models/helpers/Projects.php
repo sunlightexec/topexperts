@@ -120,7 +120,7 @@ class Projects extends \app\models\Projects
                     'DATE_ADD(FROM_UNIXTIME('.$fnDate.', "%Y-%m-%d %h:%i:%s"), INTERVAL 2 day)')
                 ->orderBy('hystorical_data.created_at DESC')
                 ->one();
-            if($project_id == 41167) die(print_r($curr));
+//            if($project_id == 41167) die(print_r($curr));
             if(!empty($curr)) {
                 $price = $price * $curr->price;
             } else {
