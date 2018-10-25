@@ -57,7 +57,7 @@ class ParsingController extends Controller
             unset($arRecs);
             $start += $step;
             $arRecs = HystoricalData::find()
-                ->where('project_id IS NULL')
+                ->where('name IS NOT NULL')
                 ->limit($step)
                 ->offset($start)
                 ->all();
