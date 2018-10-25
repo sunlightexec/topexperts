@@ -117,7 +117,7 @@ class Experts extends \app\models\Experts
 //            ->join('INNER JOIN', 'projects', 'project_data.project_id=projects.id')
             ->select($selectFlip)
             ->where(['=', 'project_data.expert_id', $expert_id])
-            ->andWhere('projects.flip_all >= 0' )
+            ->andWhere('EXISTS ( SELECT 1 FROM hystorical_data where hystorical_data.project_id = projects.id LIMIT 1 )' )
             ->groupBy('project_data.expert_id')
             ->having('flipCount>=5 ')
 //            ->having('ICO_Star>=5')
