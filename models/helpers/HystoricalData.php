@@ -18,7 +18,7 @@ class HystoricalData extends \app\models\HystoricalData
     public function behaviors()
     {
         return [
-            [
+            'asDate' => [
                 'class' => TimestampBehavior::className(),
                 /*'createdAtAttribute' => 'created_at',
                 'updatedAtAttribute' => 'updated_at',
@@ -29,17 +29,24 @@ class HystoricalData extends \app\models\HystoricalData
 
     public static function getMaxPrice($project_id = null, $period = 'last')
     {
+        $project = Projects::find()->where("id = $project_id")->one();
+        $start = $project->START_ICO;
+        $stop = $project->END_ICO;
+
         $model = self::find()->select(['price' => 'MAX(price)'])->filterWhere(['project_id' => $project_id]);
 
         switch($period) {
             case 'last':
-//                $model->orderBy('date_added DESC');
+                $model = $model->andWhere('created_at BETWEEN ' . $start .
+                    ' AND DATE_SUB(' . $start . ', INTERVAL 30 day)');
                 break;
             case 'quarter':
-                $model = $model->andWhere('updated_at >= ' . strtotime("-3 Month"))/*->orderBy('date_added ASC')*/;
+                $model = $model->andWhere('created_at BETWEEN ' . strtotime("-3 Month").
+                    ' AND DATE_SUB(' . strtotime("-3 Month") . ', INTERVAL 30 day)');
                 break;
             case 'year':
-                $model = $model->andWhere('updated_at >= ' . strtotime("-1 Year"))/*->orderBy('date_added ASC')*/;
+                $model = $model->andWhere('created_at BETWEEN ' . strtotime("-1 Year") .
+                    ' AND DATE_SUB(' . strtotime("-1 Year") . ', INTERVAL 30 day)');
                 break;
         }
 
@@ -52,17 +59,25 @@ class HystoricalData extends \app\models\HystoricalData
 
     public static function getHoldPrice($project_id = null, $period = 'last')
     {
+        $project = Projects::find()->where("id = $project_id")->one();
+        $start = $project->START_ICO;
+        $stop = $project->END_ICO;
+
         $model = self::find()->select(['price' => 'price'])->filterWhere(['project_id' => $project_id]);
 
         switch($period) {
             case 'last':
-                $model = $model->andWhere('updated_at >= ' . strtotime("-2 DAY"))->orderBy('date_added DESC');
+                $model = $model->andWhere('created_at >= ' . strtotime("-3 DAY"))->orderBy('created_at DESC');
                 break;
             case 'quarter':
-                $model = $model->andWhere('updated_at >= ' . strtotime("-3 Month"))->orderBy('date_added ASC');
+                $model = $model->andWhere('created_at BETWEEN ' . strtotime("-90 DAY").
+                    ' AND DATE_SUB(' . strtotime("-90 DAY") . ', INTERVAL 30 day)')
+                    ->orderBy('created_at ASC');
                 break;
             case 'year':
-                $model = $model->andWhere('updated_at >= ' . strtotime("-1 Year"))->orderBy('date_added ASC');
+                $model = $model->andWhere('created_at BETWEEN ' . $start .
+                    ' AND DATE_SUB(' . $start . ', INTERVAL 15 day)')
+                    ->orderBy('created_at ASC');
                 break;
         }
 
@@ -87,6 +102,8 @@ class HystoricalData extends \app\models\HystoricalData
             ->filterWhere(['name' => $data['name']])
             ->andFilterWhere($where)
             ->one();
+
+        $model->detachBehavior('asDate');
 
         if(empty($model)) {
             $model = new self();

@@ -21,6 +21,7 @@ use yii\console\Controller;
 use yii\console\ExitCode;
 use yii\helpers\FileHelper;
 use yii\helpers\Json;
+use yii\db\Expression;
 
 /**
  * This command echoes the first argument that you have entered.
@@ -151,6 +152,8 @@ class ImportController extends Controller
                 'price' => str_replace(',', '.', $fileop[5]),
                 'volume_24h' => (double)str_replace([',', '-'], ['.', ''], $fileop[6]),
                 'market_cap' => (double)str_replace([',', '-'], ['.', ''], $fileop[7]),
+                'created_at' => $fileop[4],
+                'updated_at' => $fileop[4],
             ];
 
             HystoricalData::insertOrReplace($data);

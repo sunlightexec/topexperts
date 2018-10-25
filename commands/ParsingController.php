@@ -281,6 +281,7 @@ class ParsingController extends Controller
                     ], "project_id = $project_id AND currency_id IS NULL"  );
                 }
                 $model = new HystoricalData();
+                $model->detachBehavior('asDate');
 //                print_r([
 //                    $item['quote'][$item['symbol']]['last_updated'],
 //                    strtotime($item['quote'][$item['symbol']]['last_updated'])
@@ -297,6 +298,8 @@ class ParsingController extends Controller
                     'volume_24h' => $item['quote']['USD']['volume_24h'],
                     'market_cap' => $item['quote']['USD']['market_cap'],
                     'name' => $item['name'],
+                    'created_at' => new Expression('NOW()'),
+                    'updated_at' => new Expression('NOW()'),
                 ];
                 $model->setAttributes($data);
                 if(!$model->save()) {print_r([$item['symbol'], $model->errors]); echo "\n";}
