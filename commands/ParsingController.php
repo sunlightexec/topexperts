@@ -37,7 +37,7 @@ class ParsingController extends Controller
         $row = 0;
         $arRecs = HystoricalData::find()
             ->select('project_id, currency_id, name')
-            ->where('name IS NOT NULL')
+            ->where('name IS NOT NULL AND project_id IS NOT NULL')
             ->groupBy('project_id, currency_id, name')
             ->limit($step)
             ->all();
@@ -46,19 +46,20 @@ class ParsingController extends Controller
             foreach ($arRecs as $oRec) {
                 echo "{$oRec->name} \n";
                 if($row++ % 100 == 0) echo "+$row+\n";
+                if(empty($oRec->project_id)) continue;
                 HystoricalData::updateAll([
                     'project_id' => $oRec->project_id,
                     'currency_id' => $oRec->currency_id
-                ], 'name = "' . $oRec->name . '" and name IS NULL');
+                ], 'name = "' . $oRec->name . '"');
             }
             $offset += $step;
 
             $arRecs = HystoricalData::find()
                 ->select('project_id, currency_id, name')
-                ->where('name IS NOT NULL')
+                ->where('name IS NOT NULL AND project_id IS NOT NULL')
                 ->groupBy('project_id, currency_id, name')
                 ->limit($step)
-//                ->offset($offset)
+                ->offset($offset)
                 ->all();
         }
     }
