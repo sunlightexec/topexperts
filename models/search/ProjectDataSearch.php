@@ -91,6 +91,16 @@ class ProjectDataSearch extends ProjectData
             return $dataProvider;
         }
 
+        if(isset($this->is_coined)) {
+            if($this->is_coined == 1) {
+                $condition = 'EXISTS (SELECT 1 FROM hystorical_data WHERE hystorical_data.project_id = project_data.project_id)';
+                $query->where($condition);
+            } elseif($this->is_coined == 2) {
+                $condition = 'NOT EXISTS (SELECT 1 FROM hystorical_data WHERE hystorical_data.project_id = project_data.project_id)';
+                $query->where($condition);
+            }
+        }
+
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,

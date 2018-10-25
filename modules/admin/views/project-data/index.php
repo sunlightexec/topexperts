@@ -59,7 +59,12 @@ $this->params['breadcrumbs'][] = $this->title;
             'label' => 'is coin',
             'value' => function($model){
                 return $model->getHystoricalData()->count() > 0 ? 'Yes' : 'No';
-            }
+            },
+            'filter' => Html::activeDropDownList($searchModel, 'is_coined', [
+                '' => 'All',
+                '2' => 'No',
+                '1'=>'Yes'
+            ], ['class' => 'form-control'])
         ],
         [
             'label' => 'is calc',

@@ -31,6 +31,8 @@ class ProjectData extends \yii\db\ActiveRecord
     public $scoreFlip;
     public $scoreHold;
 
+    public $is_coin;
+
     /**
      * {@inheritdoc}
      */
@@ -45,7 +47,7 @@ class ProjectData extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['max_value', 'project_id', 'expert_id', 'Report_Date', 'status', 'created_at', 'updated_at', 'graduation_id'], 'integer'],
+            [['is_coin', 'max_value', 'project_id', 'expert_id', 'Report_Date', 'status', 'created_at', 'updated_at', 'graduation_id'], 'integer'],
             [['flip', 'hold'], 'double'],
             [['scoreFlip', 'scoreHold'], 'string'],
             [['Score', 'searchProjectName', 'searchExpertName'], 'string', 'max' => 255],
