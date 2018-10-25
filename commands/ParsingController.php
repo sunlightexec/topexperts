@@ -276,6 +276,11 @@ class ParsingController extends Controller
 //                    continue;
                 } else {
                     $project_id = $projectModel->id;
+                    if(!empty($item['date_added'])) {
+                        $projectModel->start_coin = strtotime($item['date_added']);
+                        $projectModel->save();
+                    }
+
                     HystoricalData::updateAll([
                         'currency_id' => $valId,
                     ], "project_id = $project_id AND currency_id IS NULL"  );

@@ -32,21 +32,28 @@ class HystoricalData extends \app\models\HystoricalData
         $project = Projects::find()->where("id = $project_id")->one();
         $start = $project->START_ICO;
         $stop = $project->END_ICO;
+        $coin = $project->start_coin;
+        $now = time();
+        $workDate = $stop > $coin ? $stop : $coin;
+
+        if(empty($stop) || $stop > $now) return 0;
 
         $model = self::find()->select(['price' => 'MAX(price)'])->filterWhere(['project_id' => $project_id]);
 
         switch($period) {
             case 'last':
-                $model = $model->andWhere('created_at BETWEEN ' . $start .
-                    ' AND DATE_SUB(' . $start . ', INTERVAL 30 day)');
+                $model = $model->andWhere('created_at BETWEEN ' . $workDate .
+                    ' AND DATE_SUB(' . $workDate . ', INTERVAL 30 day)');
                 break;
             case 'quarter':
-                $model = $model->andWhere('created_at BETWEEN ' . strtotime("-3 Month").
-                    ' AND DATE_SUB(' . strtotime("-3 Month") . ', INTERVAL 30 day)');
+                if( $coin > strtotime("-90 DAY") ) return 0;
+                $model = $model->andWhere('created_at BETWEEN ' . strtotime("-90 DAY").
+                    ' AND DATE_SUB(' . strtotime("-90 DAY") . ', INTERVAL 30 day)');
                 break;
             case 'year':
-                $model = $model->andWhere('created_at BETWEEN ' . strtotime("-1 Year") .
-                    ' AND DATE_SUB(' . strtotime("-1 Year") . ', INTERVAL 30 day)');
+                if( $coin > strtotime("-365 DAY") ) return 0;
+                $model = $model->andWhere('created_at BETWEEN ' . strtotime("-365 DAY") .
+                    ' AND DATE_SUB(' . strtotime("-365 DAY") . ', INTERVAL 30 day)');
                 break;
         }
 
@@ -62,21 +69,29 @@ class HystoricalData extends \app\models\HystoricalData
         $project = Projects::find()->where("id = $project_id")->one();
         $start = $project->START_ICO;
         $stop = $project->END_ICO;
+        $coin = $project->start_coin;
+        $now = time();
+        $workDate = $stop > $coin ? $stop : $coin;
+
+        if(empty($stop) || $stop > $now) return 0;
 
         $model = self::find()->select(['price' => 'price'])->filterWhere(['project_id' => $project_id]);
 
         switch($period) {
             case 'last':
-                $model = $model->andWhere('created_at >= ' . strtotime("-3 DAY"))->orderBy('created_at DESC');
+                $model = $model->andWhere('created_at >= ' . $workDate)
+                    ->orderBy('created_at DESC');
                 break;
             case 'quarter':
+                if( $coin > strtotime("-90 DAY") ) return 0;
                 $model = $model->andWhere('created_at BETWEEN ' . strtotime("-90 DAY").
                     ' AND DATE_SUB(' . strtotime("-90 DAY") . ', INTERVAL 30 day)')
                     ->orderBy('created_at ASC');
                 break;
             case 'year':
-                $model = $model->andWhere('created_at BETWEEN ' . $start .
-                    ' AND DATE_SUB(' . $start . ', INTERVAL 15 day)')
+                if( $coin > strtotime("-365 DAY") ) return 0;
+                $model = $model->andWhere('created_at BETWEEN ' . strtotime("-365 DAY") .
+                    ' AND DATE_SUB(' . strtotime("-365 DAY") . ', INTERVAL 15 day)')
                     ->orderBy('created_at ASC');
                 break;
         }
@@ -102,7 +117,7 @@ class HystoricalData extends \app\models\HystoricalData
             ->filterWhere(['name' => $data['name']])
             ->andFilterWhere($where)
             ->one();
-        
+
         if(empty($model)) {
             $model = new self();
         }

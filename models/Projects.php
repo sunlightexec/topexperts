@@ -33,6 +33,7 @@ use yii\db\Exception;
  * @property int $created_at
  * @property int $updated_at
  * @property int $ICO_Star_Hold
+ * @property int $start_coin
  *
  * @property ProjectData[] $projectDatas
  * @property Categories $category
@@ -59,7 +60,7 @@ class Projects extends \yii\db\ActiveRecord
         return [
             [['ICO_NAME'], 'required'],
             [['ICO_Description'], 'string'],
-            [['Category', 'Currency_HARD_CAP', 'Currency_ICO_Price', 'status', 'START_ICO', 'END_ICO', 'ICO_Star', 'ICO_Star_Hold'], 'integer'],
+            [['start_coin','Category', 'Currency_HARD_CAP', 'Currency_ICO_Price', 'status', 'START_ICO', 'END_ICO', 'ICO_Star', 'ICO_Star_Hold'], 'integer'],
             [['HARD_CAP', 'ICO_Price'], 'number'],
             [['ICO_NAME', 'ICO_Website', 'URL_Coinmarketcap', 'URL_ICODrops', 'Scam'], 'string', 'max' => 255],
             [['ICO_NAME'], 'unique'],
@@ -102,6 +103,7 @@ class Projects extends \yii\db\ActiveRecord
             'status' => Yii::t('app', 'Status'),
             'created_at' => Yii::t('app', 'Created At'),
             'updated_at' => Yii::t('app', 'Updated At'),
+            'start_coin' => Yii::t('app/projects', 'Start Coin'),
         ];
     }
 

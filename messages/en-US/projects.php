@@ -23,6 +23,7 @@ return [
     'Hold Quarte' => 'Hold Quarte',
     'Max Value' => 'Max Value',
     'Min Star' => 'Min Star',
+    'Start Coin' => 'Start Coin',
 
     'Project' => 'Project',
     'Expert' => 'Expert',
