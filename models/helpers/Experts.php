@@ -116,9 +116,10 @@ class Experts extends \app\models\Experts
             ->join('INNER JOIN', 'projects', 'project_data.project_id=projects.id')
             ->select($selectFlip)
             ->where(['=', 'project_data.expert_id', $expert_id])
+//            ->andWhere(['>=', 'projects.ICO_Star', 5])
             ->groupBy('project_data.expert_id')
-//            ->having('flipCount>=5')
-            ->having('ICO_Star>=5')
+            ->having('flipCount>=5')
+//            ->having('ICO_Star>=5')
             ->asArray()
             ->one();
 
@@ -128,9 +129,10 @@ class Experts extends \app\models\Experts
             ->join('INNER JOIN', 'projects', 'project_data.project_id=projects.id')
             ->select($selectHold)
             ->where(['=', 'project_data.expert_id', $expert_id])
+//            ->andWhere(['>=', 'projects.ICO_Star_Hold', 5])
             ->groupBy('project_data.expert_id')
-//            ->having('holdCount>=5')
-            ->having('ICO_Star_Hold>=5')
+            ->having('holdCount>=5')
+//            ->having('ICO_Star_Hold>=5')
             ->asArray()
             ->one();
 
