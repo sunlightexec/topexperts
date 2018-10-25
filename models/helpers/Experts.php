@@ -124,7 +124,7 @@ class Experts extends \app\models\Experts
 
 //        print_r($updates);die();
 
-        if(!empty($updates)) {
+        if(!empty($updatesFlip) || !empty($updatesHold)) {
             $model->flip = $updatesFlip['flipCount']==0 ? 0 : round($updatesFlip['flipSum'] / $updatesFlip['flipCount'],1);
             $model->hold = $updatesHold['holdCount']==0 ? 0 : round($updatesHold['holdSum'] / $updatesHold['holdCount'],1);
             $model->save();
