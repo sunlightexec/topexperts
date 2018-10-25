@@ -114,8 +114,12 @@ class Projects extends \app\models\Projects
             $curr = HystoricalData::find()
                 ->joinWith(['currency'])
                 ->where(['=', 'currencies.id', $modelProject->Currency_ICO_Price])
+                ->andWhere('FROM_UNIXTIME(hystorical_data.created_at, "%Y-%m-%d %h:%i:%s") BETWEEN ' .
+                    'DATE_SUB(FROM_UNIXTIME('.$modelProject->START_ICO.', "%Y-%m-%d %h:%i:%s"), INTERVAL 2 DAY) AND ' .
+                    'DATE_ADD(FROM_UNIXTIME('.$modelProject->START_ICO.', "%Y-%m-%d %h:%i:%s"), INTERVAL 2 DAY)')
                 ->orderBy('hystorical_data.created_at DESC')
                 ->one();
+            if($project_id == 41167) die(print_r($curr));
             if(!empty($curr)) {
                 $price = $price * $curr->price;
             } else {
