@@ -371,6 +371,33 @@ class ImportController extends Controller
         return ExitCode::OK;
     }
 
+    public function actioinUpdatePrice()
+    {
+        $loadFileName = \Yii::$app->basePath . $this->loadDir . 'projects.csv';
+        $loadFileName = FileHelper::normalizePath($loadFileName);
+        if(!file_exists($loadFileName)) return ExitCode::NOINPUT;
+        $handle = fopen($loadFileName, "r");
+        $row = 0;
+        $skipRows = 1;
+        while (($fileop = fgetcsv($handle, 3000, ",")) !== false) {
+            $row++;
+            if($row <= $skipRows) continue;
+            if($row == 2) {
+                $flds = $fileop;
+                continue;
+            }
+
+            if(isset($fileop[8]) && $fileop[8] == 'No data') $fileop[8] = 0;
+            $fileop[8] = str_replace(',','',$fileop[8]);
+            $model = Projects::find()->where(['=', 'ICO_NAME', $fileop[0]])->one();
+            if(!empty($model)) {
+                $model->ICO_Price = $fileop[8];
+                $model->save();
+            }
+        }
+        fclose($handle);
+    }
+
     public function actionProjects()
     {
         ProjectData::deleteAll();
@@ -428,7 +455,7 @@ class ImportController extends Controller
 
             $fileop[6] = str_replace([',', '.', '​​ '],'',$fileop[6]);
             $fileop[6] = preg_replace("/[^0-9]/", '', $fileop[6]);
-            $fileop[8] = str_replace(',','.',$fileop[8]);
+            $fileop[8] = str_replace(',','',$fileop[8]);
 
             $model = new Projects();
             $sDate = !empty($fileop[10]) ? self::cnvDate($fileop[10]) : null;
@@ -443,7 +470,7 @@ class ImportController extends Controller
                 'Category' => $catId,
                 'HARD_CAP' => !empty($fileop[6]) ? $fileop[6] : null,
                 'Currency_HARD_CAP' => $valId1,
-                'ICO_Price' => !empty($fileop[8]) ? $fileop[8] : null,
+                'ICO_Price' => !empty($fileop[8]) ? $fileop[8] : 0,
                 'Currency_ICO_Price' => $valId2,
                 'START_ICO' => $sDate,
                 'END_ICO' => $eDate,
