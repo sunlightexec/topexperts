@@ -123,6 +123,10 @@ class Experts extends \app\models\Experts
             ->asArray()
             ->one();
 
+        if($expert_id == 1140) {
+            die(print_r($updatesFlip));
+        }
+
         $updatesHold = ProjectData::find()
 //            ->joinWith(['graduation'])
             ->join('LEFT JOIN', 'graduation_ratings', 'project_data.graduation_id=graduation_ratings.id')
