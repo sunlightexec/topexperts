@@ -9,7 +9,13 @@ use yii\grid\GridView;
         ['class' => 'yii\grid\SerialColumn'],
 
         'name',
-        $order,
+        [
+            'attribute' => $order,
+            'enableSorting' => false,
+            'value' => function($model) use($order){
+                return number_format($model->$order,3);
+            }
+        ]
 
 //        ['class' => 'yii\grid\ActionColumn'],
     ],
