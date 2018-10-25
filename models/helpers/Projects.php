@@ -111,7 +111,7 @@ class Projects extends \app\models\Projects
         $price = $modelProject->ICO_Price;
         $currPrice = HystoricalData::getHoldPrice($modelProject->id);
         if($modelProject->currencyICOPrice && $modelProject->currencyICOPrice->name != 'USD') {
-            $fnDate = empty($modelProject->START_ICO) ? strtotime('-2DAY') : $modelProject->START_ICO;
+            $fnDate = empty($modelProject->END_ICO) ? strtotime('-2DAY') : $modelProject->END_ICO;
             $curr = HystoricalData::find()
                 ->joinWith(['currency'])
                 ->where(['=', 'currencies.id', $modelProject->Currency_ICO_Price])
