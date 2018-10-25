@@ -472,6 +472,7 @@ class ImportController extends Controller
                         'Score' => $fileop[$i],
                         'Report_Date' => !empty($fileop[$i+1]) ? self::cnvDate($fileop[$i+1]) : null,
                     ]);
+
                     if(!$prData->save()) {
                         $errors .= "Save ProjectData error ({$row})" . json_encode($prData->errors) . "\n";
                         print_r([$fileop[0], $expertName, $prData->errors]);
@@ -479,7 +480,6 @@ class ImportController extends Controller
                     }
                 }
             }
-
         }
         fclose($handle);
         file_put_contents($errorFileName, $errors);
