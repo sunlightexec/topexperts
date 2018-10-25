@@ -60,7 +60,7 @@ class Projects extends \app\models\Projects
             $synonimModel = ProjectSynonims::find()->where(['=', 'UPPER(project_synonim)', $name])->one();
             if(empty($synonimModel))
 //                $synonimModel = ProjectSynonims::find()->where(['like', 'project_synonim', $slug, false])->one();
-                $synonimModel = ProjectSynonims::find()->where(['=', 'UPPER(project_synonim)', $slug, false])->one();
+                $synonimModel = ProjectSynonims::find()->where(['=', 'UPPER(project_synonim)', $slug])->one();
             /*if(empty($synonimModel))
                 $synonimModel = ProjectSynonims::find()->where(['like', 'project_synonim', $slug.'%', false])->one();*/
 
