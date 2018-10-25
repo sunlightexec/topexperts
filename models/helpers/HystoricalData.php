@@ -72,7 +72,8 @@ class HystoricalData extends \app\models\HystoricalData
                 break;
         }
 
-        $model = $model->groupBy('project_id')->all();
+        print_r($model->groupBy('project_id')->createCommand()->getRawSql());
+        $model = $model->groupBy('project_id')->one();
         if(empty($model)) {
             echo "RESULT: 0\n";
             return 0;
