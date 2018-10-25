@@ -97,17 +97,17 @@ class Experts extends \app\models\Experts
             'AVG(IF(project_data.hold >= graduation_ratings.min_star, project_data.hold, "0" )) as hold';*/
 
         $selectFlip = [
-            'flipSum' => 'SUM(IF(projects.flip_all>0 AND '.$fieldFlip1.' >= IF(project_data.max_value > 0, project_data.max_value, graduation_ratings.min_star), projects.'.$fieldFlip.', 0 ))',
+            'flipSum' => 'SUM(IF(projects.Scam IS NOT NULL OR (projects.flip_all>0 AND '.$fieldFlip1.' >= IF(project_data.max_value > 0, project_data.max_value, graduation_ratings.min_star)), projects.'.$fieldFlip.', 0 ))',
 //            'holdSum' => 'SUM(IF(projects.hold_all >= IF(project_data.max_value > 0, project_data.max_value, graduation_ratings.min_star), projects.hold_all, 0 ))',
-            'flipCount' => 'SUM(IF(projects.flip_all>0 AND '.$fieldFlip1.' >= IF(project_data.max_value > 0, project_data.max_value, graduation_ratings.min_star), 1, 0 ))',
+            'flipCount' => 'SUM(IF(projects.Scam IS NOT NULL OR (projects.flip_all>0 AND '.$fieldFlip1.' >= IF(project_data.max_value > 0, project_data.max_value, graduation_ratings.min_star)), 1, 0 ))',
 //            'holdCount' => 'SUM(IF(projects.hold_all >= IF(project_data.max_value > 0, project_data.max_value, graduation_ratings.min_star), 1, 0 ))',
         ];
 
         $selectHold = [
 //            'flipSum' => 'SUM(IF(projects.flip_all >= IF(project_data.max_value > 0, project_data.max_value, graduation_ratings.min_star), projects.flip_all, 0 ))',
-            'holdSum' => 'SUM(IF(projects.hold_all>0 AND '.$fieldHold1.' >= IF(project_data.max_value > 0, project_data.max_value, graduation_ratings.min_star), projects.'.$fieldHold.', 0 ))',
+            'holdSum' => 'SUM(IF(projects.Scam IS NOT NULL OR (projects.hold_all>0 AND '.$fieldHold1.' >= IF(project_data.max_value > 0, project_data.max_value, graduation_ratings.min_star)), projects.'.$fieldHold.', 0 ))',
 //            'flipCount' => 'SUM(IF(projects.flip_all >= IF(project_data.max_value > 0, project_data.max_value, graduation_ratings.min_star), 1, 0 ))',
-            'holdCount' => 'SUM(IF(projects.hold_all>0 AND '.$fieldHold1.' >= IF(project_data.max_value > 0, project_data.max_value, graduation_ratings.min_star), 1, 0 ))',
+            'holdCount' => 'SUM(IF(projects.Scam IS NOT NULL OR (projects.hold_all>0 AND '.$fieldHold1.' >= IF(project_data.max_value > 0, project_data.max_value, graduation_ratings.min_star)), 1, 0 ))',
         ];
 
         $updatesFlip = ProjectData::find()
@@ -124,11 +124,11 @@ class Experts extends \app\models\Experts
             ->asArray()
             ->all();
 
-        if($expert_id == 1140) {
+        /*if($expert_id == 1140) {
             die(print_r($updatesFlip));
         } else {
             return 0;
-        }
+        }*/
 
         $updatesHold = ProjectData::find()
 //            ->joinWith(['graduation'])
@@ -138,7 +138,7 @@ class Experts extends \app\models\Experts
             ->where(['=', 'project_data.expert_id', $expert_id])
 //            ->andWhere(['>=', 'projects.ICO_Star_Hold', 5])
             ->groupBy('project_data.expert_id')
-            ->having('holdCount>=5')
+//            ->having('holdCount>=5')
 //            ->having('ICO_Star_Hold>=5')
             ->asArray()
             ->one();
