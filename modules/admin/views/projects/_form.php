@@ -55,15 +55,15 @@ use kartik\date\DatePicker;
         ],
     ]) ?>
 
-    <?= $form->field($model, 'START_ICO')->widget(DatePicker::classname(), [
-        'name' => 'check_issue_date',
-        'value' => $model->START_ICO /*== 0 ? '' : date('Y-m-d', $model->START_ICO)*/,
-        'options' => ['placeholder' => 'Select issue date ...'],
-        'pluginOptions' => [
-            'format' => 'yyyy-mm-dd',
-            'todayHighlight' => true
-        ]
-    ]) ?>
+<!--    --><?//= $form->field($model, 'START_ICO')->widget(DatePicker::classname(), [
+//        'name' => 'check_issue_date',
+//        'value' => $model->START_ICO /*== 0 ? '' : date('Y-m-d', $model->START_ICO)*/,
+//        'options' => ['placeholder' => 'Select issue date ...'],
+//        'pluginOptions' => [
+//            'format' => 'yyyy-mm-dd',
+//            'todayHighlight' => true
+//        ]
+//    ]) ?>
 
 <!--    --><?//= $form->field($model, 'END_ICO')->widget(DatePicker::classname(), [
 //        'name' => 'check_issue_date',
