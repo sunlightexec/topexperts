@@ -52,9 +52,9 @@ class HystoricalData extends \app\models\HystoricalData
         switch($period) {
             case 'last':
                 $model = $model->andWhere('created_at BETWEEN ' . $workDate .
-                    ' AND DATE_ADD(' . $workDate . ', INTERVAL 30 day)');
+                    ' AND DATE_ADD(FROM_UNIXTIMESTAMP(' . $workDate . ', "%Y-%m-%d %h %i %s"), INTERVAL 30 day)');
                 if($debug) echo 'LATEST: created_at BETWEEN ' . $workDate .
-                    ' AND DATE_ADD(' . $workDate . ', INTERVAL 30 day)' . "\n";
+                    ' AND DATE_ADD(FROM_UNIXTIMESTAMP(' . $workDate . ', "%Y-%m-%d %h %i %s"), INTERVAL 30 day)' . "\n";
                 break;
             case 'quarter':
                 if( $coin > strtotime("-90 DAY") ) return 0;
