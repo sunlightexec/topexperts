@@ -81,11 +81,11 @@ class Experts extends \app\models\Experts
 
     public static function setRatings($expert_id)
     {
-        $fielf = 'flip_all';
-//        $fielf = 'flip_12';
+        $fieldFlip = 'flip_all';
+//        $fieldFlip = 'flip_12';
 //        $fieldFlip = 'flip_3';
-        $fielf = 'hold_all';
-//        $fielf = 'hold_12';
+        $fieldHold = 'hold_all';
+//        $fieldHold = 'hold_12';
 //        $fieldHold = 'hold_3';
 
 
