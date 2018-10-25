@@ -13,7 +13,7 @@ use yii\grid\GridView;
             'attribute' => $order,
             'enableSorting' => false,
             'value' => function($model) use($order){
-                return number_format($model->$order,3);
+                return number_format($model->$order,4);
             }
         ]
 
