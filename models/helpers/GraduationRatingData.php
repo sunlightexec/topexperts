@@ -108,7 +108,7 @@ class GraduationRatingData extends \app\models\GraduationRatingData
                 ->andFilterWhere($filter)
                 ->one();
 
-            if($modelFlip->type == 2) {
+            if(!empty($modelFlip) && $modelFlip->type == 2) {
                 $oProjectData->flip = ((double)str_replace(['%',','], ['','.'], $flip) * 10 / $modelFlip->max_value);
                 $oProjectData->graduation_id = $modelFlip->id;
                 $oProjectData->save();
