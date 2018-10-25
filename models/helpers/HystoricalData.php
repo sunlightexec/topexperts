@@ -76,6 +76,9 @@ class HystoricalData extends \app\models\HystoricalData
         if(empty($model))
             return 0;
 
+
+        echo $model->price . "\n";
+
         return $model->price;
     }
 
