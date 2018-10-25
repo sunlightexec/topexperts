@@ -81,12 +81,12 @@ class Experts extends \app\models\Experts
 
     public static function setRatings($expert_id)
     {
-//        $fielf = 'flip_all';
+        $fielf = 'flip_all';
 //        $fielf = 'flip_12';
-        $fieldFlip = 'flip_3';
-//        $fielf = 'hold_all';
+//        $fieldFlip = 'flip_3';
+        $fielf = 'hold_all';
 //        $fielf = 'hold_12';
-        $fieldHold = 'hold_3';
+//        $fieldHold = 'hold_3';
 
 
         $model = self::find()->where(['=', 'id', $expert_id])->one();
