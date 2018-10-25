@@ -44,7 +44,7 @@ class ParsingController extends Controller
         while(!empty($arRecs)) {
 
             foreach ($arRecs as $oRec) {
-                echo "{$oRec->name} \n";
+                echo "{$oRec->name} : {$oRec->project_id} \n";
                 if($row++ % 100 == 0) echo "+$row+\n";
                 if(empty($oRec->project_id)) continue;
                 HystoricalData::updateAll([
