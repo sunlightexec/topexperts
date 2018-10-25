@@ -112,6 +112,16 @@ class ProjectDataSearch extends ProjectData
             }
         }
 
+        if(isset($this->is_star)) {
+            if($this->is_coined == 1) {
+                $condition = 'project_data.flip >=8 OR project_data.hold >= 8';
+                $query->where($condition);
+            } elseif($this->is_coined == 2) {
+                $condition = 'project_data.flip <8 AND project_data.hold < 8';
+                $query->where($condition);
+            }
+        }
+
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,

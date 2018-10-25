@@ -44,11 +44,16 @@ $this->params['breadcrumbs'][] = $this->title;
             }
         ],
         [
-            'label' => 'is star',
+            'label' => 'Is Star',
             'attribute' => 'is_star',
             'value' => function($model){
                 return (($model->flip >= 8) ? 'Yes' : 'No') . ' / ' . (($model->hold >= 8) ? 'Yes' : 'No');
-            }
+            },
+            'filter' => Html::activeDropDownList($searchModel, 'is_star', [
+                '' => 'All',
+                '2' => 'No',
+                '1'=>'Yes'
+            ], ['class' => 'form-control'])
         ],
         [
             'label' => 'is scam',
