@@ -51,21 +51,21 @@ class HystoricalData extends \app\models\HystoricalData
 
         switch($period) {
             case 'last':
-                $model = $model->andWhere('created_at BETWEEN ' . $workDate .
+                $model = $model->andWhere('FROM_UNIXTIME(created_at, "%Y-%m-%d %h:%i:%s") BETWEEN ' . $workDate .
                     ' AND DATE_ADD(FROM_UNIXTIME(' . $workDate . ', "%Y-%m-%d %h:%i:%s"), INTERVAL 30 day)');
                 if($debug) echo 'LATEST: created_at BETWEEN ' . $workDate .
                     ' AND DATE_ADD(FROM_UNIXTIME(' . $workDate . ', "%Y-%m-%d %h:%i:%s"), INTERVAL 30 day)' . "\n";
                 break;
             case 'quarter':
                 if( $coin > strtotime("-90 DAY") ) return 0;
-                $model = $model->andWhere('created_at BETWEEN ' . strtotime("-90 DAY").
+                $model = $model->andWhere('FROM_UNIXTIME(created_at, "%Y-%m-%d %h:%i:%s") BETWEEN ' . strtotime("-90 DAY").
                     ' AND DATE_ADD(FROM_UNIXTIME(' . strtotime("-90 DAY") . ', "%Y-%m-%d %h:%i:%s"), INTERVAL 30 day)');
                 if($debug) echo 'QUARTER: created_at BETWEEN ' . strtotime("-90 DAY").
                     ' AND DATE_ADD(FROM_UNIXTIME(' . strtotime("-90 DAY") . ', "%Y-%m-%d %h:%i:%s"), INTERVAL 30 day)' . "\n";
                 break;
             case 'year':
                 if( $coin > strtotime("-365 DAY") ) return 0;
-                $model = $model->andWhere('created_at BETWEEN ' . strtotime("-365 DAY") .
+                $model = $model->andWhere('FROM_UNIXTIME(created_at, "%Y-%m-%d %h:%i:%s") BETWEEN ' . strtotime("-365 DAY") .
                     ' AND DATE_ADD(FROM_UNIXTIME(' . strtotime("-365 DAY") . ', "%Y-%m-%d %h:%i:%s"), INTERVAL 30 day)');
                 if($debug) echo 'YEAR: created_at BETWEEN ' . strtotime("-365 DAY") .
                     ' AND DATE_ADD(FROM_UNIXTIME(' . strtotime("-365 DAY") . ', "%Y-%m-%d %h:%i:%s"), INTERVAL 30 day)' . "\n";
