@@ -93,8 +93,7 @@ class HystoricalData extends \app\models\HystoricalData
 
         switch($period) {
             case 'last':
-                $model = $model->andWhere('FROM_UNIXTIME(created_at, "%Y-%m-%d %h:%i:%s") BETWEEN FROM_UNIXTIME(' . strtotime('-3 DAY') .
-                    ', "%Y-%m-%d %h:%i:%s") AND DATE_ADD(FROM_UNIXTIME(' . strtotime('-3 DAY') . ', "%Y-%m-%d %h:%i:%s"), INTERVAL 3 day)')
+                $model = $model->andWhere('created_at >= ' . $workDate)
                     ->orderBy('created_at DESC');
                 break;
             case 'quarter':
@@ -106,7 +105,7 @@ class HystoricalData extends \app\models\HystoricalData
             case 'year':
                 if( $coin < strtotime("-365 DAY") ) return 0;
                 $model = $model->andWhere('FROM_UNIXTIME(created_at, "%Y-%m-%d %h:%i:%s") BETWEEN FROM_UNIXTIME(' . strtotime("-365 DAY") .
-                    ', "%Y-%m-%d %h:%i:%s") AND DATE_ADD(FROM_UNIXTIME(' . strtotime("-365 DAY") . ', "%Y-%m-%d %h:%i:%s"), INTERVAL 15 day)')
+                    ', "%Y-%m-%d %h:%i:%s") AND DATE_ADD(FROM_UNIXTIME(' . strtotime("-365 DAY") . ', "%Y-%m-%d %h:%i:%s"), INTERVAL 365 day)')
                     ->orderBy('created_at ASC');
                 break;
         }

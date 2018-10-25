@@ -12,6 +12,7 @@ use yii\grid\GridView;
         [
             'attribute' => $order,
             'enableSorting' => false,
+//            'contentOptions' => ['class' => 'pull-right'],
             'value' => function($model) use($order){
                 return number_format($model->$order,4);
             }
