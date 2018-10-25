@@ -16,6 +16,7 @@ class ProjectDataSearch extends ProjectData
     public $project_flip;
     public $is_star;
     public $is_coined;
+    public $project_name;
     /**
      * {@inheritdoc}
      */
@@ -23,7 +24,7 @@ class ProjectDataSearch extends ProjectData
     {
         return [
             [['is_coined', 'id', 'project_id', 'expert_id', 'Report_Date', 'status', 'created_at', 'updated_at'], 'integer'],
-            [['Score', 'searchProjectName', 'searchExpertName', 'project_hold', 'is_star'], 'safe'],
+            [['project_name','Score', 'searchProjectName', 'searchExpertName', 'project_hold', 'is_star'], 'safe'],
         ];
     }
 
@@ -81,6 +82,15 @@ class ProjectDataSearch extends ProjectData
 //            'asc' => [ new \yii\db\Expression(' FIELD (flip, IF(flip >=8,1,0))') => SORT_ASC],
             'asc' => [ ' IF(project_data.flip >=8,1,0)' => SORT_ASC],
             'desc' => [ ' IF(project_data.flip >=8,1,0)' => SORT_DESC],
+//            'desc' => ['projects.ICO_Star' => SORT_DESC],
+        ];
+
+        $dataProvider->sort->attributes['project_name'] = [
+            // The tables are the ones our relation are configured to
+            // in my case they are prefixed with "tbl_"
+//            'asc' => [ new \yii\db\Expression(' FIELD (flip, IF(flip >=8,1,0))') => SORT_ASC],
+            'asc' => ['projects.ICO_Name' => SORT_ASC],
+            'desc' => ['projects.ICO_Name' => SORT_DESC],
 //            'desc' => ['projects.ICO_Star' => SORT_DESC],
         ];
 
