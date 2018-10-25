@@ -56,12 +56,12 @@ class HystoricalData extends \app\models\HystoricalData
                     ', "%Y-%m-%d %h:%i:%s") AND DATE_ADD(FROM_UNIXTIME(' . $workDate . ', "%Y-%m-%d %h:%i:%s"), INTERVAL 30 day)');
                 break;
             case 'quarter':
-                if( $coin > strtotime("-90 DAY") ) return 0;
+                if( $coin < strtotime("-90 DAY") ) return 0;
                 $model = $model->andWhere('FROM_UNIXTIME(created_at, "%Y-%m-%d %h:%i:%s") BETWEEN FROM_UNIXTIME(' . strtotime("-90 DAY").
                     ', "%Y-%m-%d %h:%i:%s") AND DATE_ADD(FROM_UNIXTIME(' . strtotime("-90 DAY") . ', "%Y-%m-%d %h:%i:%s"), INTERVAL 30 day)');
                 break;
             case 'year':
-                if( $coin > strtotime("-365 DAY") ) return 0;
+                if( $coin < strtotime("-365 DAY") ) return 0;
                 $model = $model->andWhere('FROM_UNIXTIME(created_at, "%Y-%m-%d %h:%i:%s") BETWEEN FROM_UNIXTIME(' . strtotime("-365 DAY") .
                     ', "%Y-%m-%d %h:%i:%s") AND DATE_ADD(FROM_UNIXTIME(' . strtotime("-365 DAY") . ', "%Y-%m-%d %h:%i:%s"), INTERVAL 30 day)');
 
@@ -102,13 +102,13 @@ class HystoricalData extends \app\models\HystoricalData
                     ->orderBy('created_at DESC');
                 break;
             case 'quarter':
-                if( $coin > strtotime("-90 DAY") ) return 0;
+                if( $coin < strtotime("-90 DAY") ) return 0;
                 $model = $model->andWhere('FROM_UNIXTIME(created_at, "%Y-%m-%d %h:%i:%s") BETWEEN FROM_UNIXTIME(' . strtotime("-90 DAY").
                     ', "%Y-%m-%d %h:%i:%s") AND DATE_ADD(FROM_UNIXTIME(' . strtotime("-90 DAY") . ', "%Y-%m-%d %h:%i:%s"), INTERVAL 90 day)')
                     ->orderBy('created_at ASC');
                 break;
             case 'year':
-                if( $coin > strtotime("-365 DAY") ) return 0;
+                if( $coin < strtotime("-365 DAY") ) return 0;
                 $model = $model->andWhere('FROM_UNIXTIME(created_at, "%Y-%m-%d %h:%i:%s") BETWEEN FROM_UNIXTIME(' . strtotime("-365 DAY") .
                     ', "%Y-%m-%d %h:%i:%s") AND DATE_ADD(FROM_UNIXTIME(' . strtotime("-365 DAY") . ', "%Y-%m-%d %h:%i:%s"), INTERVAL 15 day)')
                     ->orderBy('created_at ASC');
