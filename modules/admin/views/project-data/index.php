@@ -57,7 +57,7 @@ $this->params['breadcrumbs'][] = $this->title;
             }
         ],
         [
-            'label' => 'is coin',
+            'label' => 'Is Coined',
             'value' => function($model){
                 return $model->getHystoricalData()->count() > 0 ? 'Yes' : 'No';
             },
