@@ -293,7 +293,7 @@ class ImportController extends Controller
             $row++;
             if($skipRows-- > 0) continue;
             if($row % 10 == 0) echo "$row++";
-            for($i=1; $i<4; $i++) {
+            for($i=1; $i<6; $i++) {
                 if(!empty($fileop[$i])) {
 
                     $model = new ProjectSynonims();
