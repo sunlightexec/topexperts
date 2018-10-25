@@ -122,7 +122,7 @@ class Projects extends \app\models\Projects
                 ->orderBy('hystorical_data.created_at DESC')
                 ->groupBy('currencies.id')
                 ->one();
-            if($project_id == 43654) die(print_r($price * $curr->price));
+//            if($project_id == 43654) die(print_r($price * $curr->price));
             if(!empty($curr)) {
                 $price = $price * $curr->price;
             } else {
