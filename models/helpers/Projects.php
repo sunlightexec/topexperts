@@ -44,17 +44,23 @@ class Projects extends \app\models\Projects
 
     public static function getProjectByAttr($name, $slug, $url = null) {
         $url = str_replace(['http://', 'https://'], '', $url);
-        $projectModel = self::find()->where(['like', 'ICO_NAME', $name, false])->one();
+        $name = strtoupper($name);
+        $slug = strtoupper($slug);
+//        $projectModel = self::find()->where(['like', 'UPPER(ICO_NAME)', $name, false])->one();
+        $projectModel = self::find()->where(['=', 'UPPER(ICO_NAME)', $name])->one();
 
         if(empty($projectModel)) {
-            $projectModel = self::find()->where(['like', 'ICO_NAME', $slug, false])->one();
+//            $projectModel = self::find()->where(['like', 'ICO_NAME', $slug, fa;se])->one();
+            $projectModel = self::find()->where(['=', 'UPPER(ICO_NAME)', $slug])->one();
         }
 
         if(empty($projectModel)) {
 
-            $synonimModel = ProjectSynonims::find()->where(['like', 'project_synonim', $name, false])->one();
+//            $synonimModel = ProjectSynonims::find()->where(['like', 'project_synonim', $name, false])->one();
+            $synonimModel = ProjectSynonims::find()->where(['=', 'UPPER(project_synonim)', $name])->one();
             if(empty($synonimModel))
-                $synonimModel = ProjectSynonims::find()->where(['like', 'project_synonim', $slug, false])->one();
+//                $synonimModel = ProjectSynonims::find()->where(['like', 'project_synonim', $slug, false])->one();
+                $synonimModel = ProjectSynonims::find()->where(['=', 'UPPER(project_synonim)', $slug, false])->one();
             /*if(empty($synonimModel))
                 $synonimModel = ProjectSynonims::find()->where(['like', 'project_synonim', $slug.'%', false])->one();*/
 
