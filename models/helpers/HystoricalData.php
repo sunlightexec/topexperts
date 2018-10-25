@@ -43,17 +43,17 @@ class HystoricalData extends \app\models\HystoricalData
         switch($period) {
             case 'last':
                 $model = $model->andWhere('created_at BETWEEN ' . $workDate .
-                    ' AND DATE_SUB(' . $workDate . ', INTERVAL 30 day)');
+                    ' AND DATE_ADD(' . $workDate . ', INTERVAL 30 day)');
                 break;
             case 'quarter':
                 if( $coin > strtotime("-90 DAY") ) return 0;
                 $model = $model->andWhere('created_at BETWEEN ' . strtotime("-90 DAY").
-                    ' AND DATE_SUB(' . strtotime("-90 DAY") . ', INTERVAL 30 day)');
+                    ' AND DATE_ADD(' . strtotime("-90 DAY") . ', INTERVAL 30 day)');
                 break;
             case 'year':
                 if( $coin > strtotime("-365 DAY") ) return 0;
                 $model = $model->andWhere('created_at BETWEEN ' . strtotime("-365 DAY") .
-                    ' AND DATE_SUB(' . strtotime("-365 DAY") . ', INTERVAL 30 day)');
+                    ' AND DATE_ADD(' . strtotime("-365 DAY") . ', INTERVAL 30 day)');
                 break;
         }
 
@@ -85,13 +85,13 @@ class HystoricalData extends \app\models\HystoricalData
             case 'quarter':
                 if( $coin > strtotime("-90 DAY") ) return 0;
                 $model = $model->andWhere('created_at BETWEEN ' . strtotime("-90 DAY").
-                    ' AND DATE_SUB(' . strtotime("-90 DAY") . ', INTERVAL 30 day)')
+                    ' AND DATE_ADD(' . strtotime("-90 DAY") . ', INTERVAL 30 day)')
                     ->orderBy('created_at ASC');
                 break;
             case 'year':
                 if( $coin > strtotime("-365 DAY") ) return 0;
                 $model = $model->andWhere('created_at BETWEEN ' . strtotime("-365 DAY") .
-                    ' AND DATE_SUB(' . strtotime("-365 DAY") . ', INTERVAL 15 day)')
+                    ' AND DATE_ADD(' . strtotime("-365 DAY") . ', INTERVAL 15 day)')
                     ->orderBy('created_at ASC');
                 break;
         }
