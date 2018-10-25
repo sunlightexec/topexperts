@@ -30,6 +30,12 @@ use yii\db\Expression;
  */
 class ParsingController extends Controller
 {
+    public function actionUpdateRating()
+    {
+        $this->actionSetRatingProjects();
+        $this->actionSetRatingExperts();
+    }
+
     public function actionFixHystory()
     {
         $step = 30000;
