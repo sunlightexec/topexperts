@@ -56,7 +56,7 @@ class ParsingController extends Controller
                 ->where('name IS NOT NULL')
                 ->groupBy('project_id, currency_id, name')
                 ->limit($step)
-                ->offset($offset)
+//                ->offset($offset)
                 ->all();
         }
     }
