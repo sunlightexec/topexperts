@@ -47,7 +47,7 @@ class ParsingController extends Controller
 
             foreach($arRecs as $oRec) {
                 if($row++ % 2000 == 0) echo "$row++\n";
-                $prj = Projects::getProjectByAttr($oRec->name, $oRec->name);
+                $prj = Projects::getProjectByAttr( trim($oRec->name), trim($oRec->name));
 
 if($oRec->name == 'XRP') {
     echo "FOUNDED:";
