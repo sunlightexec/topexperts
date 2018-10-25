@@ -29,6 +29,7 @@ class HystoricalData extends \app\models\HystoricalData
 
     public static function getMaxPrice($project_id = null, $period = 'last')
     {
+        $debug = true;
         $project = Projects::find()->where("id = $project_id")->one();
         $start = $project->START_ICO;
         $stop = $project->END_ICO;
@@ -52,16 +53,22 @@ class HystoricalData extends \app\models\HystoricalData
             case 'last':
                 $model = $model->andWhere('created_at BETWEEN ' . $workDate .
                     ' AND DATE_ADD(' . $workDate . ', INTERVAL 30 day)');
+                if($debug) echo 'LATEST: created_at BETWEEN ' . $workDate .
+                    ' AND DATE_ADD(' . $workDate . ', INTERVAL 30 day)' . "\n";
                 break;
             case 'quarter':
                 if( $coin > strtotime("-90 DAY") ) return 0;
                 $model = $model->andWhere('created_at BETWEEN ' . strtotime("-90 DAY").
                     ' AND DATE_ADD(' . strtotime("-90 DAY") . ', INTERVAL 30 day)');
+                if($debug) echo 'QUARTER: created_at BETWEEN ' . strtotime("-90 DAY").
+                    ' AND DATE_ADD(' . strtotime("-90 DAY") . ', INTERVAL 30 day)' . "\n";
                 break;
             case 'year':
                 if( $coin > strtotime("-365 DAY") ) return 0;
                 $model = $model->andWhere('created_at BETWEEN ' . strtotime("-365 DAY") .
                     ' AND DATE_ADD(' . strtotime("-365 DAY") . ', INTERVAL 30 day)');
+                if($debug) echo 'YEAR: created_at BETWEEN ' . strtotime("-365 DAY") .
+                    ' AND DATE_ADD(' . strtotime("-365 DAY") . ', INTERVAL 30 day)' . "\n";
                 break;
         }
 
