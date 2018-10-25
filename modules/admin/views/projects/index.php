@@ -45,6 +45,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 '1'=>'Yes'
             ], ['class' => 'form-control'])
         ],
+        'flip_all',
+        'hold_all',
 
         ['class' => 'yii\grid\ActionColumn'],
     ];
