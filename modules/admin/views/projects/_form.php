@@ -65,26 +65,26 @@ use kartik\date\DatePicker;
         ]
     ]) ?>
 
-    <?= $form->field($model, 'END_ICO')->widget(DatePicker::classname(), [
-        'name' => 'check_issue_date',
-        'value' => $model->END_ICO/*date('Y-m-d', $model->END_ICO)*/,
-        'options' => ['placeholder' => 'Select issue date ...'],
-        'pluginOptions' => [
-            'format' => 'yyyy-mm-dd',
-            'todayHighlight' => true
-        ]
-    ]) ?>
-
-    <?= $form->field($model, 'Scam')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'status')->widget(Select2::classname(), [
-        'data' => \app\models\BaseModel::getStatusList(),
-        'language' => 'de',
-        'options' => ['placeholder' => 'Select a currency ...'],
-        'pluginOptions' => [
-            'allowClear' => true
-        ],
-    ]) ?>
+<!--    --><?//= $form->field($model, 'END_ICO')->widget(DatePicker::classname(), [
+//        'name' => 'check_issue_date',
+//        'value' => $model->END_ICO/*date('Y-m-d', $model->END_ICO)*/,
+//        'options' => ['placeholder' => 'Select issue date ...'],
+//        'pluginOptions' => [
+//            'format' => 'yyyy-mm-dd',
+//            'todayHighlight' => true
+//        ]
+//    ]) ?>
+<!---->
+<!--    --><?//= $form->field($model, 'Scam')->textInput(['maxlength' => true]) ?>
+<!---->
+<!--    --><?//= $form->field($model, 'status')->widget(Select2::classname(), [
+//        'data' => \app\models\BaseModel::getStatusList(),
+//        'language' => 'de',
+//        'options' => ['placeholder' => 'Select a currency ...'],
+//        'pluginOptions' => [
+//            'allowClear' => true
+//        ],
+//    ]) ?>
 
     <div class="form-group">
         <?= Html::submitButton(Yii::t('app/projects', 'Save'), ['class' => 'btn btn-success']) ?>
