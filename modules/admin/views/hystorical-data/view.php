@@ -37,7 +37,6 @@ $this->params['breadcrumbs'][] = $this->title;
             'max_supply',
             'date_added:datetime',
             'price',
-            'start_coin:datetime',
             'volume_24h',
             'market_cap',
 //            'status',

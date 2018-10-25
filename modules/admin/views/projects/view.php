@@ -42,6 +42,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'START_ICO:date',
             'END_ICO:date',
             'Scam',
+            'start_coin:datetime',
             'flip_all',
             'flip_3',
             'flip_12',
