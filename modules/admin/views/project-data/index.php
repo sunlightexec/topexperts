@@ -118,13 +118,13 @@ $this->params['breadcrumbs'][] = $this->title;
         [
             'label' => 'Hold Year',
             'value' => function($model){
-                return round($model->getProject()->one()->hold_12,1);
+                return round($model->getProject()->one()->hold_12,4);
             }
         ],
         [
             'label' => 'Hold Quarte',
             'value' => function($model){
-                return round($model->getProject()->one()->hold_3,1);
+                return round($model->getProject()->one()->hold_3,4);
             }
         ],
 
